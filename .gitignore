@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# LaTeX compilation dependencies
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.pdf
+
+# Zipped folders
+*.gz
