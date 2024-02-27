@@ -179,23 +179,23 @@ Devido à necessidade de leitura e armazenamento da estruturação dos vértices
 Desta forma, é proposto o seguinte **Modelo de Domínio**, que tenciona descrevar esta proposta de forma mais detalhada.
 
 ```mermaid
-graph TD;
-    Primitive-- tem (*) -->Face;
-    Face-- tem (3) -->Point;
-    Plane-- é uma -->Primitive;
-    Box-- é uma -->Primitive;
-    Sphere-- é uma -->Primitive;
-    Cone-- é uma -->Primitive;
-    Circle-- é uma -->Primitive;
-    Cylinder-- é uma -->Primitive;
-    Group-- tem (*) -->Primitive;
-    World-- possuí (*) -->Group;
-    World-- tem -->Camera;
-    World-- tem -->Window;
-    Engine-- renderiza -->World;
-    Engine-- usa -->Parser;
-    Parser-- cria -->World;
-    Generator-- gera -->Primitive;
+graph TD
+    Primitive-- tem (*) -->Face
+    Face-- tem (3) -->Point
+    Plane-- é uma -->Primitive
+    Box-- é uma -->Primitive
+    Sphere-- é uma -->Primitive
+    Cone-- é uma -->Primitive
+    Circle-- é uma -->Primitive
+    Cylinder-- é uma -->Primitive
+    Group-- tem (*) -->Primitive
+    World-- possuí (*) -->Group
+    World-- tem -->Camera
+    World-- tem -->Window
+    Engine-- renderiza -->World
+    Engine-- usa -->Parser
+    Parser-- cria -->World
+    Generator-- gera -->Primitive
 ```
 
 Criado o modelo, é possível perceber a hierarquia utilizada para a sua definição.
