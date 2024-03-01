@@ -127,7 +127,7 @@ Dessa forma, deverão ser tidas em conta algumas etiquetas `XML` para a criaçã
 
 | Etiqueta | Definição                                     | Lista de propriedades | Etiqueta Mãe |
 |----------|-----------------------------------------------|-----------------------|--------------|
-|world     | Define o contexto do cenário                  |:x:                    |:x:           |
+|world     | Define o contexto do cenário                  | axis                  |:x:           |
 |window    | Define as propriedades da janela de exibição  | width, height         | world        |
 |camera    | Define a uma câmera para visualização         | (sub-etiquetas)       | world        |
 |position  | Define a posição da câmera no cenário         | x, y, z               | camera       |
