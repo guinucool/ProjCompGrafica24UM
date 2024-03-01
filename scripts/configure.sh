@@ -1,3 +1,3 @@
 #!/bin/bash
-
-cmake -S . -B ./bin
+cd bin ; rm -rf !".gitkeep"
+cd .. ; cmake -S . -B ./bin
