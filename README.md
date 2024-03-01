@@ -211,3 +211,64 @@ Fará uso, ainda, a um interpretador que irá ler uma configuração `XML` e cri
 ---
 
 ### Implementação
+
+Estruturada a arquitetura base da solução, foi proposto, ainda, um modelo que conseguisse especificar como a solução vai ser implementada de forma concreta, tentando demonstrando e especificar todas as decisões de implementação tomadas para a melhor concretização do projeto pretendido.
+
+```mermaid
+classDiagram
+    class Point {
+        -x : : float
+        -y : : float
+        -z : : float
+        +Point()
+        +Point(x: float, y: float, z: float)
+        +Point(beta: float, teta: float, radius: float)
+        +Point(point: Point)
+        +Point(stream: ifstream)
+        +getX(): float
+        +getY(): float
+        +getZ(): float
+        +setX(x: float): void
+        +setY(y: float): void
+        +setZ(z: float): void
+        +write(stream: ofstream): void
+        +read(stream: ifstream): void
+        +rotateNew(angleX: float, angleY: float, angleZ: float): Point
+        +translateNew(x: float, y: float, z: float): Point
+        +translateNew(beta: float, teta: float, radius: float): Point
+        +draw(): void
+        +feedBuffer(buffer: float*): void
+        +equals(point: Point): bool
+        +clone(): Point
+        +toString(): string
+    }
+    Face *-- Point
+    class Face {
+        -first : : Point
+        -second : : Point
+        -third : : Point
+        +Face(point0: Point, point1: Point, point2: Point)
+        +Face(stream: ifstream)
+        +getFirst(): Point
+        +getSecond(): Point
+        +getThird(): Point
+        +setFirst(point: Point): void
+        +setSecond(point: Point): void
+        +setThird(point: Point): void
+        +write(stream: ofstream): void
+        +read(stream: ifstream): void
+        +rotateNew(angleX: float, angleY: float, angleZ: float): Point
+        +translateNew(x: float, y: float, z: float): Point
+        +translateNew(beta: float, teta: float, radius: float): Point
+        +draw(): void
+        +feedBuffer(buffer: float*): void
+        +equals(point: Point): bool
+        +clone(): Face
+        +toString(): string
+    }
+    Primitive *-- Face
+    class Primitive {
+      
+    }
+    
+```
