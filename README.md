@@ -272,3 +272,22 @@ classDiagram
     }
     
 ```
+
+---
+
+# Utilização dos scripts
+
+Foram ainda criados scripts de compilação e execução do projeto que podem ser encontrados na diretoria `scripts`. Estes scripts podem ser utilizados para aplicar a configuração do `CMakeLists.txt` (`configure.sh`) e para a compilação da solução (`build.sh`).
+
+Estes precisam, no entanto, de permissão para serem executados pelo que deverão ser executados da seguinte forma:
+
+```
+sudo ./scripts/script.sh
+```
+
+ou, para uma solução mais permanente:
+
+```
+sudo chmod +x scripts/script.sh
+./scripts/script.sh
+```
