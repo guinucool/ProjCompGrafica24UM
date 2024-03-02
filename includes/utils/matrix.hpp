@@ -46,7 +46,7 @@ namespace utils {
         // Operações Matriciais
         // Adição de Matrizes
         Matrix operator+(const Matrix& other) const {
-            if (this->rows != other.rows || this->cols != other.cols) {
+            if (this->rows != other.cols || this->cols != other.cols) {
                 throw std::invalid_argument("Matrices dimensions mismatch for addition");
             }
 
