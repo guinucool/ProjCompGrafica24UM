@@ -1,4 +1,4 @@
-#include "../../includes/primitives/point.h"
+#include "../../includes/primitives/point.hpp"
 #include <iostream>
 #include <fstream>
 #include <cmath>
