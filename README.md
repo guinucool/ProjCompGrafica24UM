@@ -270,7 +270,9 @@ classDiagram
     class Primitive {
       
     }
-    
+    class Vector {
+      -vector : : std:vector
+    }
 ```
 
 ---
