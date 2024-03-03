@@ -10,6 +10,7 @@ namespace containers {
       Window();
       Window(int width, int height);
       Window(const Window& window);
+      Window(std::string file);
 
       int getWidth() const;
       int getHeight() const;

@@ -16,24 +16,14 @@
 class World {
 private:
   
-  Window * window;
+  containers::Window * window;
   //  Camera * camera;
 
 public:
 
   World(std::string file)
   {
-    static const char* f = file.c_str();
-    T2::XMLDocument doc;
-    doc.LoadFile(file.c_str());
-    T2::XMLElement * w = doc.RootElement()->FirstChildElement("window");
-    T2::XMLElement * c = doc.RootElement()->FirstChildElement("window");
-
-    int width, height = 0;
-    w->QueryIntAttribute("width", &width);
-    w->QueryIntAttribute("height", &height);
-
-    containers::Window * window = new containers::Window(width, height);
+    window = new containers::Window(file);
   }
 };
 
