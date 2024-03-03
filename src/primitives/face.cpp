@@ -2,6 +2,86 @@
 #include <iostream>
 #include <fstream>
 
+/* Inicialização do namespace ao qual a classe pertence */
+namespace primitives
+{
+
+    /* Definição do objeto tipo face */
+    class Face {
+
+        private:
+
+            /* Definição dos três pontos que constituem uma face */
+            Point first;
+            Point second;
+            Point third;
+
+        public:
+
+            /* Construtor parametrizado de três pontos */
+            Face(Point first, Point second, Point third) {
+
+            }
+
+            /* Construtor de cópia */
+            Face(const Face& face) {
+
+            }
+
+            /*  */
+            Face() {
+
+            }
+
+            /* Destruição do objeto tipo face */
+            ~Face();
+
+            void setPoints(Point first, Point second, Point third) {
+
+            }
+
+            void setFirst(Point point) {
+
+            }
+
+            void setSecond(Point point) {
+                
+            }
+
+            void setThird(Point point) {
+                
+            }
+
+            Point getFirst() const {
+
+            }
+
+            Point getSecond() const {
+                
+            }
+
+            Point getThird() const {
+                
+            }
+
+            Face transform() const {
+
+            }
+
+            Face translateD(float dx, float dy, float dz) const {
+
+            }
+
+            Face translateR(float radius, float beta, float theta) const {
+
+            }
+
+            Face rotate(float angleX, float angleY, float angleZ) const {
+
+            }
+    };
+}
+
 
 class Face {
 private:
