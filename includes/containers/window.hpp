@@ -1,23 +1,22 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
 
-namespace containers {
-    class Window {
-    private:
-      int width, height;
+class Window {
+private:
+  int width, height;
 
-    public:
-      Window();
-      Window(int width, int height);
-      Window(const Window& window);
-      Window(std::string file);
+public:
+  Window();
+  Window(int width, int height);
+  Window(const Window& window);
+  Window(std::string file);
 
-      int getWidth() const;
-      int getHeight() const;
+  int getWidth() const;
+  int getHeight() const;
 
-      void setWidth(int w);
-      void setHeight(int h);
-    };
+  void setWidth(int w);
+  void setHeight(int h);
 };
+
 
 #endif // WINDOW_H

@@ -7,22 +7,27 @@
 
 #include "../../includes/containers/world.hpp"
 #include "../../includes/containers/window.hpp"
+#include "../../includes/containers/camera.hpp"
 //#include "../../src/lib/tinyxml2.h"
 
 //using namespace containers;
 
 //#define T2 tinyxml2
 
-class World {
-private:
+namespace containers
+{
+  class World {
+  private:
   
-  containers::Window * window;
-  //  Camera * camera;
+    Window window;
+    Camera camera;
 
-public:
+  public:
 
-  World(std::string file)
-  {
-    window = new containers::Window(file);
-  }
+    World(std::string file)
+    {
+      window = * new Window(file);
+      camera = * new Camera(file);
+    }
+  };
 };
