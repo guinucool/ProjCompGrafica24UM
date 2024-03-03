@@ -7,11 +7,11 @@
 
 #include "../../includes/containers/world.hpp"
 #include "../../includes/containers/window.hpp"
-#include "../../src/lib/tinyxml2.h"
+//#include "../../src/lib/tinyxml2.h"
 
 //using namespace containers;
 
-#define T2 tinyxml2
+//#define T2 tinyxml2
 
 class World {
 private:
@@ -26,7 +26,3 @@ public:
     window = new containers::Window(file);
   }
 };
-
-int main() {
-  World * w = new World("../../../xmlt/xml.xml");
-    }
