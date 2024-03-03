@@ -2,92 +2,70 @@
 #define MATRIX_HPP
 
 #include <vector>
-#include <iostream>
-#include <stdexcept> // Para std::out_of_range
-
+#include <cstddef>
+#include <string>
 
 namespace utils {
-    template<typename T>
+
     class Matrix {
-    private:
-        std::vector<T> data; // Armazena os elementos da matriz em um vetor linear
-        size_t rows; // Número de linhas
-        size_t cols; // Número de colunas
 
-    public:
-        // Construtor padrão
-        Matrix(size_t rows, size_t cols, T initialValue = T()) : rows(rows), cols(cols), data(rows * cols, initialValue) {}
+        private:
 
-        // Acessa elemento da matriz (com verificação de limites)
-        T& at(size_t row, size_t col) {
-            if (row >= rows || col >= cols) {
-                throw std::out_of_range("Matrix indices out of range");
-            }
-            return data[row * cols + col];
-        }
+            /* Propriedades do objeto matriz */
+            std::vector<float> data; /* Vetor que representa a matriz */
+            size_t rows;
+            size_t cols;
 
-        const T& at(size_t row, size_t col) const {
-            if (row >= rows || col >= cols) {
-                throw std::out_of_range("Matrix indices out of range");
-            }
-            return data[row * cols + col];
-        }
+            /* Verificar se as dimensões das matrizes são iguais */
+            bool equalDimension(const Matrix& matrix) const;
 
-        // Imprime a matriz
-        void print() const {
-            for (size_t i = 0; i < rows; ++i) {
-                for (size_t j = 0; j < cols; ++j) {
-                    std::cout << at(i, j) << " ";
-                }
-                std::cout << std::endl;
-            }
-        }
+            /* Verificar se a posição introduzida está dentro dos limites da matriz */
+            bool outOfBounds(size_t row, size_t col) const;
 
-        // Operações Matriciais
-        // Adição de Matrizes
-        Matrix operator+(const Matrix& other) const {
-            if (this->rows != other.rows || this->cols != other.cols) {
-                throw std::invalid_argument("Matrices dimensions mismatch for addition");
-            }
+            /* Soma de matrizes */
+            Matrix sum(const Matrix& other) const;
 
-            Matrix result(rows, cols, T());
-            for (size_t i = 0; i < this->data.size(); ++i) {
-                result.data[i] = this->data[i] + other.data[i];
-            }
-            return result;
-        }
+            /* Operação de multiplicação de matrizes */
+            Matrix mul(const Matrix& other) const;
 
-        // Subtração de Matrizes
-        Matrix operator-(const Matrix& other) const {
-            if (this->rows != other.rows || this->cols != other.cols) {
-                throw std::invalid_argument("Matrices dimensions mismatch for subtraction");
-            }
+        public:
+            
+            /* Construtor parametrizado */
+            Matrix(size_t rows, size_t cols, float initialValue);
 
-            Matrix result(rows, cols, T());
-            for (size_t i = 0; i < this->data.size(); ++i) {
-                result.data[i] = this->data[i] - other.data[i];
-            }
-            return result;
-        }
+            /* Construtor de cópia */
+            Matrix(const Matrix& matrix);
 
-        // Multiplicação de Matrizes
-        Matrix operator*(const Matrix& other) const {
-            if (this->cols != other.rows) {
-                throw std::invalid_argument("Matrices dimensions mismatch for multiplication");
-            }
+            /* Devolução da referência de um elemento de uma matriz numa certa posição */
+            float& at(size_t row, size_t col);
 
-            Matrix result(this->rows, other.cols, T());
-            for (size_t i = 0; i < this->rows; ++i) {
-                for (size_t j = 0; j < other.cols; ++j) {
-                    T sum = T();
-                    for (size_t k = 0; k < this->cols; ++k) {
-                        sum += this->at(i, k) * other.at(k, j);
-                    }
-                    result.at(i, j) = sum;
-                }
-            }
-            return result;
-        }
+            /* Devolução da referência de um elemento de uma matriz numa certa posição sem possibilidade de alteração */
+            const float& at(size_t row, size_t col) const;
+
+            /* Operação de negação da matriz */
+            Matrix operator-() const;
+
+            /* Operação de soma de matrizes */
+            Matrix operator+(const Matrix& other) const;
+
+            /* Operação de subtração de matrizes */
+            Matrix operator-(const Matrix& other) const;
+
+            /* Operação de multiplicação de matrizes */
+            Matrix operator*(const Matrix& other) const;
+
+            /* Operação de comparação de igualdade entre duas matrizes */
+            bool operator==(const Matrix& matrix) const;
+
+            /* Operação de comparação de desigualdade entre duas matrizes */
+            bool operator!=(const Matrix& matrix) const;
+
+            /* Operação de clonagem de uma matriz */
+            Matrix clone();
+
+            /* Transformação da matriz em string */
+            std::string toString();
     };
 }
+
 #endif
