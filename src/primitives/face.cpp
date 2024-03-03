@@ -1,149 +1,87 @@
+#include "../../includes/primitives/face.hpp"
 #include "../../includes/primitives/point.hpp"
 #include <iostream>
 #include <fstream>
 
-/* Inicialização do namespace ao qual a classe pertence */
 namespace primitives
 {
 
-    /* Definição do objeto tipo face */
-    class Face {
+    Face::Face(Point point0, Point point1, Point point2){
+        this->first = point0;
+        this->second = point1;
+        this->third = point2;
+    }
 
-        private:
-
-            /* Definição dos três pontos que constituem uma face */
-            Point first;
-            Point second;
-            Point third;
-
-        public:
-
-            /* Construtor parametrizado de três pontos */
-            Face(Point first, Point second, Point third) {
-
-            }
-
-            /* Construtor de cópia */
-            Face(const Face& face) {
-
-            }
-
-            /*  */
-            Face() {
-
-            }
-
-            /* Destruição do objeto tipo face */
-            ~Face();
-
-            void setPoints(Point first, Point second, Point third) {
-
-            }
-
-            void setFirst(Point point) {
-
-            }
-
-            void setSecond(Point point) {
-                
-            }
-
-            void setThird(Point point) {
-                
-            }
-
-            Point getFirst() const {
-
-            }
-
-            Point getSecond() const {
-                
-            }
-
-            Point getThird() const {
-                
-            }
-
-            Face transform() const {
-
-            }
-
-            Face translateD(float dx, float dy, float dz) const {
-
-            }
-
-            Face translateR(float radius, float beta, float theta) const {
-
-            }
-
-            Face rotate(float angleX, float angleY, float angleZ) const {
-
-            }
-    };
-}
-
-
-class Face {
-private:
-    Point first, second, third;
-
-public:
-
-    Face(Point point0, Point point1, Point point2) : first(point0), second(point1), third(point2) {}
-
-    Face(std::ifstream &fstream) {
+    Face::Face(std::ifstream &fstream) {
         // TODO
     }
 
-    Point getFirst() const { return first; }
-    Point getSecond() const { return second; }
-    Point getThird() const { return third; }
+    Point Face::getFirst() const { return this->first; }
+    Point Face::getSecond() const { return this->second; }
+    Point Face::getThird() const { return this->third; }
 
-    void setFirst(Point point) { first = point; }
-    void setSecond(Point point) { second = point; }
-    void setThird(Point point) { third = point; }
+    void Face::setFirst(Point point) { this->first = point; }
+    void Face::setSecond(Point point) { this->second = point; }
+    void Face::setThird(Point point) { this->third = point; }
 
-    void write(std::ofstream &ofstream) const {
+    void Face::write(std::ofstream &ofstream) const {
         // TODO
     }
 
-    void read(std::ifstream &ifstream) {
+    void Face::read(std::ifstream &ifstream) {
         // TODO
     }
 
-    Point rotateNew(float angleX, float angleY, float angleZ) {
+    Face Face::rotateNew(float angleX, float angleY, float angleZ) {
+        Point rotatedFirst = this->first.rotate(angleX, angleY, angleZ);
+        Point rotatedSecond = this->second.rotate(angleX, angleY, angleZ);
+        Point rotatedThird = this->third.rotate(angleX, angleY, angleZ);
+
+    return Face(rotatedFirst, rotatedSecond, rotatedThird);
+    }
+
+    Point Face::translateD(float x, float y, float z) {
+        Point translatedFirst = this->first.translateD(x, y, z);
+        Point translatedSecond = this->second.translateD(x, y, z);
+        Point translatedThird = this->third.translateD(x, y, z);
+
+        return Face(translatedFirst, translatedSecond, translatedThird);
+    }
+
+    Point Face::translateP(float beta, float theta, float radius) {
+        Point translatedFirst = this->first.translateP(radius, beta, theta);
+        Point translatedSecond = this->second.translateP(radius, beta, theta);
+        Point translatedThird = this->third.translateP(radius, beta, theta);
+
+        return Face(translatedFirst, translatedSecond, translatedThird);
+    }
+
+    void Face::draw() const {
         // TODO
     }
 
-    Point translateNew(float x, float y, float z) {
-        // TODO
+    void Face::feedBuffer(float* buffer) {
     }
 
-    Point rotateNew(float theta, float radius) {
-        // TODO
+    bool Face::equals(Face face) const {
+        return
+            (this->first.equals(face.getFirst()) &&
+            this->second.equals(face.getSecond()) &&
+            this->third.equals(face.getThird())) || 
+            (this->first.equals(face.getSecond()) &&
+            this->second.equals(face.getThird()) &&
+            this->third.equals(face.getFirst())) ||
+            (this->first.equals(face.getThird()) &&
+            this->second.equals(face.getFirst()) &&
+            this->third.equals(face.getSecond()));
     }
 
-    void draw() const {
-        // TODO
-    }
-
-    void feedBuffer(float* buffer) {
-        // TODO
-    }
-
-    bool equals(Point point) const {
-        // Implementação para verificar se algum dos pontos é igual ao fornecido
-        return (first.getX() == point.getX() && first.getY() == point.getY() && first.getZ() == point.getZ()) ||
-               (second.getX() == point.getX() && second.getY() == point.getY() && second.getZ() == point.getZ()) ||
-               (third.getX() == point.getX() && third.getY() == point.getY() && third.getZ() == point.getZ());
-    }
-
-    Face clone() const {
+    Face Face::clone() const {
         // Implementação para clonar a face
-        return Face(first, second, third);
+        return Face::Face(first, second, third);
     }
 
-    std::string toString() const {
+    std::string Face::toString() const {
         std::string result = "Face: ";
         result += "First: "; first.toString(); result += ", ";
         result += "Second: "; second.toString(); result += ", ";

@@ -5,35 +5,38 @@
 #include <fstream>
 #include <string>
 
-class Face {
-private:
-    Point first, second, third;
+namespace primitives{
 
-public:
-    Face(Point point0, Point point1, Point point2);
-    Face(std::ifstream &fstream);
+    class Face {
+        
+    private:
+        Point first, second, third;
 
-    Point getFirst() const;
-    Point getSecond() const;
-    Point getThird() const;
+    public:
+        Face(Point point0, Point point1, Point point2);
+        Face(std::ifstream &fstream);
 
-    void setFirst(Point point);
-    void setSecond(Point point);
-    void setThird(Point point);
+        Point getFirst() const;
+        Point getSecond() const;
+        Point getThird() const;
 
-    void write(std::ofstream &ofstream) const;
-    void read(std::ifstream &ifstream);
+        void setFirst(Point point);
+        void setSecond(Point point);
+        void setThird(Point point);
 
-    Point rotateNew(float angleX, float angleY, float angleZ);
-    Point translateNew(float x, float y, float z);
-    Point rotateNew(float theta, float radius);
+        void write(std::ofstream &ofstream) const;
+        void read(std::ifstream &ifstream);
 
-    void draw() const;
-    void feedBuffer(float* buffer);
-    
-    bool equals(Point point) const;
-    Face clone() const;
-    std::string toString() const;
-};
+        Face rotateNew(float angleX, float angleY, float angleZ);
+        Point translateD(float x, float y, float z);
+        Point translateP(float theta, float radius);
 
+        void draw() const;
+        void feedBuffer(float* buffer);
+        
+        bool equals(Face face) const;
+        Face clone() const;
+        std::string toString() const;
+    };
+}
 #endif // FACE_H
