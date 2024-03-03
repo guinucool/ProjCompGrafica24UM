@@ -3,15 +3,18 @@
 
 #include <string>
 
-namespace containers {
-    class World {
+#include "../../includes/containers/window.hpp"
+#include "../../includes/containers/camera.hpp"
 
-    private:
+class World {
+
+private:
+  Window window;
+  Camera camera;
       
-    public:
+public:
 
-      World(std::string file);
-    };
+  World(std::string file);
 };
 
 #endif // WORLD_HPP
