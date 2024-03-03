@@ -1,7 +1,7 @@
-#ifndef FACE_H
-#define FACE_H
+#ifndef FACE_HPP
+#define FACE_HPP
 
-#include "point.h"
+#include "point.hpp"
 #include <fstream>
 #include <string>
 
