@@ -3,6 +3,7 @@
 
 /* Inclusão de librarias para funcionalidade do programa */
 #include <stdexcept>
+#include <cmath>
 
 /* Declaração do namespace usado para definir esta classe */
 namespace utils
@@ -66,18 +67,123 @@ namespace utils
         return result;
     }
 
+    /* Devolução da referência de um elemento de uma matriz num certo índice */
+    float& Matrix::at(int index) {
+
+        /* Verifica se o elemento pedido está no alcance do vetor */
+        if (index >= this->data.size())
+            throw std::out_of_range("index out of range");
+
+        /* Devolve o elemento na posição pedida */
+        return this->data[index];
+    }
+
+    /* Devolução da referência de um elemento de uma matriz numa certo índice sem possibilidade de alteração */
+    const float& Matrix::at(int index) const {
+
+        /* Verifica se o elemento pedido está no alcance do vetor */
+        if (index >= this->data.size())
+            throw std::out_of_range("index out of range");
+
+        /* Devolve o elemento na posição pedida */
+        return this->data[index];
+    }
+
+    /* Inicialização da matriz para transformações */
+    void Matrix::initIdentity(size_t rows, size_t cols) {
+
+        /* Colocação do estado inicial */
+        for (size_t i = 0; i < this->rows; i++)
+            this->at(i, i) = 1.0f;
+    }
+
     /* Construtor parametrizado */
-    Matrix::Matrix(size_t rows, size_t cols, float initialValue) {
-        this->rows = rows;
-        this->cols = cols;
-        this->data = std::vector<float>(rows * cols, initialValue);
+    Matrix::Matrix(size_t rows, size_t cols, float initialValue) : rows(rows), cols(cols), data(rows * cols, initialValue) {}
+
+    /* Construtor parametrizado para matriz identidade */
+    Matrix::Matrix(size_t rows, size_t cols) : rows(rows), cols(cols), data(rows * cols, 0.0f) {
+        this->initIdentity(rows, cols);
     }
 
     /* Construtor de cópia */
-    Matrix::Matrix(const Matrix& matrix) {
-        this->rows = matrix.rows;
-        this->cols = matrix.cols;
-        this->data = std::vector<float>(matrix.data);
+    Matrix::Matrix(const Matrix& matrix) : rows(matrix.rows), cols(matrix.cols), data(matrix.data) {}
+
+    /* Construtor de matriz de translação */
+    Matrix Matrix::translateD(float dx, float dy, float dz) {
+
+        /* Inicialização da matriz */
+        Matrix matrix(4, 4);
+
+        /* Criação da matriz de translação */
+        matrix.at(0, 3) = dx;
+        matrix.at(1, 3) = dy;
+        matrix.at(2, 3) = dz;
+
+        /* Devolução da matriz construída */
+        return matrix;
+    }
+
+    /* Construtor de matriz de translação por coordenadas polares */
+    Matrix Matrix::translateP(float radius, float alpha, float beta) {
+
+        /* Inicialização da matriz */
+        Matrix matrix(4, 4);
+
+        /* Criação da matriz de translação */
+        matrix.at(0, 3) = radius * cos(beta) * sin(alpha);
+        matrix.at(1, 3) = radius * cos(beta) * cos(alpha);
+        matrix.at(2, 3) = radius * sin(beta);
+
+        /* Devolução da matriz construída */
+        return matrix;
+    }
+
+    /* Construtor de matriz de rotação sobre o eixo x */
+    Matrix Matrix::rotateX(float ax) {
+
+        /* Inicialização da matriz */
+        Matrix matrix(4, 4);
+
+        /* Criação da matriz de rotação */
+        matrix.at(1, 1) = cos(ax);
+        matrix.at(1, 2) = -sin(ax);
+        matrix.at(2, 1) = sin(ax);
+        matrix.at(2, 2) = cos(ax);
+
+        /* Devolução da matriz construída */
+        return matrix;
+    }
+
+    /* Construtor de matriz de rotação sobre o eixo y */
+    Matrix Matrix::rotateY(float ay) {
+
+        /* Inicialização da matriz */
+        Matrix matrix(4, 4);
+
+        /* Criação da matriz de rotação */
+        matrix.at(0, 0) = cos(ay);
+        matrix.at(0, 2) = sin(ay);
+        matrix.at(2, 0) = -sin(ay);
+        matrix.at(2, 2) = cos(ay);
+
+        /* Devolução da matriz construída */
+        return matrix;
+    }
+
+    /* Construtor de matriz de rotação sobre o eixo z */
+    Matrix Matrix::rotateZ(float az) {
+
+        /* Inicialização da matriz */
+        Matrix matrix(4, 4);
+
+        /* Criação da matriz de rotação */
+        matrix.at(0, 0) = cos(az);
+        matrix.at(0, 1) = -sin(az);
+        matrix.at(1, 0) = sin(az);
+        matrix.at(1, 1) = cos(az);
+
+        /* Devolução da matriz construída */
+        return matrix;
     }
 
     /* Devolução da referência de um elemento de uma matriz numa certa posição */
@@ -93,7 +199,23 @@ namespace utils
 
     /* Devolução da referência de um elemento de uma matriz numa certa posição sem possibilidade de alteração */
     const float& Matrix::at(size_t row, size_t col) const {
-        return this->at(row, col);
+        
+        /* Verifica se o elemento pedido está no alcance do vetor */
+        if (this->outOfBounds(row, col))
+            throw std::out_of_range("indices out of range");
+
+        /* Devolve o elemento na posição pedida */
+        return this->data[row * cols + col];
+    }
+
+    /* Devolução do número de linhas de uma matriz */
+    size_t Matrix::getRows() const {
+        return this->rows;
+    }
+
+    /* Devolução do número de colunas de uma matriz */
+    size_t Matrix::getCols() const {
+        return this->cols;
     }
 
     /* Operação de negação da matriz */
@@ -125,6 +247,16 @@ namespace utils
         return this->mul(other);
     }
 
+    /* Acesso a um índice da matriz */
+    float& Matrix::operator[](int index) {
+        return this->at(index);
+    }
+
+    /* Acesso a um índice da matriz sem possibilidade de modificação */
+    const float& Matrix::operator[](int index) const {
+        return this->at(index);
+    }
+
     /* Operação de comparação de igualdade entre duas matrizes */
     bool Matrix::operator==(const Matrix& matrix) const {
         return this->data == matrix.data;
@@ -136,12 +268,12 @@ namespace utils
     }
 
     /* Operação de clonagem de uma matriz */
-    Matrix Matrix::clone() {
+    Matrix Matrix::clone() const {
         return Matrix(*this);
     }
 
     /* Transformação da matriz em string */
-    std::string Matrix::toString() {
+    std::string Matrix::toString() const {
 
         /* Inicialização da string vazia */
         std::string matrix = "";

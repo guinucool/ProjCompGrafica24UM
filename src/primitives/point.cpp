@@ -1,167 +1,182 @@
-#include "../../includes/primitives/point.h"
-#include "../../includes/utils/matrix.hpp"
-#include <iostream>
-#include <fstream>
+/* Inclusão do cabeçalho de definição da classe */
+#include "../../includes/primitives/point.hpp"
+
+/* Inclusão de livrarias necessárias à funcionalidade */
+#include <stdexcept>
 #include <cmath>
-#include <string>
 
 /* Inicialização do namespace ao qual a classe pertence */
 namespace primitives
 {
+    /* Definição do valor das coordenadas de um ponto */
+    void Point::setCoords(float x, float y, float z) {
 
-    /* Definição do objeto de tipo ponto */
-    class Point {
+        /* Associação das coordendas à respetiva posição no vetor */
+        this->X() = x;
+        this->Y() = y;
+        this->Z() = z;
+    }
 
-        private:
+    /* Construtor vazio que invoca um ponto sempre na origem do referencial */
+    Point::Point() : coords(4, 1, 1.0f) {
 
-            /* Definição das propriedades do ponto */
-            utils::Matrix<float> coords;
+        /* Associação de coordenadas */
+        this->setCoords(0.0f, 0.0f, 0.0f);
+    }
 
-            /* Inicialização do vetor de coordenadas do ponto */
-            void initCoords() {
-                this->coords = utils::Matrix<float>(3, 1);
-            }
+    /* Construtor parametrizado */
+    Point::Point(float x, float y, float z) : coords(4, 1, 1.0f) {
 
-        public:
-        
-            /* Construtor vazio que invoca um ponto sempre na origem do referencial */
-            Point() {
+        /* Associação das coordenadas */
+        this->setCoords(x, y, z);
+    }
 
-                /* Inicialização do vetor de coordenadas */
-                this->initCoords();
+    /* Construtor de cópia */
+    Point::Point(const Point& point) : coords(4, 1, 1.0f) {
 
-                /* Associação de coordenadas */
-                this->setCoords(0.0f, 0.0f, 0.0f);
-            }
+        /* Associação das coordenadas */
+        this->setCoords(point.X(), point.Y(), point.Z());
+    }
 
-            /* Construtor parametrizado */
-            Point(float x, float y, float z) {
+    /* Construtor parametrizado de ponto para coordenadas polares */
+    Point Point::polarPoint(float radius, float alpha, float beta) {
 
-                /* Inicialização do vetor de coordenadas */
-                this->initCoords();
+        /* Tradução das coordenadas */
+        float x = radius * cos(beta) * sin(alpha);
+        float y = radius * cos(beta) * cos(alpha);
+        float z = radius * sin(beta);
 
-                /* Associação das coordenadas */
-                this->setCoords(x, y, z);
-            }
+        /* Criação do ponto polar */
+        return Point(x, y, z);
+    }
 
-            /* Construtor de cópia */
-            Point(const Point& point) {
+    /* Devolução da referência do valor da coordenada x do ponto */
+    float& Point::X() {
+        return this->coords[0];
+    }
 
-                /* Inicialização do vetor de coordenadas */
-                this->initCoords();
+    /* Devolução da referência do valor da coordenada x do ponto sem possibilidade de alteração */
+    const float& Point::X() const {
+        return this->coords[0];
+    }
 
-                /* Associação das coordenadas */
-                this->setCoords(point.getX(), point.getY(), point.getZ());
-            }
+    /* Devolução da referência do do valor da coordenada y do ponto */
+    float& Point::Y() {
+        return this->coords[1];
+    }
 
-            /* Construtor parametrizado com vetor */
-            Point(utils::Matrix<float> vector) {
+    /* Devolução da referência do valor da coordenada y do ponto sem possibilidade de alteração */
+    const float& Point::Y() const {
+        return this->coords[1];
+    }
 
-                /*  */
-            }
+    /* Devolução da referência do do valor da coordenada z do ponto */
+    float& Point::Z() {
+        return this->coords[2];
+    }
+
+    /* Devolução da referência do valor da coordenada z do ponto sem possibilidade de alteração */
+    const float& Point::Z() const {
+        return this->coords[2];
+    }
+
+    /* Devolução da matriz das coordenadas do ponto */
+    utils::Matrix Point::getCoords() const {
+        return utils::Matrix(this->coords);
+    }
+
+    /* Transformação de um ponto dada uma matriz */
+    void Point::transform(const utils::Matrix& transform) {
+
+        /* Verifica se a matriz de transformação é compatível */
+        if (transform.getRows() != 4 && transform.getCols() != 4)
+            throw std::runtime_error("matrix invalid for transform");
+
+        /* Criação das novas coordenadas do ponto */
+        this->coords = transform * this->coords;
+    }
+
+    /* Translação de um ponto dado um vetor */
+    void Point::translateD(float dx, float dy, float dz) {
+
+        /* Criação da matriz de translação */
+        utils::Matrix translate = utils::Matrix::translateD(dx, dy, dz);
+
+        /* Aplicação da matriz */
+        this->transform(translate);
+    }
+
+    /* Translação de um ponto dado um vetor polar */
+    void Point::translateP(float radius, float alpha, float beta) {
+
+        /* Criação da matriz de translação */
+        utils::Matrix translate = utils::Matrix::translateP(radius, alpha, beta);
+
+        /* Aplicação da matriz */
+        this->transform(translate);
+    }
+
+    /* Rotação de um ponto dado o ângulo de rotação sobre cada eixo */
+    void Point::rotate(float ax, float ay, float az) {
+
+        /* Criação da matriz de translação */
+        utils::Matrix rotateX = utils::Matrix::rotateX(ax);
+        utils::Matrix rotateY = utils::Matrix::rotateY(ay);
+        utils::Matrix rotateZ = utils::Matrix::rotateZ(az);
+
+        /* Aplicação da matriz */
+        this->transform(rotateX * rotateY * rotateZ);
+    }
+
+    /* Escrita de um ponto em ficheiro */
+    void Point::write(std::ofstream& stream) const {
+
+    }
+
+    /* Leitura de um ponto através de um ficheiro */
+    void Point::read(std::ifstream& stream) {
+
+    }
+
+    /* Desenho de um ponto no modo imediato */
+    void Point::draw() const {
+
+    }
+
+    /* Alimentação de um buffer para desenho em modo VBO */
+    void Point::feedBuffer(std::vector<float> buffer) const {
+
+    }
+
+    /* Operação de comparação por igualdade de pontos */
+    bool Point::operator==(const Point& point) const {
+        return this->coords == point.coords;
+    }
+
+    /* Operação de comparação por desigualdade de pontos */
+    bool Point::operator!=(const Point& point) const {
+        return this->coords != point.coords;
+    }
+
+    /* Operação de clonagem de um ponto */
+    Point Point::clone() const {
+        return Point((*this));
+    }
+
+    /* Transformação de um ponto em formato string */
+    std::string Point::toString() const {
+
+        /* Inicialização da string vazia */
+        std::string point = "";
+
+        /* Construção da string que irá representar o ponto */
+        point = "(" + std::to_string(this->X()) + "," + std::to_string(this->Y()) + "," + std::to_string(this->Z()) + ")";
+
+        /* Devolução da string criada */
+        return point;
+    }
 
             /*Point(std::ifstream& stream) {
                 stream >> x >> y >> z;
             }*/
-
-            /* Definição do valor das coordenadas de um ponto */
-            void setCoords(float x, float y, float z) {
-
-                /* Associação das coordendas à respetiva posição no vetor */
-                this->coords[0] = x;
-                this->coords[1] = y;
-                this->coords[2] = z;
-            }
-
-            /* Definição das coordenada x de um ponto */
-            void setX(float x) {
-                this->coords[0] = x;
-            }
-
-            /* Definição das coordenada y de um ponto */
-            void setY(float y) {
-                this->coords[1] = y;
-            }
-
-            /* Definição das coordenada z de um ponto */
-            void setZ(float z) {
-                this->coords[2] = z;
-            }
-
-            /* Definição das coordenadas via vetor */
-            void setVector(utils::Matrix<float> vector) {
-                this->coords = vector;
-            }
-
-            /* Devolução do valor da coordenada x de um ponto */
-            float getX() const {
-                return this->coords.at(0,0);
-            }
-
-            /* Devolução do valor da coordenada y de um ponto */
-            float getY() const {
-                return this->coords.at(1,0);
-            }
-
-            /* Devolução do valor da coordenada z de um ponto */
-            float getZ() const {
-                return this->coords.at(2,0);
-            }
-
-            /* Transformação de um ponto aplicando uma matriz */
-            Point transform(float ** transform) const {
-
-            }
-
-            /* Translação sobre os eixos pretendidos */
-            Point translateD(float dx, float dy, float dz) const {
-                return Point(this->getX() + dx, this->getY() + dy, this->getZ() + dz);
-            }
-
-            /* Translação sobre os eixos pretendidos usando coordenadas polares */
-            Point translateR(float radius, float beta, float theta) const {
-
-
-
-                return Point(this->getX() + dx, this->getY() + dy, this->getZ() + dz);
-            }
-
-            /* Rotação de um ponto sobre os eixos pretendidos */
-            Point rotate(float angleX, float angleY, float angleZ) const {
-                // TODO
-            }
-
-        // Operações de leitura e escrita em arquivos
-        void write(std::ofstream& stream) const {
-            stream << x << " " << y << " " << z << std::endl;
-        }
-
-        void read(std::ifstream& stream) {
-            stream >> x >> y >> z;
-        }
-
-        void draw() const {
-            // TODO
-        }
-
-        void feedBuffer(float* buffer) {
-            // TODO
-        }
-
-        bool operator==(const Point& other) const {
-            return 
-        }
-
-        bool operator!=(const Point& other) const {
-            return x == other.x && y == other.y && z == other.z;
-        }
-
-        Point clone() const {
-            return Point(*this);
-        }
-
-        std::string toString() const {
-            return "(" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ")";
-        }
-    };
 }

@@ -5,8 +5,10 @@
 #include <cstddef>
 #include <string>
 
-namespace utils {
-
+/* Inicialização do namespace usado para definir as classes */
+namespace utils
+{
+    /* Definição da classe que representa uma matriz */
     class Matrix {
 
         private:
@@ -28,19 +30,52 @@ namespace utils {
             /* Operação de multiplicação de matrizes */
             Matrix mul(const Matrix& other) const;
 
+            /* Devolução da referência de um elemento de uma matriz num certo índice */
+            float& at(int index);
+
+            /* Devolução da referência de um elemento de uma matriz numa certo índice sem possibilidade de alteração */
+            const float& at(int index) const;
+
+            /* Inicialização da matriz identidade */
+            void initIdentity(size_t rows, size_t cols);
+
         public:
             
             /* Construtor parametrizado */
             Matrix(size_t rows, size_t cols, float initialValue);
 
+            /* Construtor parametrizado para matriz identidade */
+            Matrix(size_t rows, size_t cols);
+
             /* Construtor de cópia */
             Matrix(const Matrix& matrix);
+
+            /* Construtor de matriz de translação */
+            static Matrix translateD(float dx, float dy, float dz);
+
+            /* Construtor de matriz de translação por coordenadas polares */
+            static Matrix translateP(float radius, float theta, float beta);
+
+            /* Construtor de matriz de rotação sobre eixo x */
+            static Matrix rotateX(float ax);
+
+            /* Construtor de matriz de rotação sobre eixo y */
+            static Matrix rotateY(float ay);
+
+            /* Construtor de matriz de rotação sobre eixo z */
+            static Matrix rotateZ(float az);
 
             /* Devolução da referência de um elemento de uma matriz numa certa posição */
             float& at(size_t row, size_t col);
 
             /* Devolução da referência de um elemento de uma matriz numa certa posição sem possibilidade de alteração */
             const float& at(size_t row, size_t col) const;
+
+            /* Devolução do número de linhas de uma matriz */
+            size_t getRows() const;
+
+            /* Devolução do número de colunas de uma matriz */
+            size_t getCols() const;
 
             /* Operação de negação da matriz */
             Matrix operator-() const;
@@ -54,6 +89,12 @@ namespace utils {
             /* Operação de multiplicação de matrizes */
             Matrix operator*(const Matrix& other) const;
 
+            /* Acesso a um índice da matriz */
+            float& operator[](int index);
+
+            /* Acesso a um índice da matriz sem possibilidade de modificação */
+            const float& operator[](int index) const;
+
             /* Operação de comparação de igualdade entre duas matrizes */
             bool operator==(const Matrix& matrix) const;
 
@@ -61,10 +102,10 @@ namespace utils {
             bool operator!=(const Matrix& matrix) const;
 
             /* Operação de clonagem de uma matriz */
-            Matrix clone();
+            Matrix clone() const;
 
             /* Transformação da matriz em string */
-            std::string toString();
+            std::string toString() const;
     };
 }
 
