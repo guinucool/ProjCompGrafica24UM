@@ -1,91 +1,198 @@
+/* Inclusão do cabeçalho de definição da estrutura de face */
 #include "../../includes/primitives/face.hpp"
-#include "../../includes/primitives/point.hpp"
+
+/* Inclusão de pacotes necessários ao funcionamento do módulo */
 #include <iostream>
 #include <fstream>
 
+/* Inicialização do namespace ao qual a classe pertence */
 namespace primitives
 {
-
-    Face::Face(Point point0, Point point1, Point point2){
-        this->first = point0;
-        this->second = point1;
-        this->third = point2;
+    /* Construtor parametrizado de pontos com ordem */
+    Face::Face(Point first, Point second, Point third) {
+        this->setPoints(first, second, third);
     }
 
-    Face::Face(std::ifstream &fstream) {
-        // TODO
+    /* Construtor de cópia de face */
+    Face::Face(const Face& face) : first(face.first), second(face.second), third(face.third) {}
+
+    /* Construtor de face através de um ficheiro */
+    Face::Face(std::ifstream& stream) {
+        this->read(stream);
     }
 
-    Point Face::getFirst() const { return this->first; }
-    Point Face::getSecond() const { return this->second; }
-    Point Face::getThird() const { return this->third; }
+    /* Definição do primeiro ponto da face */
+    void Face::setFirst(Point point) {
 
-    void Face::setFirst(Point point) { this->first = point; }
-    void Face::setSecond(Point point) { this->second = point; }
-    void Face::setThird(Point point) { this->third = point; }
+        /* Verifica se todos os pontos são compatíveis */
+        if (point == this->second || point == this->third)
+            std::runtime_error("incompatible face points");
 
-    void Face::write(std::ofstream &ofstream) const {
-        // TODO
+        /* Associação do ponto */
+        this->first = point;
     }
 
-    void Face::read(std::ifstream &ifstream) {
-        // TODO
+    /* Definição do segundo ponto da face */
+    void Face::setSecond(Point point) {
+
+        /* Verifica se todos os pontos são compatíveis */
+        if (point == this->first || point == this->third)
+            std::runtime_error("incompatible face points");
+
+        /* Associação do ponto */
+        this->second = point;
     }
 
-    Face Face::rotateNew(float angleX, float angleY, float angleZ) {
-        Point rotatedFirst = this->first.rotate(angleX, angleY, angleZ);
-        Point rotatedSecond = this->second.rotate(angleX, angleY, angleZ);
-        Point rotatedThird = this->third.rotate(angleX, angleY, angleZ);
+    /* Definição do terceiro ponto da face */
+    void Face::setThird(Point point) {
 
-    return Face(rotatedFirst, rotatedSecond, rotatedThird);
+        /* Verifica se todos os pontos são compatíveis */
+        if (point == this->first || point == this->second)
+            std::runtime_error("incompatible face points");
+
+        /* Associação do ponto */
+        this->third = point;
     }
 
-    Point Face::translateD(float x, float y, float z) {
-        Point translatedFirst = this->first.translateD(x, y, z);
-        Point translatedSecond = this->second.translateD(x, y, z);
-        Point translatedThird = this->third.translateD(x, y, z);
+    /* Definição de todos os pontos da face */
+    void Face::setPoints(Point first, Point second, Point third) {
+         
+        /* Verifica se todos os pontos são compatíveis */
+        if (first == second || second == third || third == first)
+            std::runtime_error("incompatible face points");
 
-        return Face(translatedFirst, translatedSecond, translatedThird);
+        /* Definição dos pontos */
+        this->first = first;
+        this->second = second;
+        this->third = third;
     }
 
-    Point Face::translateP(float beta, float theta, float radius) {
-        Point translatedFirst = this->first.translateP(radius, beta, theta);
-        Point translatedSecond = this->second.translateP(radius, beta, theta);
-        Point translatedThird = this->third.translateP(radius, beta, theta);
-
-        return Face(translatedFirst, translatedSecond, translatedThird);
+    /* Devolução do primeiro ponto da face */
+    Point Face::getFirst() const {
+        return this->first;
     }
 
+    /* Devolução do segundo ponto da face */
+    Point Face::getSecond() const {
+        return this->second;
+    }
+
+    /* Devolução do terceiro ponto da face */
+    Point Face::getThird() const {
+        return this->third;
+    }
+
+    /* Transformação de uma face dada uma matriz */
+    void Face::transform(const utils::Matrix& transform) {
+
+        /* Aplicação da matriz aos três pontos */
+        this->first.transform(transform);
+        this->second.transform(transform);
+        this->third.transform(transform);
+    }
+
+    /* Translação de uma face dado um vetor */
+    void Face::translateD(float dx, float dy, float dz) {
+
+        /* Criação da matriz de translação */
+        utils::Matrix translate = utils::Matrix::translateD(dx, dy, dz);
+
+        /* Aplicação da matriz */
+        this->transform(translate);
+    }
+
+    /* Translação de uma face dado um vetor polar */
+    void Face::translateP(float radius, float alpha, float beta) {
+
+        /* Criação da matriz de translação */
+        utils::Matrix translate = utils::Matrix::translateP(radius, alpha, beta);
+
+        /* Aplicação da matriz */
+        this->transform(translate);
+    }
+
+    /* Rotação de uma face dado o ângulo de rotação sobre cada eixo */
+    void Face::rotate(float ax, float ay, float az) {
+
+        /* Criação das matrizes de rotação */
+        utils::Matrix rotateX = utils::Matrix::rotateX(ax);
+        utils::Matrix rotateY = utils::Matrix::rotateY(ay);
+        utils::Matrix rotateZ = utils::Matrix::rotateZ(az);
+
+        /* Aplicação da matriz */
+        this->transform(rotateX * rotateY * rotateZ);
+    }
+
+    /* Rotação de uma face para ficar virada para o lado oposto */
+    void Face::turn() {
+
+        /* Armazenador auxiliar */
+        Point aux = this->first;
+
+        /* Troca de pontos */
+        this->first = this->third;
+        this->third = aux;
+    }
+
+    /* Escrita de uma face em ficheiro */
+    void Face::write(std::ofstream &stream) const {
+        
+        /* Escrita do valor dos três pontos em ficheiro */
+        this->first.write(stream);
+        this->second.write(stream);
+        this->third.write(stream);
+    }
+
+    /* Leitura de uma face através de um ficheiro */
+    void Face::read(std::ifstream &stream) {
+        
+        /* Leitura do valor dos três pontos vindos de um ficheiro */
+        this->first.read(stream);
+        this->second.read(stream);
+        this->third.read(stream);
+    }
+
+    /* Desenho de uma face no modo imediato */
     void Face::draw() const {
         // TODO
     }
 
-    void Face::feedBuffer(float* buffer) {
+    /* Alimentação de um buffer para desenho em modo VBO */
+    void Face::feedBuffer(std::vector<float> buffer) const {
+        // TODO
     }
 
-    bool Face::equals(Face face) const {
-        return
-            (this->first.equals(face.getFirst()) &&
-            this->second.equals(face.getSecond()) &&
-            this->third.equals(face.getThird())) || 
-            (this->first.equals(face.getSecond()) &&
-            this->second.equals(face.getThird()) &&
-            this->third.equals(face.getFirst())) ||
-            (this->first.equals(face.getThird()) &&
-            this->second.equals(face.getFirst()) &&
-            this->third.equals(face.getSecond()));
+    /* Operação de comparação por igualdade de faces */
+    bool Face::operator==(const Face& face) const {
+        return (this->first == face.first && this->second == face.second && this->third == face.third) ||
+               (this->first == face.second && this->second == face.third && this->third == face.first) ||
+               (this->first == face.third && this->second == face.first && this->third == face.second);
     }
 
+    /* Operação de comparação por desigualdade de faces */
+    bool Face::operator!=(const Face& face) const {
+        return !((this->first == face.first && this->second == face.second && this->third == face.third) ||
+                 (this->first == face.second && this->second == face.third && this->third == face.first) ||
+                 (this->first == face.third && this->second == face.first && this->third == face.second));
+    }
+
+    /* Operação de clonagem de uma face */
     Face Face::clone() const {
-        // Implementação para clonar a face
-        return Face::Face(first, second, third);
+        return Face((*this));
     }
 
+    /* Transformação de uma face em string */
     std::string Face::toString() const {
-        std::string result = "Face: ";
-        result += "First: "; first.toString(); result += ", ";
-        result += "Second: "; second.toString(); result += ", ";
-        result += "Third: "; third.toString();
+
+        /* Criação da string vazia */
+        std::string result = "";
+
+        /* Construção da string que irá representar a face */
+        result += "1-" + first.toString() + '\n';
+        result += "2-" + second.toString() + '\n';
+        result += "3-" + third.toString();
+
+        /* Devolução da string construída */
         return result;
     }
 };

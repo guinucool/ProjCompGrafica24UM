@@ -1,3 +1,4 @@
+#include "../includes/primitives/face.hpp"
 #include "../includes/primitives/point.hpp"
 #include <vector>
 #include <iostream>
@@ -7,11 +8,23 @@
 
 int main() {
 
-    primitives::Point ponto(0,0,1);
+    /*float x = 0.0f;
+    float y = 1.0f;
 
-    ponto.rotate(0, M_PI / 2, 0);
+    const char * coisa = reinterpret_cast<const char*>(&y);
+    const float * coisa2 = reinterpret_cast<const float*>(coisa);
 
-    std::cout << ponto.toString() << std::endl;
+    std::cout << (*coisa2) << std::endl;*/
+
+    std::ifstream out("bin.3d", std::ios::binary);
+
+    primitives::Face face(out);
+
+    //face.translateD(10, 0, 1);
+
+    std::cout << face.toString() << std::endl;
+
+    out.close();
 
     /*const utils::Matrix matrix(4, 4);
 

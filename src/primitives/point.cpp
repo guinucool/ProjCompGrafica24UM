@@ -38,6 +38,13 @@ namespace primitives
         this->setCoords(point.X(), point.Y(), point.Z());
     }
 
+    /* Construtor de ponto através de um ficheiro */
+    Point::Point(std::ifstream& stream) : coords(4, 1, 1.0f) {
+
+        /* Leitura do ponto através do ficheiro */
+        this->read(stream);
+    }
+
     /* Construtor parametrizado de ponto para coordenadas polares */
     Point Point::polarPoint(float radius, float alpha, float beta) {
 
@@ -119,7 +126,7 @@ namespace primitives
     /* Rotação de um ponto dado o ângulo de rotação sobre cada eixo */
     void Point::rotate(float ax, float ay, float az) {
 
-        /* Criação da matriz de translação */
+        /* Criação das matrizes de rotação */
         utils::Matrix rotateX = utils::Matrix::rotateX(ax);
         utils::Matrix rotateY = utils::Matrix::rotateY(ay);
         utils::Matrix rotateZ = utils::Matrix::rotateZ(az);
@@ -131,11 +138,19 @@ namespace primitives
     /* Escrita de um ponto em ficheiro */
     void Point::write(std::ofstream& stream) const {
 
+        /* Escrita do valor das três coordenadas em ficheiro */
+        stream.write(reinterpret_cast<const char*>(&(this->X())), sizeof(float));
+        stream.write(reinterpret_cast<const char*>(&(this->Y())), sizeof(float));
+        stream.write(reinterpret_cast<const char*>(&(this->Z())), sizeof(float));
     }
 
     /* Leitura de um ponto através de um ficheiro */
     void Point::read(std::ifstream& stream) {
 
+        /* Leitura do valor das três coordenadas vindas de um ficheiro */
+        stream.read(reinterpret_cast<char*>(&(this->X())), sizeof(float));
+        stream.read(reinterpret_cast<char*>(&(this->Y())), sizeof(float));
+        stream.read(reinterpret_cast<char*>(&(this->Z())), sizeof(float));
     }
 
     /* Desenho de um ponto no modo imediato */
@@ -175,8 +190,4 @@ namespace primitives
         /* Devolução da string criada */
         return point;
     }
-
-            /*Point(std::ifstream& stream) {
-                stream >> x >> y >> z;
-            }*/
 }

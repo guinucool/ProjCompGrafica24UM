@@ -31,7 +31,7 @@ namespace primitives
             Point(const Point& point);
 
             /* Construtor de ponto através da leitura do ficheiro */
-            //Point(std::ifstream& stream);
+            Point(std::ifstream& stream);
 
             /* Construtor parametrizado de ponto para coordenadas polares */
             static Point polarPoint(float radius, float theta, float beta);
