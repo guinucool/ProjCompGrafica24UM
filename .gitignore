@@ -338,3 +338,6 @@ TSWLatexianTemp*
 
 # CMake Files
 bin
+
+# Custom Files
+*.3d
