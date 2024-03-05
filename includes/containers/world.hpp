@@ -11,6 +11,7 @@ class World {
 private:
   Window window;
   Camera camera;
+  Group group;
       
 public:
 
