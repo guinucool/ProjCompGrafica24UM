@@ -73,7 +73,7 @@ namespace primitives{
             void draw() const;
 
             /* Alimentação de um buffer para desenho em modo VBO */
-            void feedBuffer(std::vector<float> buffer) const;
+            void feedBuffer(std::vector<float>& buffer) const;
             
             /* Operação de comparação por igualdade de faces */
             bool operator==(const Face& face) const;

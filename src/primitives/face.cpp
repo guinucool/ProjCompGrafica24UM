@@ -158,7 +158,7 @@ namespace primitives
     }
 
     /* Alimentação de um buffer para desenho em modo VBO */
-    void Face::feedBuffer(std::vector<float> buffer) const {
+    void Face::feedBuffer(std::vector<float>& buffer) const {
         // TODO
     }
 

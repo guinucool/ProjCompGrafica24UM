@@ -159,7 +159,7 @@ namespace primitives
     }
 
     /* Alimentação de um buffer para desenho em modo VBO */
-    void Point::feedBuffer(std::vector<float> buffer) const {
+    void Point::feedBuffer(std::vector<float>& buffer) const {
 
     }
 

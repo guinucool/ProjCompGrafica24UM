@@ -1,12 +1,35 @@
-#include "../includes/primitives/face.hpp"
-#include "../includes/primitives/point.hpp"
+#include "../includes/primitives/primitive.hpp"
 #include <vector>
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <cmath>
 
+void some(std::vector<int>& vector) {
+    vector.push_back(10);
+}
+
 int main() {
+
+    primitives::Primitive primitive;
+
+    primitive.addSquare(primitives::Point(1,1,0), primitives::Point(0,1,0), primitives::Point(0,0,0), primitives::Point(1,0,0));
+    primitives::Primitive square = primitive.clone();
+    square.translateD(0,1,0);
+    primitive.add(square);
+
+    std::cout << primitive.toString();
+
+    /*std::vector<int> vector(10, 1);
+
+    for (int i = 0; i < vector.size(); i++)
+        std::cout << vector[i] << std::endl;
+
+    some(vector);
+
+    for (int i = 0; i < vector.size(); i++)
+        std::cout << vector[i] << std::endl;*/
+    
 
     /*float x = 0.0f;
     float y = 1.0f;
@@ -16,15 +39,15 @@ int main() {
 
     std::cout << (*coisa2) << std::endl;*/
 
-    std::ifstream out("bin.3d", std::ios::binary);
+    //std::ifstream out("bin.3d", std::ios::binary);
 
-    primitives::Face face(out);
+    //primitives::Face face(out);
 
     //face.translateD(10, 0, 1);
 
-    std::cout << face.toString() << std::endl;
+    //std::cout << face.toString() << std::endl;
 
-    out.close();
+    //out.close();
 
     /*const utils::Matrix matrix(4, 4);
 
