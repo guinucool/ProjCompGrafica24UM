@@ -28,6 +28,9 @@ namespace primitives
             /* Construtor por leitura de ficheiro de primitiva */
             Primitive(std::ifstream& stream);
 
+            /* Construtor por leitura de ficheiro de primitiva */
+            Primitive(std::string path);
+
             /* Adicionar uma primitiva */
             void add(Primitive primitive);
 
@@ -60,6 +63,9 @@ namespace primitives
 
             /* Leitura de uma primitiva vinda de um ficheiro */
             void read(std::ifstream& stream);
+
+            /* Leitura de uma primitiva vinda de um ficheiro */
+            void read(std::string path);
 
             /* Desenho de uma primitiva no modo imediato */
             void draw() const;

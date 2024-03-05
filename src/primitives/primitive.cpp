@@ -15,6 +15,11 @@ namespace primitives
         this->read(stream);
     }
 
+    /* Construtor por leitura de ficheiro de primitiva */
+    Primitive::Primitive(std::string path) {
+        this->read(path);
+    }
+
     /* Adicionar uma primitiva */
     void Primitive::add(Primitive primitive) {
         this->faces.insert(this->faces.end(), primitive.faces.begin(), primitive.faces.end());
@@ -98,6 +103,19 @@ namespace primitives
         /* Leitura de todas as faces de um ficheiro */
         while (!(stream.eof()))
             this->faces.push_back(Face(stream));
+    }
+
+    /* Leitura de uma primitiva vinda de um ficheiro */
+    void Primitive::read(std::string path) {
+
+        /* Inicialização da stream de leitura */
+        std::ifstream stream(path, std::ios::binary);
+
+        /* Leitura do ficheiro e conversão dos pontos e faces */
+        this->read(stream);
+
+        /* Fecho da stream de leitura */
+        stream.close();
     }
 
     /* Desenho de uma primitiva no modo imediato */
