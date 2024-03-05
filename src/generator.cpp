@@ -1,4 +1,4 @@
-#include "../includes/models/box.hpp"
+#include "../includes/models/sphere.hpp"
 #include <vector>
 #include <iostream>
 #include <string>
@@ -22,7 +22,7 @@ int main() {
     std::cout << (translate * firstrotate).toString() << std::endl;
     std::cout << (rotate * translate * point).toString();*/
 
-    models::Box plane(1, 3);
+    models::Sphere plane(1, 3, 3);
 
     std::cout << plane.toString();
 

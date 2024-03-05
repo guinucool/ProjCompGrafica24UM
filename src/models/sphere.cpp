@@ -28,7 +28,7 @@ namespace models
             primitives::Point next = start.clone();
 
             /* Aplicação da transformaçõa ao novo ponto para o localizar no plano certo da esfera */
-            next.transform(beta);
+            next.transform(betaR);
 
             /* Criação dos pontos de rotação pelo eixo y */
             primitives::Point startR = start.clone();
