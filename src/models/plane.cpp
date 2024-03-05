@@ -57,7 +57,5 @@ namespace models
     }
 
     /* Construtor de cópia da classe plano */
-    Plane::Plane(const Plane& plane) {
-
-    }
+    Plane::Plane(const Plane& plane) : primitives::Primitive(plane) {}
 }

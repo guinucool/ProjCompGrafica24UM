@@ -76,6 +76,14 @@ namespace primitives
         this->transform(rotateX * rotateY * rotateZ);
     }
 
+    /* Rotação de todas as faces de uma primitiva para ficarem viradas para o lado oposto */
+    void Primitive::turn() {
+
+        /* Rotação de todas as faces da primitiva */
+        for (Face& elem: this->faces)
+            elem.turn();
+    }
+
     /* Escrita de uma primitiva em ficheiro */
     void Primitive::write(std::ofstream& stream) const {
 

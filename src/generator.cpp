@@ -1,4 +1,4 @@
-#include "../includes/models/plane.hpp"
+#include "../includes/models/box.hpp"
 #include <vector>
 #include <iostream>
 #include <string>
@@ -11,7 +11,18 @@ void some(std::vector<int>& vector) {
 
 int main() {
 
-    models::Plane plane(1, 3);
+    /*utils::Matrix translate = utils::Matrix::translateD(5, 0, 0);
+    utils::Matrix rotate = utils::Matrix::rotateZ(M_PI);
+    utils::Matrix point(4, 1, 1.0f);
+    point[0] = 0;
+
+    utils::Matrix firstrotate = rotate * point;
+
+    std::cout << (firstrotate).toString() << std::endl;
+    std::cout << (translate * firstrotate).toString() << std::endl;
+    std::cout << (rotate * translate * point).toString();*/
+
+    models::Box plane(1, 3);
 
     std::cout << plane.toString();
 

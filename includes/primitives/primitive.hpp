@@ -51,6 +51,9 @@ namespace primitives
 
             /* Rotação de uma primitiva dado o ângulo de rotação sobre cada eixo */
             void rotate(float ax, float ay, float az);
+
+            /* Rotação de todas as faces de uma primitiva para ficarem viradas para o lado oposto */
+            void turn();
             
             /* Escrita de uma primitiva em ficheiro */
             void write(std::ofstream& stream) const;

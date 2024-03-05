@@ -90,7 +90,7 @@ namespace utils
     }
 
     /* Inicialização da matriz para transformações */
-    void Matrix::initIdentity(size_t rows, size_t cols) {
+    void Matrix::initIdentity() {
 
         /* Colocação do estado inicial */
         for (size_t i = 0; i < this->rows; i++)
@@ -101,8 +101,8 @@ namespace utils
     Matrix::Matrix(size_t rows, size_t cols, float initialValue) : rows(rows), cols(cols), data(rows * cols, initialValue) {}
 
     /* Construtor parametrizado para matriz identidade */
-    Matrix::Matrix(size_t rows, size_t cols) : rows(rows), cols(cols), data(rows * cols, 0.0f) {
-        this->initIdentity(rows, cols);
+    Matrix::Matrix(size_t dim) : rows(dim), cols(dim), data(dim * dim, 0.0f) {
+        this->initIdentity();
     }
 
     /* Construtor de cópia */
@@ -112,7 +112,7 @@ namespace utils
     Matrix Matrix::translateD(float dx, float dy, float dz) {
 
         /* Inicialização da matriz */
-        Matrix matrix(4, 4);
+        Matrix matrix(4);
 
         /* Criação da matriz de translação */
         matrix.at(0, 3) = dx;
@@ -127,7 +127,7 @@ namespace utils
     Matrix Matrix::translateP(float radius, float alpha, float beta) {
 
         /* Inicialização da matriz */
-        Matrix matrix(4, 4);
+        Matrix matrix(4);
 
         /* Criação da matriz de translação */
         matrix.at(0, 3) = radius * cos(beta) * sin(alpha);
@@ -142,7 +142,7 @@ namespace utils
     Matrix Matrix::rotateX(float ax) {
 
         /* Inicialização da matriz */
-        Matrix matrix(4, 4);
+        Matrix matrix(4);
 
         /* Criação da matriz de rotação */
         matrix.at(1, 1) = cos(ax);
@@ -158,7 +158,7 @@ namespace utils
     Matrix Matrix::rotateY(float ay) {
 
         /* Inicialização da matriz */
-        Matrix matrix(4, 4);
+        Matrix matrix(4);
 
         /* Criação da matriz de rotação */
         matrix.at(0, 0) = cos(ay);
@@ -174,7 +174,7 @@ namespace utils
     Matrix Matrix::rotateZ(float az) {
 
         /* Inicialização da matriz */
-        Matrix matrix(4, 4);
+        Matrix matrix(4);
 
         /* Criação da matriz de rotação */
         matrix.at(0, 0) = cos(az);

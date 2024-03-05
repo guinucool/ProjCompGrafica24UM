@@ -37,7 +37,7 @@ namespace utils
             const float& at(int index) const;
 
             /* Inicialização da matriz identidade */
-            void initIdentity(size_t rows, size_t cols);
+            void initIdentity();
 
         public:
             
@@ -45,7 +45,7 @@ namespace utils
             Matrix(size_t rows, size_t cols, float initialValue);
 
             /* Construtor parametrizado para matriz identidade */
-            Matrix(size_t rows, size_t cols);
+            Matrix(size_t dim);
 
             /* Construtor de cópia */
             Matrix(const Matrix& matrix);
