@@ -1,4 +1,4 @@
-#include "../includes/primitives/primitive.hpp"
+#include "../includes/models/plane.hpp"
 #include <vector>
 #include <iostream>
 #include <string>
@@ -11,14 +11,9 @@ void some(std::vector<int>& vector) {
 
 int main() {
 
-    primitives::Primitive primitive;
+    models::Plane plane(1, 3);
 
-    primitive.addSquare(primitives::Point(1,1,0), primitives::Point(0,1,0), primitives::Point(0,0,0), primitives::Point(1,0,0));
-    primitives::Primitive square = primitive.clone();
-    square.translateD(0,1,0);
-    primitive.add(square);
-
-    std::cout << primitive.toString();
+    std::cout << plane.toString();
 
     /*std::vector<int> vector(10, 1);
 
