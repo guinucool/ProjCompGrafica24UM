@@ -8,6 +8,7 @@
 #include "../../includes/containers/world.hpp"
 #include "../../includes/containers/window.hpp"
 #include "../../includes/containers/camera.hpp"
+#include "../../includes/containers/group.hpp"
 //#include "../../src/lib/tinyxml2.h"
 
 //using namespace containers;
@@ -21,6 +22,7 @@ namespace containers
   
     Window window;
     Camera camera;
+    Group group;
 
   public:
 
@@ -28,6 +30,7 @@ namespace containers
     {
       window = * new Window(file);
       camera = * new Camera(file);
+      group = * new Group(file);
     }
   };
 };

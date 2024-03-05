@@ -51,7 +51,6 @@ namespace containers
       pro_elem->QueryFloatAttribute("fov", &fov);
       pro_elem->QueryFloatAttribute("near", &near);
       pro_elem->QueryFloatAttribute("far", &far);
-    
     }
 
     // Métodos de acesso
