@@ -27,12 +27,12 @@ namespace models
             /* Criação do novo ponto */
             primitives::Point next = start.clone();
 
-            /* Aplicação da transformaçõa ao novo ponto para o localizar no plano certo da esfera */
+            /* Aplicação da transformação ao novo ponto para o localizar no plano certo da esfera */
             next.transform(betaR);
 
             /* Criação dos pontos de rotação pelo eixo y */
             primitives::Point startR = start.clone();
-            primitives::Point nextR = start.clone();
+            primitives::Point nextR = next.clone();
 
             /* Rotação dos novos pontos pelo eixo y */
             startR.transform(alphaR);
@@ -45,6 +45,9 @@ namespace models
                 this->addTriangle(startR, start, next);
             else
                 this->addSquare(startR, start, next, nextR);
+
+            /* Preparação para a próxima iteração */
+            start = next;
         }
 
         /* Clonagem da fatia atual */

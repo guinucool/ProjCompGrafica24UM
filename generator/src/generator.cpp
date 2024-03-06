@@ -7,7 +7,7 @@
 
 int main() {
 
-    models::Sphere sphere(3, 10, 10);
+    models::Sphere sphere(3, 2, 1);
 
     std::cout << sphere.toString();
     
