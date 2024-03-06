@@ -20,7 +20,7 @@ namespace models
         utils::Matrix translate = utils::Matrix::translateD(0, border, 0);
 
         /* Criação das face oposta da inicial */
-        primitives::Primitive down = upDo.clone();
+        primitives::Primitive down = upDo;
 
         /* Aplicação das transformações */
         upDo.transform(translate);
@@ -30,8 +30,8 @@ namespace models
         upDo.add(down);
 
         /* Criação dos outros 4 lados */
-        primitives::Primitive riLe = upDo.clone();
-        primitives::Primitive foBa = upDo.clone();
+        primitives::Primitive riLe = upDo;
+        primitives::Primitive foBa = upDo;
 
         /* Rotação dos lados para o local certo */
         riLe.rotate(0, 0, M_PI / 2);

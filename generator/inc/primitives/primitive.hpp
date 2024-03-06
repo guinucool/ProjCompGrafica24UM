@@ -55,17 +55,8 @@ namespace primitives
             /* Escrita de uma primitiva em ficheiro */
             void write(std::ofstream& stream) const;
 
-            /* Leitura de uma primitiva vinda de um ficheiro */
-            //void read(std::ifstream& stream);
-
-            /* Leitura de uma primitiva vinda de um ficheiro */
-            //void read(std::string path);
-
-            /* Desenho de uma primitiva no modo imediato */
-            //void draw() const;
-
-            /* Alimentação de um buffer para desenho em modo VBO */
-            //void feedBuffer(std::vector<float>& buffer) const;
+            /* Escrita de uma primitiva em ficheiro dado o caminho onde o ficheiro deverá ser guardado */
+            void write(std::string path) const;
 
             /* Operação de comparação por igualdade de primitivas */
             bool operator==(const Primitive& primitive) const;

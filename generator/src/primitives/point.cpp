@@ -137,15 +137,6 @@ namespace primitives
         stream.write(reinterpret_cast<const char*>(&(this->Z())), sizeof(float));
     }
 
-    /* Leitura de um ponto através de um ficheiro */
-    /*void Point::read(std::ifstream& stream) {
-
-        /* Leitura do valor das três coordenadas vindas de um ficheiro */
-        /*stream.read(reinterpret_cast<char*>(&(this->X())), sizeof(float));
-        stream.read(reinterpret_cast<char*>(&(this->Y())), sizeof(float));
-        stream.read(reinterpret_cast<char*>(&(this->Z())), sizeof(float));
-    }*/
-
     /* Operação de clonagem de um ponto */
     Point Point::clone() const {
         return Point((*this));

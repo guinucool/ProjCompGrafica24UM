@@ -25,14 +25,14 @@ namespace models
         for (int i = 0; i < (stacks * 2); i++)
         {
             /* Criação do novo ponto */
-            primitives::Point next = start.clone();
+            primitives::Point next = start;
 
             /* Aplicação da transformação ao novo ponto para o localizar no plano certo da esfera */
             next.transform(betaR);
 
             /* Criação dos pontos de rotação pelo eixo y */
-            primitives::Point startR = start.clone();
-            primitives::Point nextR = next.clone();
+            primitives::Point startR = start;
+            primitives::Point nextR = next;
 
             /* Rotação dos novos pontos pelo eixo y */
             startR.transform(alphaR);
@@ -51,7 +51,7 @@ namespace models
         }
 
         /* Clonagem da fatia atual */
-        primitives::Primitive slice = this->clone();
+        primitives::Primitive slice = (*this);
 
         /* Duplicação da fatia atual por várias fatias */
         for (int i = 0; i < slices; i++) {

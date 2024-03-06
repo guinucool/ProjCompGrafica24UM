@@ -21,20 +21,35 @@ namespace drawables
             /* Construtor de ponto vazio (inicializa na origem) */
             Point();
 
+            /* Construtor parametrizado de ponto */
+            Point(float x, float y, float z);
+
             /* Construtor de cópia de ponto */
             Point(const Point& point);
 
             /* Construtor de ponto através da leitura do ficheiro */
             Point(std::ifstream& stream);
 
-            /* Devolução do valor da coordenada x do ponto */
+            /* Devolução da referência do valor da coordenada x do ponto */
+            float& X();
+
+            /* Devolução do valor da coordenada x do ponto  */
             const float& X() const;
+
+            /* Devolução da referência do valor da coordenada y do ponto */
+            float& Y();
 
             /* Devolução do valor da coordenada y do ponto */
             const float& Y() const;
 
+            /* Devolução da referência do valor da coordenada z do ponto */
+            float& Z();
+
             /* Devolução do valor da coordenada z do ponto */
             const float& Z() const;
+
+            /* Definição das coordenadas do ponto */
+            void Point::setCoords(float x, float y, float z);
 
             /* Leitura de um ponto através de um ficheiro */
             void read(std::ifstream& stream);

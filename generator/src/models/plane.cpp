@@ -43,7 +43,7 @@ namespace models
         }
         
         /* Clonagem da primeira coluna */
-        primitives::Primitive col((*this));
+        primitives::Primitive col = (*this);
 
         /* Multiplicação da primeira coluna pelas restantes */
         for (int i = 0; i < (divisions - 1); i++) {

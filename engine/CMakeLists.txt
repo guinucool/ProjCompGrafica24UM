@@ -17,6 +17,12 @@ set(ENGINE_SRC_FILES)
 file(GLOB GENERATOR_DRAWABLE_SRC "src/drawables/*.cpp")
 list(APPEND ENGINE_SRC_FILES ${GENERATOR_DRAWABLE_SRC})
 
+# Lista de módulos externos necessários
+set(EXTERNAL_SRC_FILES)
+list(APPEND EXTERNAL_SRC_FILES
+     ../external/tinyxml2/tinyxml2.cpp
+    )
+
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Criação do executável do projeto
@@ -24,6 +30,7 @@ add_executable(${PROJECT_NAME}
                 src/engine.cpp
                 ${SHARED_SRC_FILES}
                 ${ENGINE_SRC_FILES}
+                ${EXTERNAL_SRC_FILES}
             )
 
 # Definição de preferência do OpenGL

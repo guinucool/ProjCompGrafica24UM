@@ -137,15 +137,6 @@ namespace primitives
         this->third.write(stream);
     }
 
-    /* Leitura de uma face através de um ficheiro */
-    /*void Face::read(std::ifstream &stream) {
-        
-        /* Leitura do valor dos três pontos vindos de um ficheiro */
-        /*this->first.read(stream);
-        this->second.read(stream);
-        this->third.read(stream);
-    }*/
-
     /* Operação de clonagem de uma face */
     Face Face::clone() const {
         return Face((*this));

@@ -15,6 +15,9 @@ namespace drawables
     /* Construtor vazio que invoca um ponto sempre na origem do referencial */
     Point::Point() : x(0.0f), y(0.0f), z(0.0f) {}
 
+    /* Construtor parametrizado de ponto */
+    Point::Point(float x, float y, float z) : x(x), y(y), z(z) {}
+
     /* Construtor de cópia */
     Point::Point(const Point& point) : x(point.x), y(point.y), z(point.z) {}
 
@@ -23,9 +26,19 @@ namespace drawables
         this->read(stream);
     }
 
+    /* Devolução da referência do valor da coordenada x do ponto */
+    float& Point::X() {
+        return this->x;
+    }
+
     /* Devolução da referência do valor da coordenada x do ponto sem possibilidade de alteração */
     const float& Point::X() const {
         return this->x;
+    }
+
+    /* Devolução da referência do valor da coordenada y do ponto */
+    float& Point::Y() {
+        return this->y;
     }
 
     /* Devolução da referência do valor da coordenada y do ponto sem possibilidade de alteração */
@@ -33,9 +46,21 @@ namespace drawables
         return this->y;
     }
 
+    /* Devolução da referência do valor da coordenada z do ponto */
+    float& Point::Z() {
+        return this->z;
+    }
+
     /* Devolução da referência do valor da coordenada z do ponto sem possibilidade de alteração */
     const float& Point::Z() const {
         return this->z;
+    }
+
+    /* Definição das coordenadas do ponto */
+    void Point::setCoords(float x, float y, float z) {
+        this->x = x;
+        this->y = y;
+        this->z = z;
     }
 
     /* Leitura de um ponto através de um ficheiro */

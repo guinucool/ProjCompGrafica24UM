@@ -87,26 +87,18 @@ namespace primitives
             elem.write(stream);
     }
 
-    /* Leitura de uma primitiva vinda de um ficheiro */
-    //void Primitive::read(std::ifstream& stream) {
+    /* Escrita de uma primitiva em ficheiro dado o caminho onde o ficheiro deverá ser guardado */
+    void Primitive::write(std::string path) const {
 
-        /* Leitura de todas as faces de um ficheiro */
-        /*while (!(stream.eof()))
-            this->faces.push_back(Face(stream));
-    }*/
+        /* Abertura do ficheiro para escrita binária */
+        std::ofstream stream(path, std::ios::binary);
+        
+        /* Escrita do valor dos três pontos em ficheiro */
+        this->write(stream);
 
-    /* Leitura de uma primitiva vinda de um ficheiro */
-    //void Primitive::read(std::string path) {
-
-        /* Inicialização da stream de leitura */
-        //std::ifstream stream(path, std::ios::binary);
-
-        /* Leitura do ficheiro e conversão dos pontos e faces */
-        //this->read(stream);
-
-        /* Fecho da stream de leitura */
-        //stream.close();
-    //}
+        /* Fecho do ficheiro aberto */
+        stream.close();
+    }
 
     /* Operação de comparação por igualdade de primitivas */
     bool Primitive::operator==(const Primitive& primitive) const {
