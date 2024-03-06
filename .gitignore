@@ -337,7 +337,7 @@ TSWLatexianTemp*
 .vscode
 
 # CMake Files
-# bin
+bin
 
 # Custom Files
 *.3d

@@ -1,6 +1,13 @@
 /* Inclusão do cabeçalho de definição da estrutura de face */
 #include "../../inc/drawables/face.hpp"
 
+/* Inclusão de módulos necessários à funcionalidade */
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
 /* Inicialização do namespace ao qual a classe pertence */
 namespace drawables
 {
@@ -47,9 +54,15 @@ namespace drawables
         this->third.read(stream);
     }
 
-    /* Desenho de um ponto no modo imediato */
+    /* Desenho de uma face no modo imediato */
     void Face::draw() const {
 
+        /* Desenho do triângulo que a face representa */
+        glBegin(GL_TRIANGLES);
+            this->first.draw();
+            this->second.draw();
+            this->third.draw();
+        glEnd();
     }
 
     /* Alimentação de um buffer para desenho em modo VBO */

@@ -1,6 +1,13 @@
 /* Inclusão do cabeçalho de definição da classe */
 #include "../../inc/drawables/point.hpp"
 
+/* Inclusão de módulos necessários à funcionalidade */
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
 /* Inicialização do namespace ao qual a classe pertence */
 namespace drawables
 {
@@ -42,7 +49,7 @@ namespace drawables
 
     /* Desenho de um ponto no modo imediato */
     void Point::draw() const {
-
+        glVertex3f(this->x, this->y, this->z);
     }
 
     /* Alimentação de um buffer para desenho em modo VBO */

@@ -1,22 +1,21 @@
-#include "../inc/primitives/primitive.hpp"
-#include "../inc/primitives/point.hpp"
+#include "../inc/models/sphere.hpp"
 #include <vector>
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <cmath>
 
-void some(std::vector<int>& vector) {
-    vector.push_back(10);
-}
-
 int main() {
 
-    primitives::Primitive point;
+    models::Sphere sphere(3, 10, 10);
 
-    point.addSquare(primitives::Point(1,1,1), primitives::Point(0,0,0), primitives::Point(-1,-1,-1), primitives::Point(2,2,2));
+    std::cout << sphere.toString();
     
-    std::cout << point.toString();
+    std::ofstream stream("object.3d", std::ios::binary);
+
+    sphere.write(stream);
+
+    stream.close();
 
     /*utils::Matrix translate = utils::Matrix::translateD(5, 0, 0);
     utils::Matrix rotate = utils::Matrix::rotateZ(M_PI);
