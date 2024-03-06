@@ -4,7 +4,6 @@
 #include "../../../shared/inc/utils/matrix.hpp"
 #include "../../../shared/inc/geometry/point.hpp"
 #include <fstream>
-#include <string>
 
 /* Inicialização do namespace usado para definir a classe ponto */
 namespace primitives

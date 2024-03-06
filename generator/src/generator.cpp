@@ -1,3 +1,4 @@
+#include "../inc/primitives/face.hpp"
 #include "../inc/primitives/point.hpp"
 #include <vector>
 #include <iostream>
@@ -11,10 +12,8 @@ void some(std::vector<int>& vector) {
 
 int main() {
 
-    primitives::Point point(1, 1, 1);
-
-    std::cout << point.X() << std::endl;
-    std::cout << (point.X() == 2) << std::endl;
+    primitives::Face point(primitives::Point(1, 1, 1), primitives::Point(0, 0, 0), primitives::Point(-1, -1, -1));
+    
     std::cout << point.toString();
 
     /*utils::Matrix translate = utils::Matrix::translateD(5, 0, 0);

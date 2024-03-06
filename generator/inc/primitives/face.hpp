@@ -1,15 +1,14 @@
 #ifndef FACE_HPP
 #define FACE_HPP
 
+#include "../../../shared/inc/geometry/face.hpp"
 #include "point.hpp"
-#include <fstream>
-#include <string>
 
 /* Inicialização do namespace usado para definir a classe face */
 namespace primitives{
 
     /* Definição da classe face */
-    class Face {
+    class Face : public geometry::Face {
         
         private:
 
@@ -24,9 +23,6 @@ namespace primitives{
             /* Construtor de cópia de uma face */
             Face(const Face& face);
 
-            /* Construtor de uma face através de um ficheiro */
-            Face(std::ifstream &fstream);
-
             /* Definição do primeiro ponto da face */
             void setFirst(Point point);
 
@@ -40,13 +36,13 @@ namespace primitives{
             void setPoints(Point first, Point second, Point third);
 
             /* Devolução do primeiro ponto da face */
-            Point getFirst() const;
+            const Point& getFirst() const;
 
             /* Devolução do segundo ponto da face */
-            Point getSecond() const;
+            const Point& getSecond() const;
 
             /* Devolução do terceiro ponto da face */
-            Point getThird() const;
+            const Point& getThird() const;
 
             /* Transformação de uma face dada uma matriz */
             void transform(const utils::Matrix& transform);
@@ -66,26 +62,8 @@ namespace primitives{
             /* Escrita de uma face em ficheiro */
             void write(std::ofstream &ofstream) const;
 
-            /* Leitura de uma face através de um ficheiro */
-            void read(std::ifstream &ifstream);
-
-            /* Desenho de uma face no modo imediato */
-            void draw() const;
-
-            /* Alimentação de um buffer para desenho em modo VBO */
-            void feedBuffer(std::vector<float>& buffer) const;
-            
-            /* Operação de comparação por igualdade de faces */
-            bool operator==(const Face& face) const;
-
-            /* Operação de comparação por desigualdade de faces */
-            bool operator!=(const Face& face) const;
-
             /* Operação de clonagem de uma face */
             Face clone() const;
-
-            /* Transformação de uma face em formato string */
-            std::string toString() const;
     };
 }
 #endif

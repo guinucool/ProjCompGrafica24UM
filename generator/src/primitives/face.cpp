@@ -1,9 +1,8 @@
 /* Inclusão do cabeçalho de definição da estrutura de face */
 #include "../../inc/primitives/face.hpp"
 
-/* Inclusão de pacotes necessários ao funcionamento do módulo */
-#include <iostream>
-#include <fstream>
+/* Inclusão de livrarias necessárias à funcionalidade */
+#include <stdexcept>
 
 /* Inicialização do namespace ao qual a classe pertence */
 namespace primitives
@@ -15,11 +14,6 @@ namespace primitives
 
     /* Construtor de cópia de face */
     Face::Face(const Face& face) : first(face.first), second(face.second), third(face.third) {}
-
-    /* Construtor de face através de um ficheiro */
-    Face::Face(std::ifstream& stream) {
-        this->read(stream);
-    }
 
     /* Definição do primeiro ponto da face */
     void Face::setFirst(Point point) {
@@ -68,17 +62,17 @@ namespace primitives
     }
 
     /* Devolução do primeiro ponto da face */
-    Point Face::getFirst() const {
+    const Point& Face::getFirst() const {
         return this->first;
     }
 
     /* Devolução do segundo ponto da face */
-    Point Face::getSecond() const {
+    const Point& Face::getSecond() const {
         return this->second;
     }
 
     /* Devolução do terceiro ponto da face */
-    Point Face::getThird() const {
+    const Point& Face::getThird() const {
         return this->third;
     }
 
@@ -144,55 +138,16 @@ namespace primitives
     }
 
     /* Leitura de uma face através de um ficheiro */
-    void Face::read(std::ifstream &stream) {
+    /*void Face::read(std::ifstream &stream) {
         
         /* Leitura do valor dos três pontos vindos de um ficheiro */
-        this->first.read(stream);
+        /*this->first.read(stream);
         this->second.read(stream);
         this->third.read(stream);
-    }
-
-    /* Desenho de uma face no modo imediato */
-    void Face::draw() const {
-        // TODO
-    }
-
-    /* Alimentação de um buffer para desenho em modo VBO */
-    void Face::feedBuffer(std::vector<float>& buffer) const {
-        // TODO
-    }
-
-    /* Operação de comparação por igualdade de faces */
-    bool Face::operator==(const Face& face) const {
-        return (this->first == face.first && this->second == face.second && this->third == face.third) ||
-               (this->first == face.second && this->second == face.third && this->third == face.first) ||
-               (this->first == face.third && this->second == face.first && this->third == face.second);
-    }
-
-    /* Operação de comparação por desigualdade de faces */
-    bool Face::operator!=(const Face& face) const {
-        return !((this->first == face.first && this->second == face.second && this->third == face.third) ||
-                 (this->first == face.second && this->second == face.third && this->third == face.first) ||
-                 (this->first == face.third && this->second == face.first && this->third == face.second));
-    }
+    }*/
 
     /* Operação de clonagem de uma face */
     Face Face::clone() const {
         return Face((*this));
-    }
-
-    /* Transformação de uma face em string */
-    std::string Face::toString() const {
-
-        /* Criação da string vazia */
-        std::string result = "";
-
-        /* Construção da string que irá representar a face */
-        result += "1-" + first.toString() + '\n';
-        result += "2-" + second.toString() + '\n';
-        result += "3-" + third.toString();
-
-        /* Devolução da string construída */
-        return result;
     }
 };
