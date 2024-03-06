@@ -1,5 +1,5 @@
 /* Inclusão do cabeçalho da classe */
-#include "../../includes/utils/matrix.hpp"
+#include "../../inc/utils/matrix.hpp"
 
 /* Inclusão de librarias para funcionalidade do programa */
 #include <stdexcept>

@@ -1,7 +1,8 @@
 #ifndef POINT_HPP
 #define POINT_HPP
 
-#include "../utils/matrix.hpp"
+#include "../../../shared/inc/utils/matrix.hpp"
+#include "../../../shared/inc/geometry/point.hpp"
 #include <fstream>
 #include <string>
 
@@ -9,7 +10,7 @@
 namespace primitives
 {
     /* Definição da classe ponto */
-    class Point {
+    class Point : public geometry::Point {
 
         private:
 
@@ -29,9 +30,6 @@ namespace primitives
 
             /* Construtor de cópia de ponto */
             Point(const Point& point);
-
-            /* Construtor de ponto através da leitura do ficheiro */
-            Point(std::ifstream& stream);
 
             /* Construtor parametrizado de ponto para coordenadas polares */
             static Point polarPoint(float radius, float theta, float beta);
@@ -72,26 +70,8 @@ namespace primitives
             /* Escrita de um ponto em ficheiro */
             void write(std::ofstream& stream) const;
 
-            /* Leitura de um ponto através de um ficheiro */
-            void read(std::ifstream& stream);
-
-            /* Desenho de um ponto no modo imediato */
-            void draw() const;
-
-            /* Alimentação de um buffer para desenho em modo VBO */
-            void feedBuffer(std::vector<float>& buffer) const;
-
-            /* Operação de comparação por igualdade de pontos */
-            bool operator==(const Point& point) const;
-
-            /* Operação de comparação por desigualdade de pontos */
-            bool operator!=(const Point& point) const;
-
             /* Operação de clonagem de um ponto */
             Point clone() const;
-
-            /* Transformação de um ponto em formato string */
-            std::string toString() const;
     };
 }
 

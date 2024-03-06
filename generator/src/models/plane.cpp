@@ -1,8 +1,8 @@
 /* Inclusão do cabeçalho da classe plano */
-#include "../../includes/models/plane.hpp"
+#include "../../inc/models/plane.hpp"
 
 /* Inclusão de módulos essenciais à funcionalidade */
-#include "../../includes/utils/matrix.hpp"
+#include "../../../shared/inc/utils/matrix.hpp"
 
 /* Inicialização do namespace utilizado para a definição da classe */
 namespace models

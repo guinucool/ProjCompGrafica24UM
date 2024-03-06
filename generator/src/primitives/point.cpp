@@ -1,5 +1,5 @@
 /* Inclusão do cabeçalho de definição da classe */
-#include "../../includes/primitives/point.hpp"
+#include "../../inc/primitives/point.hpp"
 
 /* Inclusão de livrarias necessárias à funcionalidade */
 #include <stdexcept>
@@ -36,13 +36,6 @@ namespace primitives
 
         /* Associação das coordenadas */
         this->setCoords(point.X(), point.Y(), point.Z());
-    }
-
-    /* Construtor de ponto através de um ficheiro */
-    Point::Point(std::ifstream& stream) : coords(4, 1, 1.0f) {
-
-        /* Leitura do ponto através do ficheiro */
-        this->read(stream);
     }
 
     /* Construtor parametrizado de ponto para coordenadas polares */
@@ -145,49 +138,16 @@ namespace primitives
     }
 
     /* Leitura de um ponto através de um ficheiro */
-    void Point::read(std::ifstream& stream) {
+    /*void Point::read(std::ifstream& stream) {
 
         /* Leitura do valor das três coordenadas vindas de um ficheiro */
-        stream.read(reinterpret_cast<char*>(&(this->X())), sizeof(float));
+        /*stream.read(reinterpret_cast<char*>(&(this->X())), sizeof(float));
         stream.read(reinterpret_cast<char*>(&(this->Y())), sizeof(float));
         stream.read(reinterpret_cast<char*>(&(this->Z())), sizeof(float));
-    }
-
-    /* Desenho de um ponto no modo imediato */
-    void Point::draw() const {
-
-    }
-
-    /* Alimentação de um buffer para desenho em modo VBO */
-    void Point::feedBuffer(std::vector<float>& buffer) const {
-
-    }
-
-    /* Operação de comparação por igualdade de pontos */
-    bool Point::operator==(const Point& point) const {
-        return this->coords == point.coords;
-    }
-
-    /* Operação de comparação por desigualdade de pontos */
-    bool Point::operator!=(const Point& point) const {
-        return this->coords != point.coords;
-    }
+    }*/
 
     /* Operação de clonagem de um ponto */
     Point Point::clone() const {
         return Point((*this));
-    }
-
-    /* Transformação de um ponto em formato string */
-    std::string Point::toString() const {
-
-        /* Inicialização da string vazia */
-        std::string point = "";
-
-        /* Construção da string que irá representar o ponto */
-        point = "(" + std::to_string(this->X()) + "," + std::to_string(this->Y()) + "," + std::to_string(this->Z()) + ")";
-
-        /* Devolução da string criada */
-        return point;
     }
 }

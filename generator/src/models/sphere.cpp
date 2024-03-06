@@ -1,5 +1,5 @@
 /* Inclusão do cabeçalho que define a classe esfera */
-#include "../../includes/models/sphere.hpp"
+#include "../../inc/models/sphere.hpp"
 
 /* Inclusão dos módulos necessários para funcionalidade */
 #include <cmath>

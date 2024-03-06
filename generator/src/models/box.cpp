@@ -1,5 +1,5 @@
 /* Inclusão do cabeçalho que define a classe caixa */
-#include "../../includes/models/box.hpp"
+#include "../../inc/models/box.hpp"
 
 /* Inclusão dos módulos necessários para funcionalidade */
 #include <cmath>

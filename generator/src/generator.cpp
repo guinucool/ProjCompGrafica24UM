@@ -1,4 +1,4 @@
-#include "../includes/models/sphere.hpp"
+#include "../inc/primitives/point.hpp"
 #include <vector>
 #include <iostream>
 #include <string>
@@ -11,6 +11,12 @@ void some(std::vector<int>& vector) {
 
 int main() {
 
+    primitives::Point point(1, 1, 1);
+
+    std::cout << point.X() << std::endl;
+    std::cout << (point.X() == 2) << std::endl;
+    std::cout << point.toString();
+
     /*utils::Matrix translate = utils::Matrix::translateD(5, 0, 0);
     utils::Matrix rotate = utils::Matrix::rotateZ(M_PI);
     utils::Matrix point(4, 1, 1.0f);
@@ -22,9 +28,9 @@ int main() {
     std::cout << (translate * firstrotate).toString() << std::endl;
     std::cout << (rotate * translate * point).toString();*/
 
-    models::Sphere plane(1, 3, 3);
+    /*models::Sphere plane(1, 3, 3);
 
-    std::cout << plane.toString();
+    std::cout << plane.toString();*/
 
     /*std::vector<int> vector(10, 1);
 
