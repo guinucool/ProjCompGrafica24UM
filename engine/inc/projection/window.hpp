@@ -18,38 +18,35 @@ namespace projection
         
         public:
 
-            /* Construtor padrão de câmera */
+            /* Construtor padrão de janela */
             Window();
 
-            /* Construtor parametrizado de câmera */
+            /* Construtor parametrizado de janela */
             Window(int width, int height);
 
-            /* Construtor de cópia de câmera */
+            /* Construtor de cópia de janela */
             Window(const Window& camera);
 
             /* Construtor através de um elemento xml */
             Window(tinyxml2::XMLElement * window);
 
-            /* Devolução da referência da largura da janela */
-            int& width();
+            /* Definição do valor da largura da janela */
+            void setWidth(int width);
 
-            /* Devolução da referência da largura da janela sem possibilidade de alteração */
-            const int& width() const;
+            /* Devolução do valor da largura da janela */
+            int getWidth() const;
 
-            /* Devolução da referência da altura da janela */
-            int& height();
+            /* Devolução do valor da altura da janela */
+            void setHeight(int heigh);
 
-            /* Devolução da referência da altura da janela sem possibilidade de alteração */
-            const int& height() const;
+            /* Devolução do valor da altura da janela */
+            int getHeight() const;
 
             /* Leitura de uma janela através de um ficheiro xml */
             void read(tinyxml2::XMLElement * window);
 
-            /* Define a câmera que vai ser usada no cenário */
-            void defineCamera() const;
-
-            /* Define a função que será usada para definir o tamanho da câmera */
-            void shapeCamera(int weight, int height) const;
+            /* Define a janela que vai ser usada para representar o cenário */
+            void defineWindow() const;
 
             /* Define o operador de comparação de igualdade */
             bool operator==(const Window& camera) const;
