@@ -10,16 +10,6 @@ namespace primitives
     /* Construtor de cópia de primitiva */
     Primitive::Primitive(const Primitive& primitive) : faces(primitive.faces) {}
 
-    /* Construtor por leitura de ficheiro de primitiva */
-    Primitive::Primitive(std::ifstream& stream) {
-        this->read(stream);
-    }
-
-    /* Construtor por leitura de ficheiro de primitiva */
-    Primitive::Primitive(std::string path) {
-        this->read(path);
-    }
-
     /* Adicionar uma primitiva */
     void Primitive::add(Primitive primitive) {
         this->faces.insert(this->faces.end(), primitive.faces.begin(), primitive.faces.end());
@@ -98,35 +88,25 @@ namespace primitives
     }
 
     /* Leitura de uma primitiva vinda de um ficheiro */
-    void Primitive::read(std::ifstream& stream) {
+    //void Primitive::read(std::ifstream& stream) {
 
         /* Leitura de todas as faces de um ficheiro */
-        while (!(stream.eof()))
+        /*while (!(stream.eof()))
             this->faces.push_back(Face(stream));
-    }
+    }*/
 
     /* Leitura de uma primitiva vinda de um ficheiro */
-    void Primitive::read(std::string path) {
+    //void Primitive::read(std::string path) {
 
         /* Inicialização da stream de leitura */
-        std::ifstream stream(path, std::ios::binary);
+        //std::ifstream stream(path, std::ios::binary);
 
         /* Leitura do ficheiro e conversão dos pontos e faces */
-        this->read(stream);
+        //this->read(stream);
 
         /* Fecho da stream de leitura */
-        stream.close();
-    }
-
-    /* Desenho de uma primitiva no modo imediato */
-    void Primitive::draw() const {
-
-    }
-
-    /* Alimentação de um buffer para desenho em modo VBO */
-    void Primitive::feedBuffer(std::vector<float>& buffer) const {
-
-    }
+        //stream.close();
+    //}
 
     /* Operação de comparação por igualdade de primitivas */
     bool Primitive::operator==(const Primitive& primitive) const {
@@ -191,7 +171,7 @@ namespace primitives
 
         /* Construção da string que irá representar a primitiva */
         for (Face elem: this->faces)
-            result += elem.toString() + '\n';
+            result += elem.toString();
         
         /* Devolução da string construída */
         return result;

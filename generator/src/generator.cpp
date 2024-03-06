@@ -1,4 +1,4 @@
-#include "../inc/primitives/face.hpp"
+#include "../inc/primitives/primitive.hpp"
 #include "../inc/primitives/point.hpp"
 #include <vector>
 #include <iostream>
@@ -12,7 +12,9 @@ void some(std::vector<int>& vector) {
 
 int main() {
 
-    primitives::Face point(primitives::Point(1, 1, 1), primitives::Point(0, 0, 0), primitives::Point(-1, -1, -1));
+    primitives::Primitive point;
+
+    point.addSquare(primitives::Point(1,1,1), primitives::Point(0,0,0), primitives::Point(-1,-1,-1), primitives::Point(2,2,2));
     
     std::cout << point.toString();
 

@@ -1,16 +1,16 @@
 #ifndef PRIMITIVE_HPP
 #define PRIMITIVE_HPP
 
+#include "../../../shared/inc/geometry/primitive.hpp"
 #include "face.hpp"
 #include <list>
-#include <fstream>
 
 /* Inicialização do namespace onde a classe irá ser definida */
 namespace primitives
 {
 
     /* Definição da classe primitiva */
-    class Primitive {
+    class Primitive : public geometry::Primitive {
 
         private:
             
@@ -24,12 +24,6 @@ namespace primitives
 
             /* Construtor de cópia de primitiva */
             Primitive(const Primitive& primitive);
-
-            /* Construtor por leitura de ficheiro de primitiva */
-            Primitive(std::ifstream& stream);
-
-            /* Construtor por leitura de ficheiro de primitiva */
-            Primitive(std::string path);
 
             /* Adicionar uma primitiva */
             void add(Primitive primitive);
@@ -62,16 +56,16 @@ namespace primitives
             void write(std::ofstream& stream) const;
 
             /* Leitura de uma primitiva vinda de um ficheiro */
-            void read(std::ifstream& stream);
+            //void read(std::ifstream& stream);
 
             /* Leitura de uma primitiva vinda de um ficheiro */
-            void read(std::string path);
+            //void read(std::string path);
 
             /* Desenho de uma primitiva no modo imediato */
-            void draw() const;
+            //void draw() const;
 
             /* Alimentação de um buffer para desenho em modo VBO */
-            void feedBuffer(std::vector<float>& buffer) const;
+            //void feedBuffer(std::vector<float>& buffer) const;
 
             /* Operação de comparação por igualdade de primitivas */
             bool operator==(const Primitive& primitive) const;
