@@ -14,8 +14,8 @@ namespace containers
     Group::Group(const Group& group) : models(group.models) {}
 
     /* Construtor através de um elemento xml */
-    Group::Group(tinyxml2::XMLElement * group) {
-        this->read(group);
+    Group::Group(std::string directory, tinyxml2::XMLElement * group) {
+        this->read(directory, group);
     }
 
     /* Adição de uma primitiva à lista de modelos */
@@ -34,7 +34,7 @@ namespace containers
     }
 
     /* Leitura de um grupo através de um ficheiro xml */
-    void Group::read(tinyxml2::XMLElement * group) {
+    void Group::read(std::string directory, tinyxml2::XMLElement * group) {
         
         /* Percorre os elementos todos do grupo */
         for (int i = 0; i < group->ChildElementCount(); i++) {
@@ -58,9 +58,8 @@ namespace containers
                     const char * nameModels = nextModels->Value();
 
                     /* Verifica qual é o elemento */
-                    if (nameModels == "model") {
-                        /* ADICIONAR PRIMITIVA */
-                    }
+                    if (nameModels == "model")
+                        this->addModel(drawables::Primitive(directory, nextModels));
 
                     /* Caso o elemento seja inválido */
                     else

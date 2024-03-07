@@ -107,7 +107,7 @@ namespace containers
     }
 
     /* Leitura de um mundo através de um ficheiro xml */
-    void World::read(std::string path, tinyxml2::XMLElement * world) {
+    void World::read(std::string directory, tinyxml2::XMLElement * world) {
 
         /* Percorre todos os elementos presentes no mundo */
         for (int i = 0; i < world->ChildElementCount(); i++)
@@ -126,7 +126,7 @@ namespace containers
                 this->setCamera(projection::Camera(next));
 
             else if (name == "group" && !(this->group))
-                this->setGroup(Group(next));
+                this->setGroup(Group(directory, next));
 
             /* No caso de ser um elemento inválido ou repetido */
             else

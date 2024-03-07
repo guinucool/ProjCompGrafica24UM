@@ -73,7 +73,7 @@ namespace containers
             Group getGroup() const;
 
             /* Leitura de um mundo através de um ficheiro xml */
-            void read(std::string path, tinyxml2::XMLElement * world);
+            void read(std::string directory, tinyxml2::XMLElement * world);
 
             /* Leitura de um mundo através de um ficheiro xml dado o seu caminho */
             void read(std::string path);

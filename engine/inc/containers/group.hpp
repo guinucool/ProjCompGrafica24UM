@@ -25,7 +25,7 @@ namespace containers
             Group(const Group& group);
 
             /* Construtor através de um elemento xml */
-            Group(tinyxml2::XMLElement * group);
+            Group(std::string directory, tinyxml2::XMLElement * group);
 
             /* Adição de uma primitiva à lista de modelos */
             void addModel(drawables::Primitive model);
@@ -37,7 +37,7 @@ namespace containers
             std::list<drawables::Primitive> getModels() const;
 
             /* Leitura de um grupo através de um ficheiro xml */
-            void read(tinyxml2::XMLElement * group);
+            void read(std::string directory, tinyxml2::XMLElement * group);
 
             /* Define a função que será usada para desenhar os elementos do grupo em modo imediato */
             void draw() const;
