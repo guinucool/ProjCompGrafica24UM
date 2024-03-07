@@ -49,7 +49,7 @@ namespace drawables
             const float& Z() const;
 
             /* Definição das coordenadas do ponto */
-            void Point::setCoords(float x, float y, float z);
+            void setCoords(float x, float y, float z);
 
             /* Leitura de um ponto através de um ficheiro */
             void read(std::ifstream& stream);

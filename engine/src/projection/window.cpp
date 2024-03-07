@@ -74,8 +74,8 @@ namespace projection
         int width = this->width, height = this->height;
 
         /* Obtenção dos atributos e verificação da existência deles */
-        if (window->QueryIntAttribute("width", &width) && window->QueryIntAttribute("height", &height))
-            throw std::invalid_argument("given xml configuration is invalid");
+        window->QueryIntAttribute("width", &width);
+        window->QueryIntAttribute("height", &height);
 
         /* Associação das propriedades */
         this->setWidth(width);

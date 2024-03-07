@@ -93,9 +93,16 @@ void renderScene(void)
 		
 	// put drawing instructions here
 	glColor3f(1.0f, 1.0f, 1.0f);
-    drawables::Primitive primitive("object.3d");
-    primitive.draw();
+    //drawables::Primitive primitive("object.3d");
+    //primitive.draw();
 	
+	glBegin(GL_TRIANGLES);
+		glVertex3f(1.0f, 1.0f, 0.0f);
+		glVertex3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(0.0f, 1.0f, 0.0f);
+	glEnd();
+
+
 	// End of frame
 	glutSwapBuffers();
 }

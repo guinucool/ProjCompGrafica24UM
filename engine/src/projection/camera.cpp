@@ -160,8 +160,11 @@ namespace projection
             /* Caso seja inválido */
             else
                 throw std::invalid_argument("given xml configuration is invalid");
+
+            /* Apaga o elemento lido */
+            camera->DeleteChild(next);
+            delete name;
         }
-        
     }
 
     /* Define a câmera que vai ser usada no cenário */
