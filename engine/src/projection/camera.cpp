@@ -171,7 +171,7 @@ namespace projection
 
     /* Define a câmera que vai ser usada no cenário */
     void Camera::defineCamera() const {
-        gluLookAt(this->origin.X(), this->origin.Y(), this->origin.Z(), this->lookAt.X(), this->lookAt.Y(), this->lookAt.Z(), this->up.X(), this->up.X(), this->up.X());
+        gluLookAt(this->origin.X(), this->origin.Y(), this->origin.Z(), this->lookAt.X(), this->lookAt.Y(), this->lookAt.Z(), this->up.X(), this->up.Y(), this->up.Z());
     }
 
     /* Define a função que será usada para definir o tamanho da câmera */

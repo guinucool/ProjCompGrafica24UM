@@ -106,7 +106,7 @@ namespace drawables
 
         /* Verfica se a leitura foi válida */
         if (read)
-            throw std::invalid_argument("given 3d file is invalid");        
+            throw std::invalid_argument("given 3d file is invalid");
     }
 
     /* Desenho de um ponto no modo imediato */

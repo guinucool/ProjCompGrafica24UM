@@ -42,7 +42,7 @@ namespace drawables
     void Primitive::read(std::ifstream& stream) {
 
         /* Leitura de todas as faces de um ficheiro */
-        while (!(stream.eof()))
+        while (stream.peek() != EOF)
             this->faces.push_back(Face(stream));
     }
 
