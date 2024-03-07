@@ -52,11 +52,16 @@ namespace containers
 
     /* Definição do mundo como o mundo global */
     void World::setGlobal() const {
-        World::singleton = World(*this);
+
+        /* Definição das propriedades do singleton */
+        World::singleton.setWindow(*(this->window));
+        World::singleton.setCamera(*(this->camera));
+        World::singleton.setGroup(*(this->group));
     }
 
     /* Definição da janela do mundo */
     void World::setWindow(projection::Window window) {
+        this->removeWindow();
         this->window = new projection::Window(window);
     }
 
@@ -75,6 +80,7 @@ namespace containers
 
     /* Definição da câmera do mundo */
     void World::setCamera(projection::Camera camera) {
+        this->removeCamera();
         this->camera = new projection::Camera(camera);
     }
 
@@ -93,6 +99,7 @@ namespace containers
 
     /* Definição do grupo do mundo */
     void World::setGroup(Group group) {
+        this->removeGroup();
         this->group = new Group(group);
     }
 
@@ -276,7 +283,7 @@ namespace containers
         world += '\n';
 
         /* Informação da câmera */
-        world += "Camera: ";
+        world += "Camera: \n";
 
         /* Verifica a existência de uma câmera */
         if(this->camera)
@@ -284,20 +291,14 @@ namespace containers
         else
             world += "NULL";
 
-        /* Criação de uma nova linha */
-        world += '\n';
-
         /* Informação do grupo */
-        world += "Group: ";
+        world += "Group: \n";
 
         /* Verifica a existência de um grupo */
         if(this->group)
             world += this->group->toString();
         else
             world += "NULL";
-
-        /* Criação de uma nova linha */
-        world += '\n';
 
         /* Devolução da string construída */
         return world;
