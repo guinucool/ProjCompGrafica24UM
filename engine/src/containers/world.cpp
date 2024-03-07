@@ -109,6 +109,37 @@ namespace containers
     /* Leitura de um mundo através de um ficheiro xml */
     void World::read(std::string path, tinyxml2::XMLElement * world) {
 
+        /* Percorre todos os elementos presentes no mundo */
+        for (int i = 0; i < world->ChildElementCount(); i++)
+        {
+            /* Lê o próximo elemento na árvore */
+            tinyxml2::XMLElement * next = world->FirstChildElement();
+
+            /* Armazena o nome do elemento */
+            const char * name = next->Value();
+
+            /* Verifica qual é o elemento e transforma-o num tipo */
+            if (name == "window" && !(this->window))
+                this->setWindow(projection::Window(next));
+            
+            else if (name == "camera" && !(this->camera))
+                this->setCamera(projection::Camera(next));
+
+            else if (name == "group" && !(this->group))
+                this->setGroup(Group(next));
+
+            /* No caso de ser um elemento inválido ou repetido */
+            else
+                throw std::invalid_argument("given xml configuration is invalid");
+
+            /* Apaga o elemento lido */
+            world->DeleteChild(next);
+            delete name;
+        }
+        
+        /* Verifica se existe algum elemento essencial em falta */
+        if (!(this->window) || !(this->camera) || !(this->group))
+            throw std::invalid_argument("given xml configuration is invalid");
     }
 
     /* Leitura de um mundo através de um ficheiro xml dado o seu caminho */
@@ -142,6 +173,9 @@ namespace containers
 
         /* Leitura do xml */
         this->read(directory, world);
+
+        /* Destruição da árvore */
+        doc.DeleteChild(world);
     }
 
     /* Define a função que será usada para dar início à configuração do mundo */
@@ -164,6 +198,7 @@ namespace containers
 
         /* Definição das funções de representação */
         glutReshapeFunc(World::shapeCamera);
+        glutDisplayFunc(callback);
 
         /* Configurações do OpenGL */
         glEnable(GL_DEPTH_TEST);
@@ -177,6 +212,29 @@ namespace containers
     /* Define a função que será usada para dar início ao desenho do mundo em modo imediato */
     void World::initDraw() {
 
+        /* Verifica a existência de uma câmera */
+        if (!(World::singleton.camera))
+            throw customException::undefined_value("camera property is not defined properly");
+
+        /* Verifica a existência de um grupo */
+        if (!(World::singleton.group))
+            throw customException::undefined_value("main group property is not defined properly");
+
+        /* Limpeza dos buffers */
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	    glPolygonMode( GL_FRONT, GL_LINE );
+
+        /* Inicialização da matriz identidade */
+        glLoadIdentity();
+
+        /* Desenha a câmera */
+        World::singleton.camera->defineCamera();
+
+        /* Desenha o grupo */
+        World::singleton.group->draw();
+
+        /* Troca de buffers para desenhar no ecrã */
+        glutSwapBuffers();
     }
 
     /* Define o operador de comparação de igualdade */
