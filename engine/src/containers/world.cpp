@@ -11,10 +11,14 @@
 /* Inclusão de módulos necessários à funcionalidade */
 #include "../../../shared/inc/exception/unvalues.hpp"
 #include <stdexcept>
+#include <iostream>
 
 /* Inicialização do namespace onde irá ser definida a classe */
 namespace containers
 {
+    /* Definição de uma instância global de desenho */
+    World World::singleton;
+
     /* Define a função que será usada para chamar a função de shape da câmera */
     void World::shapeCamera(int width, int height) {
         World::singleton.camera->shapeCamera(width, height);
@@ -31,8 +35,8 @@ namespace containers
     }
 
     /* Construtor através de um elemento xml */
-    World::World(std::string path, tinyxml2::XMLElement * world) : window(NULL), camera(NULL), group(NULL) {
-        this->read(path, world);
+    World::World(std::string directory, tinyxml2::XMLElement * world) : window(NULL), camera(NULL), group(NULL) {
+        this->read(directory, world);
     }
 
     /* Construtor através de um elemento xml dado o seu caminho */
@@ -116,7 +120,7 @@ namespace containers
             tinyxml2::XMLElement * next = world->FirstChildElement();
 
             /* Armazena o nome do elemento */
-            const char * name = next->Value();
+            std::string name = std::string(next->Value());
 
             /* Verifica qual é o elemento e transforma-o num tipo */
             if (name == "window" && !(this->window))
@@ -134,7 +138,6 @@ namespace containers
 
             /* Apaga o elemento lido */
             world->DeleteChild(next);
-            delete name;
         }
         
         /* Verifica se existe algum elemento essencial em falta */

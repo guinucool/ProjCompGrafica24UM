@@ -34,7 +34,7 @@ namespace containers
             World(const World& world);
 
             /* Construtor através de um elemento xml */
-            World(std::string path, tinyxml2::XMLElement * world);
+            World(std::string directory, tinyxml2::XMLElement * world);
 
             /* Construtor através de um elemento xml dado o seu caminho */
             World(std::string path);
