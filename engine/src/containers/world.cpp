@@ -11,7 +11,6 @@
 /* Inclusão de módulos necessários à funcionalidade */
 #include "../../../shared/inc/exception/unvalues.hpp"
 #include <stdexcept>
-#include <iostream>
 
 /* Inicialização do namespace onde irá ser definida a classe */
 namespace containers
@@ -113,8 +112,11 @@ namespace containers
     /* Leitura de um mundo através de um ficheiro xml */
     void World::read(std::string directory, tinyxml2::XMLElement * world) {
 
+        /* Fixa o número de iterações */
+        int children = world->ChildElementCount();
+
         /* Percorre todos os elementos presentes no mundo */
-        for (int i = 0; i < world->ChildElementCount(); i++)
+        for (int i = 0; i < children; i++)
         {
             /* Lê o próximo elemento na árvore */
             tinyxml2::XMLElement * next = world->FirstChildElement();

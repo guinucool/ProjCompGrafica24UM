@@ -35,27 +35,33 @@ namespace containers
 
     /* Leitura de um grupo através de um ficheiro xml */
     void Group::read(std::string directory, tinyxml2::XMLElement * group) {
+
+        /* Fixa o número de iterações */
+        int children = group->ChildElementCount();
         
         /* Percorre os elementos todos do grupo */
-        for (int i = 0; i < group->ChildElementCount(); i++) {
+        for (int i = 0; i < children; i++) {
 
             /* Vai buscar o primeiro elemento */
             tinyxml2::XMLElement * next = group->FirstChildElement();
 
             /* Armazena o nome do primeiro elemento */
-            const char * name = next->Value();
+            std::string name = std::string(next->Value());
 
             /* Verifica qual é o elemento */
             if (name == "models") {
 
+                /* Fixa o número de iterações */
+                int childrenModels = next->ChildElementCount();
+
                 /* Percorre os elementos todos dos modelos */
-                for (int i = 0; i < next->ChildElementCount(); i++) {
+                for (int i = 0; i < childrenModels; i++) {
                     
                     /* Vai buscar o primeiro elemento */
                     tinyxml2::XMLElement * nextModels = next->FirstChildElement();
 
                     /* Armazena o nome do primeiro elemento */
-                    const char * nameModels = nextModels->Value();
+                    std::string nameModels = std::string(nextModels->Value());
 
                     /* Verifica qual é o elemento */
                     if (nameModels == "model")
@@ -67,7 +73,6 @@ namespace containers
 
                     /* Apaga o elemento lido */
                     next->DeleteChild(nextModels);
-                    delete nameModels;
                 }
             }
             
@@ -77,7 +82,6 @@ namespace containers
 
             /* Apaga o elemento lido */
             group->DeleteChild(next);
-            delete name;
         }
         
     }

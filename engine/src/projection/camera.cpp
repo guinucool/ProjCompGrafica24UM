@@ -113,15 +113,18 @@ namespace projection
 
     /* Leitura de uma câmera através de um ficheiro xml */
     void Camera::read(tinyxml2::XMLElement * camera) {
+
+        /* Fixa o número de iterações */
+        int children = camera->ChildElementCount();
         
         /* Percorre os elementos todos */
-        for (int i = 0; i < camera->ChildElementCount(); i++) {
+        for (int i = 0; i < children; i++) {
 
             /* Vai buscar o primeiro elemento */
             tinyxml2::XMLElement * next = camera->FirstChildElement();
 
             /* Armazena o nome do primeiro elemento */
-            const char * name = next->Value();
+            std::string name = std::string(next->Value());
 
             /* Verifica qual é o primeiro elemento */
             if (name == "position" || name == "lookAt" || name == "up") {
@@ -163,7 +166,6 @@ namespace projection
 
             /* Apaga o elemento lido */
             camera->DeleteChild(next);
-            delete name;
         }
     }
 
