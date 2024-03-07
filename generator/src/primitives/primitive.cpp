@@ -31,6 +31,11 @@ namespace primitives
         this->faces.push_back(Face(third, forth, first));
     }
 
+    /* Devolução de uma cópia da lista de faces da primitiva */
+    std::list<Face> Primitive::getFaces() const {
+        return this->faces;
+    }
+
     /* Transformação de uma primitiva dada uma matriz */
     void Primitive::transform(const utils::Matrix& transform) {
 

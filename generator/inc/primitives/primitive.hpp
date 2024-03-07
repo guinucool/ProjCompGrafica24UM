@@ -37,6 +37,9 @@ namespace primitives
             /* Adicionar um quadrado */
             void addSquare(Point first, Point second, Point third, Point forth);
 
+            /* Devolução de uma cópia da lista de faces da primitiva */
+            std::list<Face> getFaces() const;
+
             /* Transformação de uma primitiva dada uma matriz */
             void transform(const utils::Matrix& transform);
 

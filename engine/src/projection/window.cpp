@@ -73,7 +73,7 @@ namespace projection
         /* Inicialização de variáveis para armazenar as propriedades */
         int width = this->width, height = this->height;
 
-        /* Obtenção dos atributos e verificação da existência deles */
+        /* Obtenção dos atributos */
         window->QueryIntAttribute("width", &width);
         window->QueryIntAttribute("height", &height);
 

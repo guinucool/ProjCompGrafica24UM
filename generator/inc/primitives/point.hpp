@@ -31,7 +31,7 @@ namespace primitives
             Point(const Point& point);
 
             /* Construtor parametrizado de ponto para coordenadas polares */
-            static Point polarPoint(float radius, float theta, float beta);
+            static Point polarPoint(float radius, float alpha, float beta);
 
             /* Devolução da referência do valor da coordenada x do ponto */
             float& X();

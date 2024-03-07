@@ -1,12 +1,16 @@
 /* Inclusão do cabeçalho de definição da classe */
 #include "../../inc/drawables/point.hpp"
 
-/* Inclusão de módulos necessários à funcionalidade */
+/* Inclusão do OpenGL e do GLUT */
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
 #endif
+
+/* Inclusão de módulos necessários à funcionalidade */
+#include <stdexcept>
+#include <cmath>
 
 /* Inicialização do namespace ao qual a classe pertence */
 namespace drawables
@@ -24,6 +28,19 @@ namespace drawables
     /* Construtor de ponto através da leitura do ficheiro */
     Point::Point(std::ifstream& stream) {
         this->read(stream);
+    }
+
+    /* Construtor parametrizado de ponto para coordenadas polares */
+    Point Point::polarPoint(float radius, float alpha, float beta) {
+
+        /* Inicialização do ponto ao qual vão ser atribuídas as coordenadas polares */
+        Point point;
+
+        /* Definição das coordenadas */
+        point.setPolarCoords(radius, alpha, beta);
+
+        /* Devolução do ponto polar */
+        return point;
     }
 
     /* Devolução da referência do valor da coordenada x do ponto */
@@ -63,13 +80,33 @@ namespace drawables
         this->z = z;
     }
 
+    /* Definição das coordenadas polares do ponto */
+    void Point::setPolarCoords(float radius, float alpha, float beta) {
+
+        /* Verifica a validade do raio */
+        if (radius < 0)
+            throw std::invalid_argument("given radius is invalid");
+
+        /* Tradução e definição das coordenadas */
+        this->x = radius * cos(beta) * sin(alpha);;
+        this->y = radius * cos(beta) * cos(alpha);
+        this->z = radius * sin(beta);
+    }
+
     /* Leitura de um ponto através de um ficheiro */
     void Point::read(std::ifstream& stream) {
 
+        /* Variável de verificação da validade da leitura */
+        bool read = false;
+
         /* Leitura do valor das três coordenadas vindas de um ficheiro */
-        stream.read(reinterpret_cast<char*>(&(this->x)), sizeof(float));
-        stream.read(reinterpret_cast<char*>(&(this->y)), sizeof(float));
-        stream.read(reinterpret_cast<char*>(&(this->z)), sizeof(float));
+        read |= stream.read(reinterpret_cast<char*>(&(this->x)), sizeof(float)).fail();
+        read |= stream.read(reinterpret_cast<char*>(&(this->y)), sizeof(float)).fail();
+        read |= stream.read(reinterpret_cast<char*>(&(this->z)), sizeof(float)).fail();
+
+        /* Verfica se a leitura foi válida */
+        if (read)
+            throw std::invalid_argument("given 3d file is invalid");        
     }
 
     /* Desenho de um ponto no modo imediato */

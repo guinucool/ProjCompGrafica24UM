@@ -2,6 +2,7 @@
 #define PRIMITIVE_HPP
 
 #include "../../../shared/inc/geometry/primitive.hpp"
+#include "../../../external/tinyxml2/tinyxml2.h"
 #include "face.hpp"
 #include <list>
 
@@ -31,6 +32,12 @@ namespace drawables
             /* Construtor de primitiva através da leitura de ficheiro dado o seu caminho */
             Primitive(std::string path);
 
+            /* Construtor de uma primitiva vinda de um ficheiro xml */
+            Primitive(std::string directory, tinyxml2::XMLElement * model);
+
+            /* Devolução de uma cópia da lista de faces da primitiva */
+            std::list<Face> getFaces() const;
+
             /* Rotação de todas as faces de uma primitiva para ficarem viradas para o lado oposto */
             void turn();
 
@@ -39,6 +46,9 @@ namespace drawables
 
             /* Leitura de uma primitiva vinda de um ficheiro */
             void read(std::string path);
+
+            /* Leitura de uma primitiva vinda de um ficheiro xml */
+            void read(std::string directory, tinyxml2::XMLElement * model);
 
             /* Desenho de uma primitiva no modo imediato */
             void draw() const;

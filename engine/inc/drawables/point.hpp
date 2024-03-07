@@ -30,6 +30,9 @@ namespace drawables
             /* Construtor de ponto através da leitura do ficheiro */
             Point(std::ifstream& stream);
 
+            /* Construtor parametrizado de ponto para coordenadas polares */
+            static Point polarPoint(float radius, float theta, float beta);
+
             /* Devolução da referência do valor da coordenada x do ponto */
             float& X();
 
@@ -50,6 +53,9 @@ namespace drawables
 
             /* Definição das coordenadas do ponto */
             void setCoords(float x, float y, float z);
+
+            /* Definição das coordenadas polares do ponto */
+            void setPolarCoords(float radius, float alpha, float beta);
 
             /* Leitura de um ponto através de um ficheiro */
             void read(std::ifstream& stream);
