@@ -1,11 +1,16 @@
-#include "includes/utils/matrix.hpp"
+#include <iostream>
+#include <string>
 
-int main() {
-    // Criando uma instância da classe Matrix dentro do namespace utils
-    utils::Matrix<int> mat(2, 3, 5);
+using namespace std;
 
-    // Usando métodos da classe
-    mat.print();
+int main(int argc, char ** argv) {
 
+    for (int i = 0; i < argc; i++)
+    {
+        string arg(argv[i]);
+
+        cout << arg << endl;
+    }
+    
     return 0;
 }
