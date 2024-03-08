@@ -3,7 +3,6 @@
 #include "../inc/models/plane.hpp"
 #include "../inc/models/cone.hpp"
 #include "../inc/models/box.hpp"
-#include "../inc/models/cylinder.hpp"
 #include <stdexcept>
 #include <iostream>
 #include <string>
@@ -22,22 +21,6 @@ primitives::Primitive sphere(int argc, char ** argv) {
 
     /* Devolução do plano criado */
     return models::Sphere(radius, slices, stacks);
-}
-
-primitives::Primitive cylinder(int argc, char ** argv) {
-    
-    /* Validação da quantidade de elementos */
-    if (argc != 7)
-        throw std::invalid_argument("given invalid arguments");
-
-    /* Inicialização e transformação das propriedades */
-    float radius = std::stof(argv[2]);
-    float height = std::stof(argv[3]);
-    int slices = std::stoi(argv[4]);
-    int stacks = std::stoi(argv[5]);
-
-    /* Devolução do plano criado */
-    return models::Cylinder(radius, height, slices, stacks);
 }
 
 /* Função de criação do cone */
@@ -120,8 +103,6 @@ int main(int argc, char ** argv) {
             primitive = cone(argc, argv);
         else if (model == "sphere")
             primitive = sphere(argc, argv);
-        else if (model == "cylinder")
-            primitive = cylinder(argc, argv);
         else
             throw std::invalid_argument("given invalid arguments");
 
