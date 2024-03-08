@@ -195,7 +195,9 @@ graph TD
     Engine-- lê -->FicheiroXML
     FicheiroXML-- define -->World
     Engine-- renderiza -->World
-    Generator-- gera -->Primitive
+    Generator-- cria -->Primitive
+    Generator-- gera -->Ficheiro3D
+    Ficheiro3D-- representa -->Primitive
 ```
 
 Criado o modelo, é possível perceber a hierarquia utilizada para a sua definição.
