@@ -1,0 +1,26 @@
+\section{Requisitos}
+
+Nesta secção serão especificadas as funcionalidades pretendidas  do \textbf{motor gráfico}
+e do \textbf{gerador de primitivas}.
+
+\subsection{Gerador}
+
+O gerador de primitivas deve ser capaz de criar diversas \textbf{primitivas geométricas}, das quais
+constam no enunciado \textit{esferas}, \textit{cubos}, \textit{cones} e \textit{planos}.
+O conteúdo do output deste programa será um ficheiro com extensão \textit{.3d}
+que contém os \textbf{pontos} estruturantes dos respetivos sólidos. De modo a que o motor possa
+desenhar as figuras, a informação terá de ser organizada em \textbf{faces}, ou seja, triângulos.
+Segue em exemplo um comando para gerar uma esfera de \textit{raio 1}, \textit{10 stacks, 10 fatias}
+e guardar o resultado em \textit{sphere.3d}:
+\begin{lstlisting}[style=BASH]
+$ generator sphere 1 10 10 sphere.3d
+\end{lstlisting}
+
+\subsection{Motor}
+
+O motor vai ler um \textbf{ficheiro de configuração \textit{.xml}}. Dessa configuração deverá
+extrair as informações de \textbf{câmera}, \textbf{janela} e \textbf{modelos \textit{.3d}}.
+Para este efeito é necessário implementar-se uma ferramenta de \textit{parsing xml}. Durante as
+aulas teóricas desta UC foi-nos aconselhado o uso da biblioteca \textit{tinyxml2}.
+Depois de processados os campos supracitados, o motor irá servir-se dos pontos presentes nos
+\textbf{modelos} e das configurações para desenhar as figuras, através do \textit{OpenGL}.

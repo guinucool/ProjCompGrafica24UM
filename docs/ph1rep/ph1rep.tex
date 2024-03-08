@@ -1,16 +1,25 @@
 \documentclass[a4paper,12pt]{article}
-
+\usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \usepackage{titling}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{color}
 
 \pretitle{
         \begin{center}
         \LARGE
         \includegraphics[width=10cm]{teapot.png}\\[\bigskipamount]
-        \title{Computação Gráfica - Relatório 1ª Fase}
+        \title{\textbf{Computação Gráfica - Relatório 1ª Fase}}
         \author{Gabriel Pereira, a100891\\
                 Guilherme Oliveira, a100592\\
-                Gustavo Castro, a100482}        
+                Gustavo Castro, a100482}
+}
+
+\lstdefinestyle{BASH}
+{
+        backgroundcolor=\color{black},
+        basicstyle=\scriptsize\color{white}\ttfamily     
 }
 
 \posttitle{
@@ -25,11 +34,11 @@
 
 \include{introducao}
 
-%\include{requisitos}
+\include{requisitos}
 
 \include{conceptualizacao}
 
-%\include{implementacao}
+\include{implementacao}
 
 %\include{resultados}
 
