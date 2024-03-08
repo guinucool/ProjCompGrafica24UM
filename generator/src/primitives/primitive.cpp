@@ -1,6 +1,9 @@
 /* Inclusão do cabeçalho da definição de primitiva */
 #include "../../inc/primitives/primitive.hpp"
 
+/* Inclusão de livrarias necessárias à funcionalidade */
+#include <stdexcept>
+
 /* Inicialização do namespace utilizado para a definição */
 namespace primitives
 {
@@ -97,6 +100,10 @@ namespace primitives
 
         /* Abertura do ficheiro para escrita binária */
         std::ofstream stream(path, std::ios::binary);
+
+        /* Verifica se foi possível criar o ficheiro */
+        if (!stream.is_open())
+            std::runtime_error("failed to load or create file");        
         
         /* Escrita do valor dos três pontos em ficheiro */
         this->write(stream);

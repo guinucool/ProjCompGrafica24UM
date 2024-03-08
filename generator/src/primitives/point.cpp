@@ -8,15 +8,6 @@
 /* Inicialização do namespace ao qual a classe pertence */
 namespace primitives
 {
-    /* Definição do valor das coordenadas de um ponto */
-    void Point::setCoords(float x, float y, float z) {
-
-        /* Associação das coordendas à respetiva posição no vetor */
-        this->X() = x;
-        this->Y() = y;
-        this->Z() = z;
-    }
-
     /* Construtor vazio que invoca um ponto sempre na origem do referencial */
     Point::Point() : coords(4, 1, 1.0f) {
 
@@ -41,13 +32,14 @@ namespace primitives
     /* Construtor parametrizado de ponto para coordenadas polares */
     Point Point::polarPoint(float radius, float alpha, float beta) {
 
-        /* Tradução das coordenadas */
-        float x = radius * cos(beta) * sin(alpha);
-        float y = radius * cos(beta) * cos(alpha);
-        float z = radius * sin(beta);
+        /* Inicialização do ponto onde vão ser armazenadas as coordenadas */
+        Point point;
 
-        /* Criação do ponto polar */
-        return Point(x, y, z);
+        /* Associação das coordenadas polares */
+        point.setPolarCoords(radius, alpha, beta);
+
+        /* Devolução do ponto polar */
+        return point;
     }
 
     /* Devolução da referência do valor da coordenada x do ponto */
@@ -78,6 +70,28 @@ namespace primitives
     /* Devolução da referência do valor da coordenada z do ponto sem possibilidade de alteração */
     const float& Point::Z() const {
         return this->coords[2];
+    }
+
+    /* Definição do valor das coordenadas de um ponto */
+    void Point::setCoords(float x, float y, float z) {
+
+        /* Associação das coordendas à respetiva posição no vetor */
+        this->X() = x;
+        this->Y() = y;
+        this->Z() = z;
+    }
+
+    /* Definição do valor das coordenadas de um ponto */
+    void Point::setPolarCoords(float radius, float alpha, float beta) {
+
+        /* Verificação de validade do raio */
+        if (radius < 0)
+            std::invalid_argument("invalid radius given");
+
+        /* Associação das coordendas à respetiva posição no vetor */
+        this->X() = radius * cos(beta) * sin(alpha);
+        this->Y() = radius * cos(beta) * cos(alpha);
+        this->Z() = radius * sin(beta);
     }
 
     /* Devolução da matriz das coordenadas do ponto */
@@ -135,6 +149,10 @@ namespace primitives
         stream.write(reinterpret_cast<const char*>(&(this->X())), sizeof(float));
         stream.write(reinterpret_cast<const char*>(&(this->Y())), sizeof(float));
         stream.write(reinterpret_cast<const char*>(&(this->Z())), sizeof(float));
+
+        /* Verifica se a escrita foi bem sucedida */
+        if (stream.fail())
+            std::runtime_error("failed to write to file");
     }
 
     /* Operação de clonagem de um ponto */

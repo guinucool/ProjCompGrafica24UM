@@ -16,9 +16,6 @@ namespace primitives
             /* Definição das propriedades do ponto */
             utils::Matrix coords;
 
-            /* Definição das coordenadas do ponto */
-            void setCoords(float x, float y, float z);
-
         public:
 
             /* Construtor de ponto vazio (inicializa na origem) */
@@ -50,6 +47,12 @@ namespace primitives
 
             /* Devolução da referência do valor da coordenada z do ponto sem possibilidade de alteração */
             const float& Z() const;
+
+            /* Definição das coordenadas do ponto */
+            void setCoords(float x, float y, float z);
+
+            /* Definição das coordenadas polares do ponto */
+            void setPolarCoords(float radius, float alpha, float beta);
 
             /* Devolução da matriz das coordenadas do ponto */
             utils::Matrix getCoords() const;

@@ -20,7 +20,7 @@ namespace primitives
 
         /* Verifica se todos os pontos são compatíveis */
         if (point == this->second || point == this->third)
-            std::runtime_error("incompatible face points");
+            std::invalid_argument("incompatible face points");
 
         /* Associação do ponto */
         this->first = point;
@@ -31,7 +31,7 @@ namespace primitives
 
         /* Verifica se todos os pontos são compatíveis */
         if (point == this->first || point == this->third)
-            std::runtime_error("incompatible face points");
+            std::invalid_argument("incompatible face points");
 
         /* Associação do ponto */
         this->second = point;
@@ -42,7 +42,7 @@ namespace primitives
 
         /* Verifica se todos os pontos são compatíveis */
         if (point == this->first || point == this->second)
-            std::runtime_error("incompatible face points");
+            std::invalid_argument("incompatible face points");
 
         /* Associação do ponto */
         this->third = point;
@@ -53,7 +53,7 @@ namespace primitives
          
         /* Verifica se todos os pontos são compatíveis */
         if (first == second || second == third || third == first)
-            std::runtime_error("incompatible face points");
+            std::invalid_argument("incompatible face points");
 
         /* Definição dos pontos */
         this->first = first;
