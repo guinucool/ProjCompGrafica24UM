@@ -143,3 +143,83 @@ posterior rotação de ambas para a criação das faces restantes.
 \end{center}
 
 \subsubsection{Esfera}
+
+Focando num modelo mais complexo, a esfera será mais complicada de
+definir devido à sua curvatura, porém ainda será possível aproveitar
+conceitos vistos anteriormente.\newline
+\break
+\noindent
+A ideia da definição da esfera começa na perceção da mesma como várias
+fatias iguais, dividas sobre o eixo y. Esta percepção permitirá,
+simplesmente, duplicar a primeira fatia através de rotações
+pelo eixo y de forma a obter várias iguais, deixando o desafio
+apenas na definição da primeira fatia.\newline
+\break
+\noindent
+Será necessário, então, pensar na fatia como dois arcos de pontos que
+se ligam através de triângulos ou quadrados, em que um arco pode ser
+obtido através do outro com uma simples rotação sobre o eixo y.\newline
+\break
+\noindent
+Fica necessário apenas definir um arco. Este pode ser visto, portanto,
+como várias rotações de um ponto sobre o eixo x até fazer
+meia rotação completa ao eixo.\newline
+\break
+\noindent
+Este processo pode, portanto, ser visualizado na Figura \ref{fig:sphere}.
+
+\begin{center}
+    \includegraphics[width=0.6\textwidth]{imgs/sphere.png}
+    \captionof{figure}{Construção da esfera}
+    \label{fig:sphere}
+\end{center}
+
+\subsubsection{Cone}
+
+Por último, sendo algo também complicado, apenas é necessário definir o
+cone, que adotará uma estratégia semelhante à da esfera, dividindo em
+fatias.\newline
+\break
+\noindent
+O problema encontra-se, mais uma vez, na definição da primeira fatia
+onde poderá ser usada, também, uma abordagem semelhante à da esfera,
+divisão em dois triângulos que podem ser obtidos por uma rotação.\newline
+\break
+\noindent
+O primeiro triângulo será, então, simples de obter, sendo apenas
+necessário aplicar sucessivas translações polares (com um ângulo a 
+apontar para o topo do cone) ao ponto da base do cone até este atingir
+o topo desejado.\newline
+\break
+
+\begin{center}
+    \includegraphics[width=0.6\textwidth]{imgs/cone.png}
+    \captionof{figure}{Construção do cone}
+    \label{fig:cone}
+\end{center}
+
+\subsection{Motor gráfico}
+
+Estruturada e decidida a implementação do gerador de primitivas, existe,
+ainda, a necessidade de definir como estas vão ser lidas, armazenadas e
+representadas no motor gráfico.\newline
+\break
+\noindent
+Não existindo a exigência de realizar translações, rotações, etc. à
+estrutura dos modelos (ainda poderão ser realizadas transformações às suas
+representações), decidiu-se definir os pontos como três \textit{float},
+em constraste à abordagem matricial seguida anteriormente, devido à
+necessidade única do armazenamento das propriedades.\newline
+\break
+\noindent
+Assim sendo, o motor gráfico apenas recorrerá à utilização de métodos para
+a leitura dos ficheiros definidos para o armazenamento, para a leitura dos
+ficheiros \textit{XML} que definem um cenário e para a representação deste
+cenário e das suas primitivas através das funcionalidades ofericidas pelo
+\textbf{OpenGL} e \textbf{GLUT}.\newline
+\break
+\noindent
+Estes métodos serão, ainda, definidos de acordo com a hierarquia
+já definida na conceptualização, sendo que cada objeto ficará
+encarregue da sua interpretação em ficheiro, quer seja \textit{XML}
+ou \textit{3d}.
