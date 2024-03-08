@@ -1,19 +1,24 @@
 /* Inclusão do cabeçalho da classe plano */
 #include "../../inc/models/plane.hpp"
 
+/* Inclusão dos módulos necessários para funcionalidade */
+#include <stdexcept>
+
 /* Inicialização do namespace utilizado para a definição da classe */
 namespace models
 {
     /* Construtor parametrizado da classe plano */
-    Plane::Plane(float lenght, int divisions) {
+    Plane::Plane(float length, int divisions) {
 
-        /* EXCEÇÕES */
+        /* Verifica a validade das propriedades submetidas */
+        if (length <= 0 || divisions < 1)
+            std::invalid_argument("invalid primitive arguments given");
 
         /* Calculo do comprimento de cada partição */
-        float dvlen = lenght / divisions;
+        float dvlen = length / divisions;
 
         /* Calculo da coordenada limite */
-        float border = lenght / 2;
+        float border = length / 2;
 
         /* Inicialização do primeiro quadrado */
         primitives::Primitive square;

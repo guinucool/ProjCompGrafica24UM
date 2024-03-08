@@ -2,6 +2,7 @@
 #include "../../inc/models/sphere.hpp"
 
 /* Inclusão dos módulos necessários para funcionalidade */
+#include <stdexcept>
 #include <cmath>
 
 /* Inicialização do namespace onde vai ser feita a definição */
@@ -10,7 +11,10 @@ namespace models
     /* Construtor padrão parametrizado */
     Sphere::Sphere(float radius, int slices, int stacks) {
 
-        /* EXCEÇÕES */
+        /* Verifica a validade das propriedades submetidas */
+        if (radius <= 0 || slices < 3 || stacks < 1)
+            std::invalid_argument("invalid primitive arguments given");
+        
 
         /* Cáculo dos ângulos de rotação */
         float alpha = (2 * M_PI) / slices;

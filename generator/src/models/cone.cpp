@@ -2,6 +2,7 @@
 #include "../../inc/models/cone.hpp"
 
 /* Inclusão de módulos essenciais à funcionalidade */
+#include <stdexcept>
 #include <cmath>
 
 /* Inicialização do namespace utilizado para a definição da classe */
@@ -10,7 +11,9 @@ namespace models
     /* Construtor parametrizado da classe plano */
     Cone::Cone(float radius, float height, int slices, int stacks) {
 
-        /* EXCEÇÕES */
+        /* Verifica a validade das propriedades submetidas */
+        if (radius <= 0 || height <= 0 || slices < 3 || stacks < 1)
+            std::invalid_argument("invalid primitive arguments given");
 
         /* Cálculo do ângulo de cada fatia do cone */
         float angle = (2 * M_PI) / slices;

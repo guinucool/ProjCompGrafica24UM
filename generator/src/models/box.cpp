@@ -2,6 +2,7 @@
 #include "../../inc/models/box.hpp"
 
 /* Inclusão dos módulos necessários para funcionalidade */
+#include <stdexcept>
 #include <cmath>
 
 /* Inicialização do namespace onde vai ser feita a definição */
@@ -10,7 +11,9 @@ namespace models
     /* Construtor padrão parametrizado */
     Box::Box(float length, int divisions) {
 
-        /* EXCEÇÕES */
+        /* Verifica a validade das propriedades submetidas */
+        if (length <= 0 || divisions < 1)
+            std::invalid_argument("invalid primitive arguments given");
 
         /* Cálculo da coordenada limite */
         float border = length / 2;
