@@ -189,7 +189,7 @@ graph TD
     Circle-- é uma -->Primitive
     Cylinder-- é uma -->Primitive
     Group-- tem (*) -->Primitive
-    World-- possuí (*) -->Group
+    World-- possuí -->Group
     World-- tem -->Camera
     World-- tem -->Window
     Engine-- lê -->XMLFile
