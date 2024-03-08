@@ -192,12 +192,13 @@ graph TD
     World-- possuí (*) -->Group
     World-- tem -->Camera
     World-- tem -->Window
-    Engine-- lê -->FicheiroXML
-    FicheiroXML-- define -->World
+    Engine-- lê -->XMLFile
+    XMLFile-- define -->World
     Engine-- renderiza -->World
     Generator-- cria -->Primitive
-    Generator-- gera -->Ficheiro3D
-    Ficheiro3D-- representa -->Primitive
+    Generator-- gera -->3DFile
+    3DFile-- representa -->Primitive
+    Engine-- usa -->3DFile
 ```
 
 Criado o modelo, é possível perceber a hierarquia utilizada para a sua definição.
