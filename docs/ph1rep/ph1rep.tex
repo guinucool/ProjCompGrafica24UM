@@ -3,6 +3,8 @@
 \usepackage{graphicx}
 \usepackage{titling}
 \usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{color}
 
 \pretitle{
         \begin{center}
@@ -11,7 +13,13 @@
         \title{\textbf{Computação Gráfica - Relatório 1ª Fase}}
         \author{Gabriel Pereira, a100891\\
                 Guilherme Oliveira, a100592\\
-                Gustavo Castro, a100482}        
+                Gustavo Castro, a100482}
+}
+
+\lstdefinestyle{BASH}
+{
+        backgroundcolor=\color{black},
+        basicstyle=\scriptsize\color{white}\ttfamily     
 }
 
 \posttitle{
@@ -26,7 +34,7 @@
 
 \include{introducao}
 
-%\include{requisitos}
+\include{requisitos}
 
 \include{conceptualizacao}
 
