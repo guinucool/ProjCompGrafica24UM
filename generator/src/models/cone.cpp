@@ -51,7 +51,7 @@ namespace models
 
             /* Criação da face lateral */
             if (i == (stacks - 1))
-                this->addTriangle(side, originNext, origin);
+                this->addTriangle(side, primitives::Point(0, height, 0), origin);
             else
                 this->addSquare(sideNext, originNext, origin, side);
 
