@@ -341,3 +341,6 @@ bin
 
 # Custom Files
 *.3d
+
+# Ignore PDF File
+*.pdf
