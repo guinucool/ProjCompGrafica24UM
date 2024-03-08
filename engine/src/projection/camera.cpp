@@ -151,7 +151,12 @@ namespace projection
                 float fov = this->fov, near = this->near, far = this->far;
 
                 /* Obtenção dos atributos e verificação da existência deles */
-                if (next->QueryFloatAttribute("fov", &fov) && next->QueryFloatAttribute("near", &near) && next->QueryFloatAttribute("far", &far))
+                bool vFov = next->QueryFloatAttribute("fov", &fov);
+                bool vNear = next->QueryFloatAttribute("near", &near);
+                bool vFar = next->QueryFloatAttribute("far", &far);
+
+                /* Obtenção dos atributos e verificação da existência deles */
+                if (vFov && vNear && vFar)
                     throw std::invalid_argument("given xml configuration is invalid");
 
                 /* Associação das propriedades */

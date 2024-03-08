@@ -74,7 +74,8 @@ namespace drawables
         const char * path;
 
         /* Obtenção do atributo e verificação da existência dele */
-        if (model->QueryStringAttribute("file", &path));
+        if (model->QueryStringAttribute("file", &path))
+            throw std::invalid_argument("given xml configuration is invalid");
 
         /* Transformação do atributo em string */
         std::string mpath(path);
