@@ -192,9 +192,9 @@ graph TD
     World-- possuí (*) -->Group
     World-- tem -->Camera
     World-- tem -->Window
+    Engine-- lê -->FicheiroXML
+    FicheiroXML-- define -->World
     Engine-- renderiza -->World
-    Engine-- usa -->Parser
-    Parser-- cria -->World
     Generator-- gera -->Primitive
 ```
 
