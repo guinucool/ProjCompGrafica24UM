@@ -10,6 +10,8 @@ namespace models
     /* Construtor padrão parametrizado */
     Box::Box(float length, int divisions) {
 
+        /* EXCEÇÕES */
+
         /* Cálculo da coordenada limite */
         float border = length / 2;
 

@@ -10,6 +10,8 @@ namespace models
     /* Construtor padrão parametrizado */
     Sphere::Sphere(float radius, int slices, int stacks) {
 
+        /* EXCEÇÕES */
+
         /* Cáculo dos ângulos de rotação */
         float alpha = (2 * M_PI) / slices;
         float beta = M_PI / (2 * stacks);
@@ -54,7 +56,7 @@ namespace models
         primitives::Primitive slice = (*this);
 
         /* Duplicação da fatia atual por várias fatias */
-        for (int i = 0; i < slices; i++) {
+        for (int i = 0; i < (slices - 1); i++) {
 
             /* Transformação desta fatia na próxima */
             slice.transform(alphaR);

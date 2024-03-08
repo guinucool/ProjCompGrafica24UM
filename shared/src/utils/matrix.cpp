@@ -131,8 +131,8 @@ namespace utils
 
         /* Criação da matriz de translação */
         matrix.at(0, 3) = radius * cos(beta) * sin(alpha);
-        matrix.at(1, 3) = radius * cos(beta) * cos(alpha);
-        matrix.at(2, 3) = radius * sin(beta);
+        matrix.at(2, 3) = radius * cos(beta) * cos(alpha);
+        matrix.at(1, 3) = radius * sin(beta);
 
         /* Devolução da matriz construída */
         return matrix;

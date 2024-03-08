@@ -90,8 +90,8 @@ namespace primitives
 
         /* Associação das coordendas à respetiva posição no vetor */
         this->X() = radius * cos(beta) * sin(alpha);
-        this->Y() = radius * cos(beta) * cos(alpha);
-        this->Z() = radius * sin(beta);
+        this->Z() = radius * cos(beta) * cos(alpha);
+        this->Y() = radius * sin(beta);
     }
 
     /* Devolução da matriz das coordenadas do ponto */

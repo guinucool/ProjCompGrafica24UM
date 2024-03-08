@@ -1,14 +1,13 @@
 /* Inclusão do cabeçalho da classe plano */
 #include "../../inc/models/plane.hpp"
 
-/* Inclusão de módulos essenciais à funcionalidade */
-#include "../../../shared/inc/utils/matrix.hpp"
-
 /* Inicialização do namespace utilizado para a definição da classe */
 namespace models
 {
     /* Construtor parametrizado da classe plano */
     Plane::Plane(float lenght, int divisions) {
+
+        /* EXCEÇÕES */
 
         /* Calculo do comprimento de cada partição */
         float dvlen = lenght / divisions;

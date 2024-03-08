@@ -1,2 +1,2 @@
 #!/bin/bash
-cd .. ; cmake -S . -B ./bin
+cmake -S . -B ./bin

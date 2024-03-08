@@ -88,24 +88,21 @@ namespace drawables
             throw std::invalid_argument("given radius is invalid");
 
         /* Tradução e definição das coordenadas */
-        this->x = radius * cos(beta) * sin(alpha);;
-        this->y = radius * cos(beta) * cos(alpha);
-        this->z = radius * sin(beta);
+        this->x = radius * cos(beta) * sin(alpha);
+        this->z = radius * cos(beta) * cos(alpha);
+        this->y = radius * sin(beta);
     }
 
     /* Leitura de um ponto através de um ficheiro */
     void Point::read(std::ifstream& stream) {
 
-        /* Variável de verificação da validade da leitura */
-        bool read = false;
-
         /* Leitura do valor das três coordenadas vindas de um ficheiro */
-        read |= stream.read(reinterpret_cast<char*>(&(this->x)), sizeof(float)).fail();
-        read |= stream.read(reinterpret_cast<char*>(&(this->y)), sizeof(float)).fail();
-        read |= stream.read(reinterpret_cast<char*>(&(this->z)), sizeof(float)).fail();
+        stream.read(reinterpret_cast<char*>(&(this->x)), sizeof(float));
+        stream.read(reinterpret_cast<char*>(&(this->y)), sizeof(float));
+        stream.read(reinterpret_cast<char*>(&(this->z)), sizeof(float));
 
         /* Verfica se a leitura foi válida */
-        if (read)
+        if (stream.fail())
             throw std::invalid_argument("given 3d file is invalid");
     }
 
