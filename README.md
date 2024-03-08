@@ -186,19 +186,18 @@ graph TD
     Box-- é uma -->Primitive
     Sphere-- é uma -->Primitive
     Cone-- é uma -->Primitive
-    Circle-- é uma -->Primitive
-    Cylinder-- é uma -->Primitive
-    Group-- tem (*) -->Primitive
-    World-- possuí -->Group
-    World-- tem -->Camera
-    World-- tem -->Window
-    Engine-- lê -->XMLFile
-    XMLFile-- define -->World
-    Engine-- renderiza -->World
     Generator-- cria -->Primitive
-    Generator-- gera -->3DFile
-    3DFile-- representa -->Primitive
-    Engine-- usa -->3DFile
+```
+
+```mermaid
+graph TD
+    Primitive-- tem (*) -->Face
+    Face-- tem (3) -->Point
+    Group-- tem (*) -->Primitive
+    World-- tem -->Window
+    World-- tem -->Camera
+    World-- tem -->Group
+    Engine-- representa -->World
 ```
 
 Criado o modelo, é possível perceber a hierarquia utilizada para a sua definição.

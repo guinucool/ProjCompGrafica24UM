@@ -1,31 +1,54 @@
 \section{Conceptualização}
 
-De forma a atingir os objetivos propostos, foi necessário desenvolver um sistema
-dividido em Motor Grafico e Gerador de Primitivas. O Motor Gráfico é responsável
-por gerir e renderizar a cena e os modelos geométricos, enquanto que o Gerador de Primitivas
-é responsável por criar as primitivas geométricas que compõem os modelos. 
-
-
-\subsection{Modelo de Domínio}
-
-\includegraphics[width=15cm]{ModeloDominio.png}\\[\bigskipamount]
-
-\subsection{Motor Gráfico}
-
-Para atribuir uma organização ao sistema, foi decidido atribuir ao Motor Gráfico a
-responsabilidade de ler ficheiros XML que descrevem a cena e os modelos, ao que chamamos 
-World. O World é composto por um grupo de primitivas, que por sua vez são
-desenhados na prespetiva de uma câmara e uma janela. Todos os objetos contidos no World
-estão no ficheiro XML assim como as propriedades da câmara e da janela.
-Quando o Motor Grafico renderiza o World, este necessita de ler os ficheiros .3d que
-contêm as primitivas geométricas. Estes ficheiros são criados pelo Gerador de Primitivas
+De forma a atingir os objetivos propostos, foi necessário desenvolver
+uma arquitetura semelhante para ambos o motor gráfico e o gerador de
+primitivas.
 
 \subsection{Gerador de Primitivas}
 
-O Gerador de Primitivas é responsável por criar as primitivas geométricas que serão
-transformadas em Ficheiros .3d e posteriormente lidos pelo Motor Gráfico
-quando este renderiza a cena. Quando é invocado, este gera um ficheiro .3d para a
-primitiva geométrica que é passada como argumento. Este ficheiro contém a descrição
-da primitiva geométrica em formato binário, que é lido pelo Motor Gráfico durante a
-renderização da cena.
+\begin{center}
+    \includegraphics[width=\textwidth]{imgs/gendom.png}
+    \captionof{figure}{Modelo de Domínio do Gerador de Primitivas}
+    \label{fig:gendom}
+\end{center}
+
+\noindent
+Criado este primeiro modelo, é possível perceber a hierarquia utilizada
+para a sua definição.\newline
+\break
+\noindent
+O gerador irá, portanto, ser responsável pela criação de primitivas que
+serão definidas pelas respetivas faces, que por sua vez são constituídas
+pelos seus pontos.\newline
+\break
+\noindent
+Estas primitivas poderão ser do tipo \textbf{caixa, esfera, etc.} que,
+por sua vez, definirão os processos necessários para a construção de pontos
+e faces que bem definam a sua estrutura.
+
+\subsection{Motor Gráfico}
+
+\begin{center}
+    \includegraphics[width=0.7\textwidth]{imgs/engdom.png}
+    \captionof{figure}{Modelo de Domínio do Motor Gráfico}
+    \label{fig:engdom}
+\end{center}
+
+\noindent
+Embora com um ramo semelhante, o motor intrepreta o seu domínio de maneira
+diferente.\newline
+\break
+\noindent
+O motor usará uma noção semelhante de primitiva, também, porém não utilizará
+as definições mais especificas do que uma primitiva pode ser
+(\textbf{esfera, etc.}), visto que as faces e pontos lidos dos ficheiros 
+\textit{3d} deverão ser mais do que suficientes para a boa representação
+das figuras pretendidas.\newline
+\break
+\noindent
+Fará uso, ainda, de um mundo que possuirá um grupo de representação, uma câmera
+e uma configuração de janela, em memória, que após lidos
+da configuração \textit{XML} serão, posteriormente, utilizados
+para a representação da configuração pretendida
+pelo utilizador na janela e no cenário do motor.
 

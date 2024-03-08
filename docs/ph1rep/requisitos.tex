@@ -1,26 +1,81 @@
 \section{Requisitos}
 
-Nesta secção serão especificadas as funcionalidades pretendidas  do \textbf{motor gráfico}
-e do \textbf{gerador de primitivas}.
+Foram, portanto, especificados objetivos e funcionalidades pretendidas
+para esta primeira fase, tanto para o motor gráfico como para o gerador
+de primitivas.
 
-\subsection{Gerador}
+\subsection{Gerador de Primitivas}
 
-O gerador de primitivas deve ser capaz de criar diversas \textbf{primitivas geométricas}, das quais
-constam no enunciado \textit{esferas}, \textit{cubos}, \textit{cones} e \textit{planos}.
-O conteúdo do output deste programa será um ficheiro com extensão \textit{.3d}
-que contém os \textbf{pontos} estruturantes dos respetivos sólidos. De modo a que o motor possa
-desenhar as figuras, a informação terá de ser organizada em \textbf{faces}, ou seja, triângulos.
-Segue em exemplo um comando para gerar uma esfera de \textit{raio 1}, \textit{10 stacks, 10 fatias}
-e guardar o resultado em \textit{sphere.3d}:
+Numa fase inicial pretende-se que o gerador apenas seja capaz de gerar um
+conjunto de quatro primitivas: \textbf{planos, caixas, esferas e cones}.
+\newline
+\break
+\noindent
+Estas primitivas deverão ser geradas dado, através de um comando,
+um conjunto de propriedades que têm de respeitar e que as definem. Estas
+propriedades podem ser o número de fatias, o número de pilhas, o tamanho
+do lado, o raio, etc...\newline
+\break
+\noindent
+Estas podem portanto ser obtidos através do seguintes comandos:
+
 \begin{lstlisting}[style=BASH]
-$ generator sphere 1 10 10 sphere.3d
+    $ generator plane length divisions path/to/file.3d
 \end{lstlisting}
+
+\begin{lstlisting}[style=BASH]
+    $ generator box length divisions path/to/file.3d
+\end{lstlisting}
+
+\begin{lstlisting}[style=BASH]
+    $ generator sphere radius slices stacks path/to/file.3d
+\end{lstlisting}
+
+\begin{lstlisting}[style=BASH]
+    $ generator cone radius height slices stacks path/to/file.3d
+\end{lstlisting}
+
+\break
+\noindent
+Geradas as primitivas, as suas propriedades deverão ser armazenadas em
+ficheiros \textit{3d}, dos quais deverá ser possível a reconstrução das
+primitivas por parte do motor gráfico.
 
 \subsection{Motor}
 
-O motor vai ler um \textbf{ficheiro de configuração \textit{.xml}}. Dessa configuração deverá
-extrair as informações de \textbf{câmera}, \textbf{janela} e \textbf{modelos \textit{.3d}}.
-Para este efeito é necessário implementar-se uma ferramenta de \textit{parsing xml}. Durante as
-aulas teóricas desta UC foi-nos aconselhado o uso da biblioteca \textit{tinyxml2}.
-Depois de processados os campos supracitados, o motor irá servir-se dos pontos presentes nos
-\textbf{modelos} e das configurações para desenhar as figuras, através do \textit{OpenGL}.
+Já o motor, numa fase inicial, ficará encarregue, apenas, de ler e
+interpretar uma configuração \textit{XML} que definirá um cenário
+a ser representado.\newline
+\break
+\noindent
+Esta configuração deverá ser do tipo:
+\begin{tcolorbox}[
+    colback=gray!10!white,
+    colframe=black!50!black,
+    after upper={\hfill\textbf{xml}}
+]
+\begin{verbatim}
+<world>
+    <window width="512" height="512" />
+    <camera>
+        <position x="3" y="2" z="1" />
+        <lookAt x="0" y="0" z="0" />
+        <up x="0" y="1" z="0" />
+        <projection fov="60" near="1" far="1000" />
+    </camera>
+    <group>
+        <models>
+            <model file="plane.3d" />
+            <model file="cone.3d" />
+        </models>
+    </group>
+</world>
+\end{verbatim}
+\end{tcolorbox}
+
+\break
+\noindent
+Em caso de parâmetros em falta que sejam substituíveis por um valor padrão,
+essa deverá ser a decisão a tomar pelo interpretar \textit{XML} do motor
+gráfico. O motor ainda deverá ser capaz de interpretar e armazenar ficheiros
+\textit{3d}.
