@@ -24,10 +24,10 @@ Estes vértices deverão ser construídos e armazenados num documento com extens
 
 Foi definida, portanto, uma lista de primitivas geométricas que se pretendem implementar nesta fase inicial.
 
-- [ ] Plano (Plane)
-- [ ] Cubo (Box)
-- [ ] Esfera (Sphere)
-- [ ] Cone (Cone)
+- [x] Plano (Plane)
+- [x] Cubo (Box)
+- [x] Esfera (Sphere)
+- [x] Cone (Cone)
 - [ ] Círculo (Circle)
 - [ ] Cilindro (Cylinder)
 
@@ -80,35 +80,33 @@ O comando será dado, portanto, por `$ generator primitiva length divisions ... 
 
 Para armazenar estas estruturas de forma eficaz e íntegra foi definido, ainda, um formato de ficheiro capaz de guardar todos os vértices e faces que constituem uma primitiva.
 
-O ficheiro deverá, portanto, começar por armazenar todos os vértices de uma primitiva, que serão indexados pela ordem de aparição no ficheiro (primeiro vértice -> 0, etc...).
+De forma a ter uma leitura rápida e eficaz, decidiu-se usar uma arquitetura binária, facilitando o armazenamento e leitura das variáveis flutuantes devido a não necessidade de fazer a conversão das mesmas para um formato de texto.
 
-De seguida, estarão presentes as faces que irão ser definidas por 3 pontos identificados pelo respetivo índice (ou seja, face x -> 1 0 2 (pontos 1, 0 e 2)).
+Os valores dos pontos serão armazenados, portanto, de forma contínua, sendo que a cada três valores flutuantes existe um ponto, e a cada três pontos (ou nove valores) existe uma face. O conjunto de pontos guardados nestes ficheiros irá, portanto, definir um conjunto de faces que, por sua vez, definirão uma primitiva.
 
-O ficheiro terá, portanto, a seguinte estrutura.
+A quantidade de valores flutuantes será, portanto, sempre múltipla de três.
+
+Esta estrutura pode ser vista, de forma simplificada e considerando os espaços como inexistentes, da seguinte forma:
 
 ```
-# Número de vértices
-N
-# Lista de coordenadas dos vértices
-x0 y0 z0
-x1 y1 z1
-...
-# Número de faces
-M
-# Lista de faces
-i0 i1 i2
+0.0000 0.0000 0.0000 (em binário) | Face1
+...Ponto2...                      | Face1
+...Ponto3...                      | Face1
+...Ponto4...                      | Face2
+...Ponto5...                      | Face2
+...Ponto6...                      | Face2
+...Ponto7...                      | Face3
+...                               ...
 ...
 ```
 
 Ou seja, por exemplo, um ficheiro que define uma face, seria definido da seguinte forma.
 
 ```
-3
-0.0 0.0 0.0
-1.0 0.0 0.0
-0.0 0.0 1.0
-1
-1 0 2
+0.0000 0.0000 0.0000
+1.0000 0.0000 0.0000
+0.0000 0.0000 1.0000
+(tudo em formato binário)
 ```
 
 ---
@@ -127,7 +125,7 @@ Dessa forma, deverão ser tidas em conta algumas etiquetas `XML` para a criaçã
 
 | Etiqueta | Definição                                     | Lista de propriedades | Etiqueta Mãe |
 |----------|-----------------------------------------------|-----------------------|--------------|
-|world     | Define o contexto do cenário                  | axis                  |:x:           |
+|world     | Define o contexto do cenário                  |:x:                    |:x:           |
 |window    | Define as propriedades da janela de exibição  | width, height         | world        |
 |camera    | Define a uma câmera para visualização         | (sub-etiquetas)       | world        |
 |position  | Define a posição da câmera no cenário         | x, y, z               | camera       |
@@ -170,13 +168,13 @@ Este motor simples terá de originar, portanto, figuras semelhantes às seguinte
 
 ## Fase 1
 
-### Conceptualização
-
 Definidos os objetivos da fase inicial, é proposta uma solução que baseia a sua estrutura nas hierarquias definidas anteriormente, considerando ambas as hierarquias propostas no **[Gerador](#gerador-de-primitivas)** e no **[Motor](#motor-gráfico)**.
 
-Devido à necessidade de leitura e armazenamento da estruturação dos vértices e das faces definidos para cada primitiva nos seus ficheiros, optou-se pela implementação de uma espécie de *Middleware*, que tenciona manter, em memória, uma arquitetura "idêntica" das estruturas partilhadas por ambos os programas da solução, simplificando o processo de leitura, escrita e representação para ambos os lados.
+Devido à necessidade de leitura e armazenamento da estruturação dos vértices e das faces definidas para cada primitiva nos seus ficheiros, a estrutura adotada será, de certa forma, semelhante para o **[Gerador](#gerador-de-primitivas)** e para o **[Motor](#motor-gráfico)**, partilhando um ramo idêntico em ambas as arquiteturas.
 
-Desta forma, é proposto o seguinte **Modelo de Domínio**, que tenciona descrevar esta proposta de forma mais detalhada.
+A implementação será, porém, diferente, já que não existe a necessidade de o **[Gerador](#gerador-de-primitivas)** saber ler ou representar primitivas, tal como não existe a necessidade do **[Motor](#motor-gráfico)** saber escrever ou gerar certos tipos de primitivas.
+
+Desta forma, são propostos os seguintes **Modelos de Domínio**, que tencionam descrevar esta proposta de forma mais detalhada.
 
 ```mermaid
 graph TD
@@ -189,6 +187,14 @@ graph TD
     Generator-- cria -->Primitive
 ```
 
+Este modelo representa, portanto de certa forma, o processo da construção de primitivas por parte do gerador.
+
+O gerador irá criar, portanto, uma primitiva, constítuida por faces que são constituídas por pontos, que pode ser ou um plano, ou uma caixa, etc...
+
+O objetivo é implementar o ponto de forma matricial, tal que lhe sejam possível aplicar transformações sem necessidade de um grande poder computacional, reutilizando a mesma matriz no caso de, por exemplo, se querer fazer a mesma transformação em vários pontos ou mesmo numa primitiva inteira.
+
+Assim sendo, e usando esta ideologia de transformações únicas numa primitiva, o processo de construção dos modelos deverá ser baseado neste conceito de criação de sub-primitivas que irão constituir uma primitiva maior.
+
 ```mermaid
 graph TD
     Primitive-- tem (*) -->Face
@@ -200,82 +206,17 @@ graph TD
     Engine-- representa -->World
 ```
 
-Criado o modelo, é possível perceber a hierarquia utilizada para a sua definição.
+Já no lado do **[Motor](#motor-gráfico)**, a estrutura das primitivas é semelhante, porém a implementação não deverá fazer uso do formato matricial ou das transformações anteriormente discutidas.
 
-O gerador irá, portanto, ser responsável pela criação de primitivas que serão definidas pelas respetivas faces, que por sua vez são constituídas pelos seus pontos.
+A leitura das faces e pontos deverá, portanto, ser mais que suficiente para a boa representação das figuras pretendidas.
 
-Estas primitivas poderão ser do tipo **caixa, esfera, etc.** que, por sua vez, definirão os processos necessários para a construção de pontos e faces que bem definam a sua estrutura.
+Ainda existirá um novo conjunto de estruturas, contidas num cenário (mundo), que ajudarão a definir a propriedades da cena.
 
-O motor usará esta noção de primitiva, também, porém não utilizará a definições mais especificas (**esfera, etc.**), visto que as faces e pontos lidos deverão ser mais que suficientes para a boa representação das figuras pretendidas.
+A câmera deverá conseguir definir o comportamento e as propriedades da própria câmera do cenário, assim como a janela deverá definir a janela que irá ser usada para a representação.
 
-Fará uso, ainda, a um interpretador que irá ler uma configuração `XML` e criará um mundo (com os seus respetivos grupos, câmera, etc.), em memória, de acordo que será posteriormente utilizado para a representação de configuração pretendida pelo utilizador na janela do motor.
+O grupo deverá conter, então, o conjunto de primitivas que se pretende representar.
 
----
-
-### Implementação
-
-Estruturada a arquitetura base da solução, foi proposto, ainda, um modelo que conseguisse especificar como a solução vai ser implementada de forma concreta, tentando demonstrando e especificar todas as decisões de implementação tomadas para a melhor concretização do projeto pretendido.
-
-```mermaid
-classDiagram
-    class Point {
-        -x : : float
-        -y : : float
-        -z : : float
-        +Point()
-        +Point(x: float, y: float, z: float)
-        +Point(beta: float, teta: float, radius: float)
-        +Point(point: Point)
-        +Point(stream: ifstream)
-        +getX(): float
-        +getY(): float
-        +getZ(): float
-        +setX(x: float): void
-        +setY(y: float): void
-        +setZ(z: float): void
-        +write(stream: ofstream): void
-        +read(stream: ifstream): void
-        +rotateNew(angleX: float, angleY: float, angleZ: float): Point
-        +translateNew(x: float, y: float, z: float): Point
-        +translateNew(beta: float, teta: float, radius: float): Point
-        +draw(): void
-        +feedBuffer(buffer: float*): void
-        +equals(point: Point): bool
-        +clone(): Point
-        +toString(): string
-    }
-    Face *-- Point
-    class Face {
-        -first : : Point
-        -second : : Point
-        -third : : Point
-        +Face(point0: Point, point1: Point, point2: Point)
-        +Face(stream: ifstream)
-        +getFirst(): Point
-        +getSecond(): Point
-        +getThird(): Point
-        +setFirst(point: Point): void
-        +setSecond(point: Point): void
-        +setThird(point: Point): void
-        +write(stream: ofstream): void
-        +read(stream: ifstream): void
-        +rotateNew(angleX: float, angleY: float, angleZ: float): Point
-        +translateNew(x: float, y: float, z: float): Point
-        +translateNew(beta: float, teta: float, radius: float): Point
-        +draw(): void
-        +feedBuffer(buffer: float*): void
-        +equals(point: Point): bool
-        +clone(): Face
-        +toString(): string
-    }
-    Primitive *-- Face
-    class Primitive {
-      
-    }
-    class Vector {
-      -vector : : std:vector
-    }
-```
+Todas estas estruturas deverão ser capaz de, dadas estruturas **XML**, lerem e adaptarem os conteúdos dos ficheiros pretendido às suas propriedades, de forma à representação do cenário final apenas necessitar destas estruturas em memória.
 
 ---
 
@@ -295,3 +236,4 @@ ou, para uma solução mais permanente:
 sudo chmod +x scripts/script.sh
 ./scripts/script.sh
 ```
+
