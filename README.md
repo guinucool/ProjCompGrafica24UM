@@ -30,6 +30,7 @@ Foi definida, portanto, uma lista de primitivas geométricas que se pretendem im
 - [x] Cone (Cone)
 - [ ] Círculo (Circle)
 - [ ] Cilindro (Cylinder)
+- [ ] Torus
 
 Cada uma destas figuras deverá, no ato da sua criação, receber determinados parâmetros que deverão especificar a sua estrutura.
 
@@ -41,6 +42,7 @@ Cada uma destas figuras deverá, no ato da sua criação, receber determinados p
 | Cone                 |:x:               |:white_check_mark:|:white_check_mark:|:x:               |:white_check_mark:|:white_check_mark:|
 | Círculo              |:x:               |:white_check_mark:|:x:               |:x:               |:white_check_mark:|:x:               |
 | Cilindro             |:x:               |:white_check_mark:|:white_check_mark:|:x:               |:white_check_mark:|:white_check_mark:|
+| Torus                |:white_check_mark:|:white_check_mark:|:x:               |:x:               |:white_check_mark:|:white_check_mark:|
 
 Estas primitivas deverão, então, ser geradas através do comando `generator` fornecendo a este os argumentos necessários (figura pretendida, propriedades da figura e ficheiro de armazenamento).
 
@@ -72,6 +74,11 @@ O comando será dado, portanto, por `$ generator primitiva length divisions ... 
   # Gerar um cilindro de raio 3 e 6 de altura, dividido em
   # 10 fatias e 2 montes
   $ generator cylinder 3 6 10 2 cylinder.3d 
+  ```
+- ``` 
+  # Gerar um torus de comprimento 1 e 2 de raio, dividido em
+  # 10 fatias e 2 montes
+  $ generator torus 1 2 10 2 torus.3d 
   ```
 
 ---
@@ -108,6 +115,20 @@ Ou seja, por exemplo, um ficheiro que define uma face, seria definido da seguint
 0.0000 0.0000 1.0000
 (tudo em formato binário)
 ```
+
+## Gerador de figuras complementares (Extra)
+
+Devido ao insucesso na implementação de algumas figuras geométricas pretendidas para a fase anterior, pretende-se corrigir essa falha e implementar, agora, as figuras em falta, tal como algumas extra.
+
+Por questões da não necessidade da repetição, as figuras continuarão definidas na primeira fase, sendo aqui indicadas quais foram implementadas e em que fase.
+
+### Fase 2
+
+Foram implementadas (ou pretendia-se implementar) as seguintes primitivas geométricas:
+
+- Cilindro (Cylinder)
+- Círculo (Circle)
+- Torus
 
 ---
 
@@ -162,6 +183,33 @@ Este motor simples terá de originar, portanto, figuras semelhantes às seguinte
 
 ![Representação visual das primitivas](imgs/f1visual.png)
 
+## Transformações de figuras (Fase 2)
+
+Implementado o básico necessário para a representação de modelos no ecrã, pretende-se agora puder mover através de escalas, translações ou rotações estes vários objetos pelo cenário.
+
+Para tal, será necessário que a configuração `XML` aceite novos tipos de etiquetas, as etiquetas de translação.
+
+Estas estruturas deverão estar contidas dentro de um grupo e, portanto, aplicar a todos os objetos contidos nesse mesmo grupo as transformações enunciadas.
+
+Todas as transformações deverão estar, ainda, contidas dentro da secção `transform`, e não se deverá repetir o mesmo tipo de transformação dentro de um mesmo grupo.
+
+Deverá, também, ser possível a criação de grupos dentro de grupos, sendo que um sub-grupo herda as transformações do grupo acima.
+
+Assim sendo, adicionam-se as seguintes propriedades à tabela:
+| Etiqueta | Definição                                     | Lista de propriedades | Etiqueta Mãe |
+|----------|-----------------------------------------------|-----------------------|--------------|
+|world     | Define o contexto do cenário                  | axis                  |:x:           |
+|window    | Define as propriedades da janela de exibição  | x, y, name            | world        |
+|group     | Define um grupo de representação              |:x:                    | world, group |
+|transform | Define um grupo de transformações             |:x:                    | group        |
+|translate | Define uma translação de objetos              | x, y, z               | transform    |
+|rotate    | Define uma rotação de objetos                 | angle, x, y, z        | transform    |
+|scale     | Define uma escala de objetos                  | x, y, z               | transform    |
+
+> IMPORTANTE: A ordem das transformações importa!
+
+Pretende-se obter, portanto, uma maquete do sistema solar, com os planetas, estrelas e luas definidas numa hierarquia de grupos.
+
 ---
 
 # Estrutura da solução
@@ -175,6 +223,8 @@ Devido à necessidade de leitura e armazenamento da estruturação dos vértices
 A implementação será, porém, diferente, já que não existe a necessidade de o **[Gerador](#gerador-de-primitivas)** saber ler ou representar primitivas, tal como não existe a necessidade do **[Motor](#motor-gráfico)** saber escrever ou gerar certos tipos de primitivas.
 
 Desta forma, são propostos os seguintes **Modelos de Domínio**, que tencionam descrevar esta proposta de forma mais detalhada.
+
+### Gerador de Primitivas
 
 ```mermaid
 graph TD
@@ -194,6 +244,8 @@ O gerador irá criar, portanto, uma primitiva, constítuida por faces que são c
 O objetivo é implementar o ponto de forma matricial, tal que lhe sejam possível aplicar transformações sem necessidade de um grande poder computacional, reutilizando a mesma matriz no caso de, por exemplo, se querer fazer a mesma transformação em vários pontos ou mesmo numa primitiva inteira.
 
 Assim sendo, e usando esta ideologia de transformações únicas numa primitiva, o processo de construção dos modelos deverá ser baseado neste conceito de criação de sub-primitivas que irão constituir uma primitiva maior.
+
+### Motor Gráfico
 
 ```mermaid
 graph TD
@@ -216,7 +268,34 @@ A câmera deverá conseguir definir o comportamento e as propriedades da própri
 
 O grupo deverá conter, então, o conjunto de primitivas que se pretende representar.
 
-Todas estas estruturas deverão ser capaz de, dadas estruturas **XML**, lerem e adaptarem os conteúdos dos ficheiros pretendido às suas propriedades, de forma à representação do cenário final apenas necessitar destas estruturas em memória.
+Todas estas estruturas deverão ser capaz de, dadas estruturas `XML`, lerem e adaptarem os conteúdos dos ficheiros pretendido às suas propriedades, de forma à representação do cenário final apenas necessitar destas estruturas em memória.
+
+## Fase 2
+
+### Motor Gráfico
+
+```mermaid
+graph TD
+    Primitive-- tem (*) -->Face
+    Face-- tem (3) -->Point
+    Group-- tem (*) -->Primitive
+    Group-- tem (*) -->Group
+    Group-- tem (3) -->Transform
+    Translate-- é uma -->Transform
+    Scale-- é uma -->Transform
+    Rotate-- é uma -->Transform
+    World-- tem -->Window
+    World-- tem -->Camera
+    World-- tem -->Group
+    Engine-- representa -->World
+```
+Para a implementação desta fase, o modelo do **[Motor](#motor-gráfico)** foi extendido e, rapidamente, são percétiveis e justificáveis as modificações aplicadas de forma a incluir os requisitos para fase que se pretende implementar.
+
+Um grupo passa, portanto, a ter a possibilidade de ter mais grupos em si própria, utilizando, de certa forma, uma estratégia recursiva para implementar o conceito de sub-grupo.
+
+Para além disso, também foi adicionada a possibilidade de um grupo ter três ou menos transformações. Deverá ser garantido que o tipo destas transformações não se repita, e que todas as tranformações de um grupo sejam, ainda, aplicadas a todos os seus sub-grupos.
+
+Todos os tipos de transformações deverão, também, ser sub-classes de transformação, já que todas partilharão propriedades semelhantes para a sua aplicação e estrutura.
 
 ---
 
