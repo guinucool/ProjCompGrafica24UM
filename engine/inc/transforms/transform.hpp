@@ -47,13 +47,13 @@ namespace transforms {
             const float& getZ() const;
 
             /* Leitura de uma transformação através de um ficheiro XML */
-            virtual const float& read(tinyxml2::XMLElement * model) const = 0;
+            void read(tinyxml2::XMLElement * transform);
 
             /* Aplicação da transformação ao cenário */
             virtual const void apply() const = 0;
 
             /* Operação de clonagem de uma transformação*/
-            virtual Transform clone() const = 0;
+            virtual Transform * clone() const = 0;
 
             /* Transformação de uma transformação em formato string */
             std::string toString() const;

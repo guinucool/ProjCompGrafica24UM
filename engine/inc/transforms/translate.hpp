@@ -21,16 +21,16 @@ namespace transforms {
             Translate(const Translate& translate);
 
             /* Construtor através de um ficheiro XML de translação */
-            Translate(tinyxml2::XMLElement * model);
+            Translate(tinyxml2::XMLElement * transform);
 
             /* Leitura de uma translação através de um ficheiro XML */
-            const float& read(tinyxml2::XMLElement * model);
+            void read(tinyxml2::XMLElement * transform);
 
             /* Aplicação da translação ao cenário */
             const void apply() const;
 
             /* Operação de clonagem de uma translação */
-            Transform clone() const;
+            Transform * clone() const;
 
             /* Transformação de uma translação em formato string */
             std::string toString() const;

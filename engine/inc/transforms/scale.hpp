@@ -21,16 +21,16 @@ namespace transforms {
             Scale(const Scale& scale);
 
             /* Construtor através de um ficheiro XML de escala */
-            Scale(tinyxml2::XMLElement * model);
+            Scale(tinyxml2::XMLElement * transform);
 
             /* Leitura de uma escala através de um ficheiro XML */
-            const float& read(tinyxml2::XMLElement * model);
+            void read(tinyxml2::XMLElement * transform);
 
             /* Aplicação da escala ao cenário */
             const void apply() const;
 
             /* Operação de clonagem de uma escala */
-            Transform clone() const;
+            Transform * clone() const;
 
             /* Transformação de uma escala em formato string */
             std::string toString() const;
