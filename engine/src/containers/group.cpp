@@ -257,7 +257,7 @@ namespace containers
         }
 
         /* Avalia o tamanho da lista de modelos */
-        bool result = this->models.size() == group.models.size();
+        result = this->models.size() == group.models.size();
 
         /* Verifica a existência do elemento no outro grupo */
         for (drawables::Primitive elem: this->models) {
@@ -275,7 +275,7 @@ namespace containers
         }
 
         /* Avalia o tamanho da lista de grupos */
-        bool result = this->groups.size() == group.groups.size();
+        result = this->groups.size() == group.groups.size();
 
         /* Verifica a existência do elemento no outro grupo */
         for (Group elem: this->groups) {
