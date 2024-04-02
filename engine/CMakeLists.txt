@@ -18,6 +18,10 @@ set(ENGINE_SRC_FILES)
 file(GLOB GENERATOR_DRAWABLE_SRC "src/drawables/*.cpp")
 list(APPEND ENGINE_SRC_FILES ${GENERATOR_DRAWABLE_SRC})
 
+# Lista de módulos necessários para a transformação do desenho do programa
+file(GLOB GENERATOR_TRANSFORM_SRC "src/transforms/*.cpp")
+list(APPEND ENGINE_SRC_FILES ${GENERATOR_TRANSFORM_SRC})
+
 # Lista de módulos necessários para a projeção do desenho do programa
 file(GLOB GENERATOR_PROJECTION_SRC "src/projection/*.cpp")
 list(APPEND ENGINE_SRC_FILES ${GENERATOR_PROJECTION_SRC})

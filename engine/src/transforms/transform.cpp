@@ -3,6 +3,7 @@
 
 /* Inclusão de módulos necessários à funcionalidade */
 #include <stdexcept>
+#include <typeinfo>
 
 /* Inicialização do namespace utilizado para a definição */
 namespace transforms
@@ -60,6 +61,16 @@ namespace transforms
         this->x = x;
         this->y = y;
         this->z = z;
+    }
+
+    /* Define o operador de comparação de igualdade */
+    bool Transform::operator==(const Transform * transform) const {
+        return ((typeid(*this) == typeid(*transform)) && (this->x == transform->x) && (this->y == transform->y) && (this->z == transform->z));
+    }
+
+    /* Define o operador de comparação de desigualdade */
+    bool Transform::operator!=(const Transform * transform) const {
+        return ((typeid(*this) != typeid(*transform)) || (this->x != transform->x) || (this->y != transform->y) || (this->z != transform->z));
     }
 
     /* Transformação de uma transformação em formato string */

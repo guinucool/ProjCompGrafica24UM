@@ -52,6 +52,12 @@ namespace transforms {
             /* Aplicação da transformação ao cenário */
             virtual const void apply() const = 0;
 
+            /* Define o operador de comparação de igualdade */
+            bool operator==(const Transform * transform) const;
+
+            /* Define o operador de comparação de desigualdade */
+            bool operator!=(const Transform * transform) const;
+
             /* Operação de clonagem de uma transformação*/
             virtual Transform * clone() const = 0;
 

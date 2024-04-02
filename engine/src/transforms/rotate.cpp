@@ -64,6 +64,26 @@ namespace transforms {
         glRotatef(this->angle, this->getX(), this->getY(), this->getZ());
     }
 
+    /* Define o operador de comparação de igualdade */
+    bool Rotate::operator==(const Transform * transform) const {
+
+        /* Transforma a transformação em rotação */
+        Rotate * rotate = (Rotate *) transform;
+
+        /* Verificação de igualdade */
+        return ((Transform::operator==(transform)) && (rotate->angle == this->angle));
+    }
+
+    /* Define o operador de comparação de desigualdade */
+    bool Rotate::operator!=(const Transform * transform) const {
+
+        /* Transforma a transformação em rotação */
+        Rotate * rotate = (Rotate *) transform;
+
+        /* Verificação de igualdade */
+        return ((Transform::operator==(transform)) || (rotate->angle != this->angle));
+    }
+
     /* Operação de clonagem de uma rotação */
     Transform * Rotate::clone() const {
         return new Rotate((*this));

@@ -1,5 +1,5 @@
-#ifndef SCALE_HPP
-#define SCALE_HPP
+#ifndef ROTATE_HPP
+#define ROTATE_HPP
 
 #include "transform.hpp"
 
@@ -41,6 +41,12 @@ namespace transforms {
 
             /* Aplicação da rotação ao cenário */
             const void apply() const;
+
+            /* Define o operador de comparação de igualdade */
+            bool operator==(const Transform * transform) const;
+
+            /* Define o operador de comparação de desigualdade */
+            bool operator!=(const Transform * transform) const;
 
             /* Operação de clonagem de uma rotação */
             Transform * clone() const;
