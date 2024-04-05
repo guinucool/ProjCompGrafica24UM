@@ -89,3 +89,64 @@ formato exemplar:
 </world>
 \end{verbatim}
 \end{tcolorbox}
+
+\subsection{Sub-Grupos}
+Para além destas transformações, o motor gráfico deve,
+agora, suportar, também, a existência de sub-grupos.
+\newline
+\break
+\noindent
+Estes grupos, que em termos de propriedades nada diferem
+de um grupo normal, devem estar contidos dentro
+de outro grupo, do qual devem herdar as transformações
+definidas.
+\newline
+\break
+\noindent
+Assim sendo, um sub-grupo deverá ser definido exatamente
+da mesma forma que um grupo, estando, porém, contido
+noutro grupo, como é possível observar na segunite
+configuração:
+\newline
+
+\begin{tcolorbox}[
+    colback=blue!10!white,
+    colframe=black!50!black,
+    after upper={\hfill\textbf{xml}}
+]
+\begin{verbatim}
+<world>
+    <window width="512" height="512" />
+    <camera>
+        <position x="10" y="10" z="10" />
+        <lookAt x="0" y="0" z="0" />
+        <up x="0" y="1" z="0" />
+        <projection fov="60" near="1" far="1000" />
+    </camera>
+    <group>
+        <transform>
+            <translate x="4" y="0" z="0" />
+        </transform>
+        <models>
+            <model file="cone.3d" />
+        </models>
+        <group>
+            <transform>
+                <translate x="4" y="0" z="0"/>
+            </transform>
+            <models>
+                <model file="sphere.3d" />
+            </models>
+            <group>
+                <transform>
+                    <translate x="0" y="4" z="0"/>
+                </transform>
+                <models>
+                    <model file="cone.3d" />
+                </models>
+            </group>
+        </group>
+    </group>
+</world>
+\end{verbatim}
+\end{tcolorbox}
