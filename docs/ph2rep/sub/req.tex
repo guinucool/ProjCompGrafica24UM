@@ -1,0 +1,91 @@
+Definidos os objetivos para esta fase da implementação,
+especificaram-se requisitos, garantias e funcionalidades
+que a arquitetura deverá respeitar.
+\newline
+\break
+\noindent
+Em constrate com a fase inicial desta solução, para
+garantir a implementação pretendida apenas será
+necessário atualizar o motor gráfico, que agora deverá
+conseguir identificar transformações e sub-grupos.
+
+\subsection{Transformações}
+
+O motor gŕafico terá, portanto, a necessidade de
+conseguir identificar e armazenar todos os tipos
+de transformações existentes.
+\newline
+\break
+\noindent
+Existem três tipos de transformações:
+\textbf{translações, rotações e escalas} e cada uma delas
+apresenta um conjunto de propriedades que permitem
+definir como a primitiva será afeta por elas.
+\newline
+
+\begin{tcolorbox}[
+    colback=blue!10!white,
+    colframe=black!50!black,
+]
+\begin{verbatim}
+Translação:
+    x, y, z -> translação sobre os eixos x, y, z
+
+Rotação:
+    angle -> ângulo de rotação
+    x, y, z -> eixo de rotação definido
+
+Scale:
+    x, y, z -> escala sobre os eixos x, y, z
+\end{verbatim}
+\end{tcolorbox}
+
+\vspace{12pt}
+\noindent
+Estas transformações devem, então, ser definidas numa
+configuração \textbf{XML} envolvidas sob uma etiqueta
+\textbf{Transform}, que inicia um grupo de
+transformações.
+\newline
+\break
+\noindent
+Dentro de um grupo não é permitido, também,
+existir repetições de um mesmo tipo de transformação,
+ou seja, se um grupo já possuí uma translação, uma outra
+translação apenas pode ser definida noutro grupo ou
+sub-grupo.
+\newline
+\break
+\noindent
+A configuração assume, portanto, o seguinte
+formato exemplar:
+\newline
+
+\begin{tcolorbox}[
+    colback=blue!10!white,
+    colframe=black!50!black,
+    after upper={\hfill\textbf{xml}}
+]
+\begin{verbatim}
+<world>
+    <window width="512" height="512" />
+    <camera>
+        <position x="10" y="10" z="10" />
+        <lookAt x="0" y="0" z="0" />
+        <up x="0" y="1" z="0" />
+        <projection fov="60" near="1" far="1000" />
+    </camera>
+    <group>
+        <transform>
+            <translate x="4" y="0" z="0" />
+            <rotate angle="30" x="0" y="1" z="0" />
+            <scale x="2" y="0.3" z="1" />
+        </transform>
+        <models>
+            <model file="cone.3d" />
+            <model file="plane.3d" />
+        </models>
+    </group>
+</world>
+\end{verbatim}
+\end{tcolorbox}
