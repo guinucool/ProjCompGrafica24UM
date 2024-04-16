@@ -18,6 +18,11 @@ namespace utils
         return row >= this->rows || col >= this->cols;
     }
 
+    /* Verificar se a matriz é quadrada */
+    bool Matrix::isSquare() const {
+        return this->rows == this->cols;
+    }
+
     /* Soma de matrizes */
     Matrix Matrix::sum(const Matrix& other) const {
 
@@ -194,7 +199,7 @@ namespace utils
             throw std::out_of_range("indices out of range");
 
         /* Devolve o elemento na posição pedida */
-        return this->data[row * cols + col];
+        return this->data[row * this->cols + col];
     }
 
     /* Devolução da referência de um elemento de uma matriz numa certa posição sem possibilidade de alteração */
@@ -205,7 +210,7 @@ namespace utils
             throw std::out_of_range("indices out of range");
 
         /* Devolve o elemento na posição pedida */
-        return this->data[row * cols + col];
+        return this->data[row * this->cols + col];
     }
 
     /* Devolução do número de linhas de uma matriz */
@@ -216,6 +221,129 @@ namespace utils
     /* Devolução do número de colunas de uma matriz */
     size_t Matrix::getCols() const {
         return this->cols;
+    }
+
+    /* Corte de uma linha de uma matriz */
+    Matrix Matrix::sliceRow(size_t row) const {
+
+        /* Verificação da existência da linha */
+        if (row >= this->rows)
+            throw std::out_of_range("slice row out of bounds");
+
+        /* Criação da matriz resultado */
+        Matrix sliced(this->rows - 1, this->cols, 0);
+
+        /* Colocação do corte da matriz original na matriz cortada */
+        for (size_t rowIndex = 0; rowIndex < this->rows - 1; rowIndex++) {
+
+            /* Indíce de linha da matriz original */
+            size_t rowIndexOriginal = rowIndex;
+
+            /* Caso a linha que se pretende cortar tenha sido atingida */
+            if (rowIndex >= row)
+                rowIndexOriginal++;
+
+            /* Percorre as colunas para copiar os valores */
+            for (size_t columnIndex = 0; columnIndex < this->cols; columnIndex++)
+                sliced.at(rowIndex, columnIndex) = this->at(rowIndexOriginal, columnIndex);
+        }
+        
+        /* Devolução da matriz cortada criada */
+        return sliced;
+    }
+
+    /* Corte de uma coluna de uma matriz */
+    Matrix Matrix::sliceColumn(size_t col) const {
+
+        /* Verificação da existência da coluna */
+        if (col >= this->cols)
+            throw std::out_of_range("slice column out of bounds");
+
+        /* Criação da matriz resultado */
+        Matrix sliced(this->rows, this->cols - 1, 0);
+
+        /* Colocação do corte da matriz original na matriz cortada */
+        for (size_t rowIndex = 0; rowIndex < this->rows; rowIndex++) {
+
+            /* Percorre as colunas para copiar os valores */
+            for (size_t columnIndex = 0; columnIndex < this->cols - 1; columnIndex++) {
+
+                /* Indíce de coluna da matriz original */
+                size_t columnIndexOriginal = columnIndex;
+
+                /* Caso a coluna que se pretende cortar tenha sido atingida */
+                if (columnIndex >= col)
+                    columnIndexOriginal++;
+
+                sliced.at(rowIndex, columnIndex) = this->at(rowIndex, columnIndexOriginal);
+            }
+        }
+        
+        /* Devolução da matriz cortada criada */
+        return sliced;
+    }
+
+    /* Corte de uma matriz */
+    Matrix Matrix::slice(size_t row, size_t col) const {
+
+        /* Corte da linha na matriz */
+        Matrix slicedRow = this->sliceRow(row);
+
+        /* Corte da linha na matriz */
+        Matrix slicedColumn = slicedRow.sliceColumn(col);
+
+        /* Devolução da matriz cortada final */
+        return slicedColumn;
+    }
+
+    /* Cálculo do determinante de uma matriz */
+    float Matrix::determinant() const {
+
+        /* Verifica se a matriz da qual se pretende calcular o determinante é quadrada */
+        if (this->isSquare())
+            throw std::runtime_error("given matrix does not have a determinant");
+
+        /* Variável que irá armazenar o determinante */
+        float determinant = 0;
+
+        /* Caso seja pedido o determinante de uma matriz vazia */
+        if (this->rows == 0)
+            determinant = 1;
+
+        /* Multiplicador de determinante */
+        int multiplier = 1;
+
+        /* Percorre todas as fatias e elementos da matriz */
+        for (size_t row = 0; row < this->rows; row++) {
+            
+            /* Percorre as várias colunas de uma linha */
+            for (size_t col = 0; col < this->cols; col++) {
+                
+                /* Cálculo do determinante para a fatia atual */
+                determinant += multiplier * this->at(row, col) * this->slice(row, col).determinant();
+
+                /* Mudança do multiplicador para o próximo elemento */
+                multiplier = -multiplier;
+            }   
+        }
+        
+        /* Devolução do determinante calculado */
+        return determinant;
+    }
+
+    /* Cálculo da matriz transposta */
+    Matrix Matrix::transpose() const {
+
+    }
+
+    /* Cálculo da matriz adjacente */
+    Matrix Matrix::adjacent() const {
+
+    }
+
+    /* Cálculo da inversa de uma matriz */
+    Matrix Matrix::inverse() const {
+
     }
 
     /* Operação de negação da matriz */

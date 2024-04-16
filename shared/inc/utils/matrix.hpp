@@ -24,6 +24,9 @@ namespace utils
             /* Verificar se a posição introduzida está dentro dos limites da matriz */
             bool outOfBounds(size_t row, size_t col) const;
 
+            /* Verificar se a matriz é quadrada */
+            bool isSquare() const;
+
             /* Soma de matrizes */
             Matrix sum(const Matrix& other) const;
 
@@ -76,6 +79,27 @@ namespace utils
 
             /* Devolução do número de colunas de uma matriz */
             size_t getCols() const;
+
+            /* Corte de uma linha de uma matriz */
+            Matrix sliceRow(size_t row) const;
+
+            /* Corte de uma coluna de uma matriz */
+            Matrix sliceColumn(size_t col) const;
+
+            /* Corte de uma matriz */
+            Matrix slice(size_t row, size_t col) const;
+
+            /* Cálculo do determinante de uma matriz */
+            float determinant() const;
+
+            /* Cálculo da matriz transposta */
+            Matrix transpose() const;
+
+            /* Cálculo da matriz adjacente */
+            Matrix adjacent() const;
+
+            /* Cálculo da inversa de uma matriz */
+            Matrix inverse() const;
 
             /* Operação de negação da matriz */
             Matrix operator-() const;
