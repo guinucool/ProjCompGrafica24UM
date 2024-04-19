@@ -72,6 +72,21 @@ namespace utils
         return result;
     }
 
+    /* Operação de multiplicação de uma matriz a um escalar */
+    Matrix Matrix::mul(float scalar) const {
+
+        /* Inicializa a matriz resultado toda a zero */
+        Matrix result(this->rows, this->cols, 0.0f);
+
+        /* Multiplica todos os elementos da matriz e origina um resultado */
+        for (size_t i = 0; i < this->rows; i++)
+            for (size_t j = 0; j < this->cols; j++)
+                result.at(i, j) = this->at(i, j) * scalar;
+
+        /* Devolução do resultado obtido */
+        return result;
+    }
+
     /* Devolução da referência de um elemento de uma matriz num certo índice */
     float& Matrix::at(int index) {
 
@@ -296,6 +311,26 @@ namespace utils
         return slicedColumn;
     }
 
+    /* Cálculo de um complemente algébrico de uma posição da matriz */
+    float Matrix::cofactor(size_t row, size_t col) const {
+
+        /* Verifica se a matriz da qual se pretende calcular o complemento algébrico é quadrada */
+        if (this->isSquare())
+            throw std::runtime_error("given matrix does not have cofactors");
+
+        /* Multiplicador do complemento */
+        int multiplier = -1;
+
+        /* Cálculo do multiplicador do complemento pretendido */
+        multiplier = (int) pow(multiplier, row + col);
+
+        /* Cálculo do complemento algébrico */
+        float cofactor = multiplier * this->slice(row, col).determinant();
+
+        /* Devolução do complemento calculado */
+        return cofactor;
+    }
+
     /* Cálculo do determinante de uma matriz */
     float Matrix::determinant() const {
 
@@ -310,40 +345,80 @@ namespace utils
         if (this->rows == 0)
             determinant = 1;
 
-        /* Multiplicador de determinante */
-        int multiplier = 1;
-
-        /* Percorre todas as fatias e elementos da matriz */
-        for (size_t row = 0; row < this->rows; row++) {
-            
-            /* Percorre as várias colunas de uma linha */
-            for (size_t col = 0; col < this->cols; col++) {
-                
-                /* Cálculo do determinante para a fatia atual */
-                determinant += multiplier * this->at(row, col) * this->slice(row, col).determinant();
-
-                /* Mudança do multiplicador para o próximo elemento */
-                multiplier = -multiplier;
-            }   
-        }
+        /* Cálculo do determinante para a fatia atual */
+        for (size_t row = 0; row < this->rows; row++)
+            for (size_t col = 0; col < this->cols; col++)
+                determinant += this->at(row, col) * this->cofactor(row, col);
         
         /* Devolução do determinante calculado */
         return determinant;
     }
 
+    /* Cálculo da matriz de complementos algébricos */
+    Matrix Matrix::cofactors() const {
+
+        /* Criação de uma nova matriz que corresponderá à matriz de complementos algébricos */
+        Matrix cofactors(this->rows, this->cols, 0.0f);
+
+        /* Criação dos complementos algébricos para os vários elementos */
+        for (size_t row = 0; row < this->rows; row++)
+            for (size_t col = 0; col < this->cols; col++)
+                cofactors.at(row, col) = this->cofactor(row, col);
+
+        /* Devolução da matriz de complementos algébricos criada */
+        return cofactors;
+    }
+
     /* Cálculo da matriz transposta */
     Matrix Matrix::transpose() const {
 
+        /* Criação de uma nova matriz que corresponderá à transposta */
+        Matrix transpose(this->rows, this->cols, 0.0f);
+
+        /* Transposição e colocação dos elementos na nova matriz */
+        for (size_t row = 0; row < this->rows; row++)
+            for (size_t col = 0; col < this->cols; col++)
+                transpose.at(col, row) = this->at(row, col);
+        
+        /* Devolução da matriz transposta criada */
+        return transpose;
     }
 
     /* Cálculo da matriz adjacente */
     Matrix Matrix::adjacent() const {
 
+        /* Criação da matriz de cofatores da matriz original */
+        Matrix cofactors = this->cofactors();
+
+        /* Criação da matriz adjacente da matriz original */
+        Matrix adjacent = cofactors.transpose();
+
+        /* Devolução da matriz adjacente criada */
+        return adjacent;
     }
 
     /* Cálculo da inversa de uma matriz */
     Matrix Matrix::inverse() const {
 
+        /* Verifica se a matriz da qual se pretende calcular a inversa é quadrada */
+        if (this->isSquare())
+            throw std::runtime_error("given matrix does not have a inverse");
+
+        /* Cálcula o determinante da matriz */
+        float determinant = this->determinant();
+
+        /* Verifica se o determinante da matriz da qual se pretende calcular a inversa é diferente de 0 */
+        if (determinant == 0)
+            throw std::runtime_error("given matrix does not have a inverse");
+
+        /* Cálculo da inversa do determinante */
+        float inv = 1 / determinant;
+
+        /* Cálculo da matriz inversa */
+        Matrix inverse = this->adjacent() * inv;
+
+        /* Devolução da inversa calculada */
+        return inverse;
     }
 
     /* Operação de negação da matriz */
@@ -373,6 +448,11 @@ namespace utils
     /* Operação de multiplicação de matrizes */
     Matrix Matrix::operator*(const Matrix& other) const {
         return this->mul(other);
+    }
+
+    /* Operação de multiplicação de matrizes a escalares */
+    Matrix Matrix::operator*(float scalar) const {
+        return this->mul(scalar);
     }
 
     /* Acesso a um índice da matriz */

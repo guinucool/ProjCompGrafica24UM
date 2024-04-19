@@ -33,6 +33,9 @@ namespace utils
             /* Operação de multiplicação de matrizes */
             Matrix mul(const Matrix& other) const;
 
+            /* Operação de multiplicação de uma matriz a um escalar */
+            Matrix mul(float scalar) const;
+
             /* Devolução da referência de um elemento de uma matriz num certo índice */
             float& at(int index);
 
@@ -89,8 +92,14 @@ namespace utils
             /* Corte de uma matriz */
             Matrix slice(size_t row, size_t col) const;
 
+            /* Cálculo de um complemente algébrico de uma posição da matriz */
+            float cofactor(size_t row, size_t col) const;
+
             /* Cálculo do determinante de uma matriz */
             float determinant() const;
+
+            /* Cálculo da matriz de complementos algébricos */
+            Matrix cofactors() const;
 
             /* Cálculo da matriz transposta */
             Matrix transpose() const;
@@ -112,6 +121,9 @@ namespace utils
 
             /* Operação de multiplicação de matrizes */
             Matrix operator*(const Matrix& other) const;
+
+            /* Operação de multiplicação de matrizes a escalares */
+            Matrix operator*(float scalar) const;
 
             /* Acesso a um índice da matriz */
             float& operator[](int index);
