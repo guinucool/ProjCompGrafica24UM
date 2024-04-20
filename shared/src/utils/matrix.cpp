@@ -3,7 +3,6 @@
 
 /* Inclusão de librarias para funcionalidade do programa */
 #include <stdexcept>
-#include <iostream>
 #include <cmath>
 
 /* Declaração do namespace usado para definir esta classe */
