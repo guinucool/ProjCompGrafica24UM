@@ -1,5 +1,5 @@
-#ifndef TRANSLATE_HPP
-#define TRANSLATE_HPP
+#ifndef STATIC_TRANSLATE_HPP
+#define STATIC_TRANSLATE_HPP
 
 #include "transform.hpp"
 

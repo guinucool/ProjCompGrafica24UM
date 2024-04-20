@@ -1,5 +1,5 @@
-#ifndef SCALE_HPP
-#define SCALE_HPP
+#ifndef STATIC_SCALE_HPP
+#define STATIC_SCALE_HPP
 
 #include "transform.hpp"
 

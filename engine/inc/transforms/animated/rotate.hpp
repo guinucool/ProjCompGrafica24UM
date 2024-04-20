@@ -3,8 +3,8 @@
 
 #include "transform.hpp"
 
-/* Inicialização do namespace usado para definir a classe de rotação */
-namespace transforms::constant {
+/* Inicialização do namespace usado para definir a classe de rotação animada */
+namespace transforms::animated {
 
     /* Definição da classe de rotação */
     class Rotate : public Transform {
@@ -12,12 +12,18 @@ namespace transforms::constant {
         private:
 
             /* Definição das propriedades de uma rotação */
-            float angle;
+            float x, y, z;
 
         protected:
 
-            /* Devolução do valor do ângulo aplicado sobre a rotação, alterável */
-            float& Angle();
+            /* Devolução do valor de rotação aplicada sobre o eixo x, alterável */
+            float& X();
+
+            /* Devolução do valor de rotação aplicada sobre o eixo y, alterável */
+            float& Y();
+
+            /* Devolução do valor de rotação aplicada sobre o eixo z, alterável */
+            float& Z();
 
         public:
 
@@ -25,16 +31,22 @@ namespace transforms::constant {
             Rotate();
 
             /* Construtor parametrizado de rotação */
-            Rotate(float angle, float x, float y, float z);
+            Rotate(float time, float x, float y, float z);
 
-            /* Construtor de cópia de escala */
+            /* Construtor de cópia de rotação */
             Rotate(const Rotate& rotate);
 
             /* Construtor através de um ficheiro XML de rotação */
             Rotate(tinyxml2::XMLElement * transform);
 
-            /* Devolução do ângulo da rotação usado */
-            const float& getAngle() const;
+            /* Devolução do valor da rotação aplicada sobre o eixo x */
+            const float& getX() const;
+
+            /* Devolução do valor da rotação aplicada sobre o eixo y */
+            const float& getY() const;
+
+            /* Devolução do valor da rotação aplicada sobre o eixo z */
+            const float& getZ() const;
 
             /* Leitura de uma rotação através de um ficheiro XML */
             void read(tinyxml2::XMLElement * transform);
