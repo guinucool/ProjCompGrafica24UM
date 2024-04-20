@@ -1,5 +1,5 @@
 /* Inclusão do cabeçalho de definição da estrutura de rotação */
-#include "../../inc/transforms/rotate.hpp"
+#include "../../../inc/transforms/constant/rotate.hpp"
 
 /* Inclusão do OpenGL e do GLUT */
 #ifdef __APPLE__
@@ -12,8 +12,8 @@
 #include <stdexcept>
 
 /* Inicialização do namespace utilizado para a definição */
-namespace transforms {
-
+namespace transforms::constant
+{
     /* Construtor padrão vazio de rotação */
     Rotate::Rotate() : Transform() {}
 
@@ -60,12 +60,12 @@ namespace transforms {
     }
 
     /* Aplicação da rotação ao cenário */
-    const void Rotate::apply() const {
+    void Rotate::apply() const {
         glRotatef(this->angle, this->getX(), this->getY(), this->getZ());
     }
 
     /* Define o operador de comparação de igualdade */
-    bool Rotate::operator==(const Transform * transform) const {
+    bool Rotate::operator==(const transforms::Transform * transform) const {
 
         /* Transforma a transformação em rotação */
         Rotate * rotate = (Rotate *) transform;
@@ -75,7 +75,7 @@ namespace transforms {
     }
 
     /* Define o operador de comparação de desigualdade */
-    bool Rotate::operator!=(const Transform * transform) const {
+    bool Rotate::operator!=(const transforms::Transform * transform) const {
 
         /* Transforma a transformação em rotação */
         Rotate * rotate = (Rotate *) transform;
@@ -85,7 +85,7 @@ namespace transforms {
     }
 
     /* Operação de clonagem de uma rotação */
-    Transform * Rotate::clone() const {
+    transforms::Transform * Rotate::clone() const {
         return new Rotate((*this));
     }
 

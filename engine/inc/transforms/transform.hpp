@@ -10,59 +10,28 @@ namespace transforms {
     /* Definição da interface de transformação */
     class Transform {
 
-        private:
-
-            /* Definição das propriedades de uma transformação */
-            float x, y, z;
-
-        protected:
-
-            /* Devolução do valor de transformação aplicada sobre o eixo x, alterável */
-            float& X();
-
-            /* Devolução do valor de transformação aplicada sobre o eixo y, alterável */
-            float& Y();
-
-            /* Devolução do valor de transformação aplicada sobre o eixo z, alterável */
-            float& Z();
-
         public:
 
             /* Construtor padrão vazio de transformação */
             Transform();
 
-            /* Construtor parametrizado de transformação */
-            Transform(float x, float y, float z);
-
-            /* Construtor de cópia de transformação */
-            Transform(const Transform& transform);
-
-            /* Devolução do valor da transformação aplicada sobre o eixo x */
-            const float& getX() const;
-
-            /* Devolução do valor da transformação aplicada sobre o eixo y */
-            const float& getY() const;
-
-            /* Devolução do valor da transformação aplicada sobre o eixo z */
-            const float& getZ() const;
-
             /* Leitura de uma transformação através de um ficheiro XML */
-            void read(tinyxml2::XMLElement * transform);
+            virtual void read(tinyxml2::XMLElement * transform) = 0;
 
             /* Aplicação da transformação ao cenário */
-            virtual const void apply() const = 0;
+            virtual void apply() const = 0;
 
             /* Define o operador de comparação de igualdade */
-            bool operator==(const Transform * transform) const;
+            virtual bool operator==(const Transform * transform) const = 0;
 
             /* Define o operador de comparação de desigualdade */
-            bool operator!=(const Transform * transform) const;
+            virtual bool operator!=(const Transform * transform) const = 0;
 
             /* Operação de clonagem de uma transformação*/
             virtual Transform * clone() const = 0;
 
             /* Transformação de uma transformação em formato string */
-            std::string toString() const;
+            virtual std::string toString() const = 0;
     };
 }
 

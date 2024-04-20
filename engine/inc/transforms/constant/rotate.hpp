@@ -4,7 +4,7 @@
 #include "transform.hpp"
 
 /* Inicialização do namespace usado para definir a classe de rotação */
-namespace transforms {
+namespace transforms::constant {
 
     /* Definição da classe de rotação */
     class Rotate : public Transform {
@@ -40,16 +40,16 @@ namespace transforms {
             void read(tinyxml2::XMLElement * transform);
 
             /* Aplicação da rotação ao cenário */
-            const void apply() const;
+            void apply() const;
 
             /* Define o operador de comparação de igualdade */
-            bool operator==(const Transform * transform) const;
+            bool operator==(const transforms::Transform * transform) const;
 
             /* Define o operador de comparação de desigualdade */
-            bool operator!=(const Transform * transform) const;
+            bool operator!=(const transforms::Transform * transform) const;
 
             /* Operação de clonagem de uma rotação */
-            Transform * clone() const;
+            transforms::Transform * clone() const;
 
             /* Transformação de uma rotação em formato string */
             std::string toString() const;

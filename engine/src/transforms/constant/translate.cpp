@@ -1,5 +1,5 @@
 /* Inclusão do cabeçalho de definição da estrutura de translação */
-#include "../../inc/transforms/translate.hpp"
+#include "../../../inc/transforms/constant/translate.hpp"
 
 /* Inclusão do OpenGL e do GLUT */
 #ifdef __APPLE__
@@ -12,8 +12,8 @@
 #include <stdexcept>
 
 /* Inicialização do namespace utilizado para a definição */
-namespace transforms {
-
+namespace transforms::constant
+{
     /* Construtor padrão vazio de translação */
     Translate::Translate() : Transform() {}
 
@@ -40,12 +40,12 @@ namespace transforms {
     }
 
     /* Aplicação da translação ao cenário */
-    const void Translate::apply() const {
+    void Translate::apply() const {
         glTranslatef(this->getX(), this->getY(), this->getZ());
     }
 
     /* Operação de clonagem de uma translação */
-    Transform * Translate::clone() const {
+    transforms::Transform * Translate::clone() const {
         return new Translate((*this));
     }
 

@@ -4,7 +4,7 @@
 #include "transform.hpp"
 
 /* Inicialização do namespace usado para definir a classe de escala */
-namespace transforms {
+namespace transforms::constant {
 
     /* Definição da classe de escala */
     class Scale : public Transform {
@@ -27,10 +27,10 @@ namespace transforms {
             void read(tinyxml2::XMLElement * transform);
 
             /* Aplicação da escala ao cenário */
-            const void apply() const;
+            void apply() const;
 
             /* Operação de clonagem de uma escala */
-            Transform * clone() const;
+            transforms::Transform * clone() const;
 
             /* Transformação de uma escala em formato string */
             std::string toString() const;

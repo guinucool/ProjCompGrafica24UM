@@ -1,5 +1,5 @@
 /* Inclusão do cabeçalho de definição da estrutura de escala */
-#include "../../inc/transforms/scale.hpp"
+#include "../../../inc/transforms/constant/scale.hpp"
 
 /* Inclusão do OpenGL e do GLUT */
 #ifdef __APPLE__
@@ -12,8 +12,8 @@
 #include <stdexcept>
 
 /* Inicialização do namespace utilizado para a definição */
-namespace transforms {
-
+namespace transforms::constant
+{
     /* Construtor padrão vazio de escala */
     Scale::Scale() : Transform() {}
 
@@ -40,12 +40,12 @@ namespace transforms {
     }
 
     /* Aplicação da escala ao cenário */
-    const void Scale::apply() const {
+    void Scale::apply() const {
         glScalef(this->getX(), this->getY(), this->getZ());
     }
 
     /* Operação de clonagem de uma escala */
-    Transform * Scale::clone() const {
+    transforms::Transform * Scale::clone() const {
         return new Scale((*this));
     }
 
