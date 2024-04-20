@@ -295,6 +295,11 @@ namespace utils
         return this->cols;
     }
 
+    /* Devolução do comprimento de uma matriz */
+    size_t Matrix::getLength() const {
+        return (this->rows * this->cols);
+    }
+
     /* Corte de uma linha de uma matriz */
     Matrix Matrix::sliceRow(size_t row) const {
 
@@ -368,6 +373,23 @@ namespace utils
         return slicedColumn;
     }
 
+    /* Cálculo do comprimento numérico de uma matriz */
+    float Matrix::length() const {
+
+        /* Acumulador de somas quadradas dos elementos da matriz */
+        float sum = 0;
+
+        /* Percorre os elementos todos e somas o seu quadrado */
+        for (size_t i = 0; i < this->getLength(); i++)
+            sum += pow((*this)[i], 2);
+
+        /* Cálculo do comprimento numérico da matriz */
+        float len = sqrt(sum);
+
+        /* Devolução do comprimento calculado */
+        return len;
+    }
+
     /* Cálculo de um complemente algébrico de uma posição da matriz */
     float Matrix::cofactor(size_t row, size_t col) const {
 
@@ -409,6 +431,19 @@ namespace utils
         
         /* Devolução do determinante calculado */
         return determinant;
+    }
+
+    /* Cálculo de uma matriz normalizada */
+    Matrix Matrix::normalize() const {
+
+        /* Normalizador da matriz */
+        float normalizer = this->length();
+
+        /* Criação de uma matriz para armazenar o resultado */
+        Matrix normalized = (*this) * (1 / normalizer);
+
+        /* Devolução da matriz normalizada */
+        return normalized;        
     }
 
     /* Cálculo da matriz de complementos algébricos */

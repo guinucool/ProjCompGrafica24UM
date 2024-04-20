@@ -89,6 +89,9 @@ namespace utils
             /* Devolução do número de colunas de uma matriz */
             size_t getCols() const;
 
+            /* Devolução do comprimento de uma matriz */
+            size_t getLength() const;
+
             /* Corte de uma linha de uma matriz */
             Matrix sliceRow(size_t row) const;
 
@@ -98,11 +101,17 @@ namespace utils
             /* Corte de uma matriz */
             Matrix slice(size_t row, size_t col) const;
 
+            /* Cálculo do comprimento numérico de uma matriz */
+            float length() const;
+
             /* Cálculo de um complemente algébrico de uma posição da matriz */
             float cofactor(size_t row, size_t col) const;
 
             /* Cálculo do determinante de uma matriz */
             float determinant() const;
+
+            /* Cálculo de uma matriz normalizada */
+            Matrix normalize() const;
 
             /* Cálculo da matriz de complementos algébricos */
             Matrix cofactors() const;
