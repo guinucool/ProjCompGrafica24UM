@@ -64,7 +64,7 @@ namespace models
         primitives::Primitive slice = (*this);
 
         /* Criação da rotação */
-        utils::Matrix rotation = utils::Matrix::rotateY(angle);
+        utils::Matrix rotation = utils::Matrix::rotate(angle, 0, 1, 0);
 
         /* Multiplicação da fatia para completar a figura */
         for (int i = 0; i < (slices - 1); i++) {

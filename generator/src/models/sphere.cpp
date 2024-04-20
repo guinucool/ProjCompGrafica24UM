@@ -21,8 +21,8 @@ namespace models
         float beta = M_PI / (2 * stacks);
 
         /* Criação das matrizes de rotação */
-        utils::Matrix betaR = utils::Matrix::rotateX(beta);
-        utils::Matrix alphaR = utils::Matrix::rotateY(alpha);
+        utils::Matrix betaR = utils::Matrix::rotate(beta, 1, 0, 0);
+        utils::Matrix alphaR = utils::Matrix::rotate(alpha, 0, 1, 0);
 
         /* Criação dos pontos de começo */
         primitives::Point start(0, radius, 0);

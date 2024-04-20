@@ -29,7 +29,7 @@ namespace models
 
         /* Aplicação das transformações */
         upDo.transform(translate);
-        down.transform((utils::Matrix::rotateZ(M_PI)) * translate);
+        down.transform(utils::Matrix::rotate(M_PI, 0, 0, 1) * translate);
 
         /* Adição da face oposta */
         upDo.add(down);
@@ -39,8 +39,8 @@ namespace models
         primitives::Primitive foBa = upDo;
 
         /* Rotação dos lados para o local certo */
-        riLe.rotate(0, 0, M_PI / 2);
-        foBa.rotate(M_PI / 2, 0, 0);
+        riLe.rotate(M_PI / 2, 0, 0, 1);
+        foBa.rotate(M_PI / 2, 1, 0, 0);
         
 
         /* Adição das faces à caixa */
