@@ -44,6 +44,9 @@ namespace primitives{
             /* Devolução do terceiro ponto da face */
             const Point& getThird() const;
 
+            /* Normalização de todos os pontos de uma face */
+            void normalize();
+
             /* Transformação de uma face dada uma matriz */
             void transform(const utils::Matrix& transform);
 
@@ -53,8 +56,11 @@ namespace primitives{
             /* Translação de uma face dado um vetor polar */
             void translateP(float radius, float alpha, float beta);
 
-            /* Rotação de uma face dado o ângulo de rotação sobre cada eixo */
-            void rotate(float ax, float ay, float az);
+            /* Rotação de uma face dado um eixo e ângulo de rotação */
+            void rotate(float angle, float rx, float ry, float rz);
+
+            /* Escala de uma face dado um vetor de escala */
+            void scale(float sx, float sy, float sz);
 
             /* Rotação de uma face para ficar virada para o lado oposto */
             void turn();

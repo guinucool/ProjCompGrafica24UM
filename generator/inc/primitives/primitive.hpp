@@ -40,6 +40,9 @@ namespace primitives
             /* Devolução de uma cópia da lista de faces da primitiva */
             std::list<Face> getFaces() const;
 
+            /* Normalização de todos os pontos de uma primitiva */
+            void normalize();
+
             /* Transformação de uma primitiva dada uma matriz */
             void transform(const utils::Matrix& transform);
 
@@ -49,8 +52,11 @@ namespace primitives
             /* Translação de uma primitiva dado um vetor polar */
             void translateP(float radius, float alpha, float beta);
 
-            /* Rotação de uma primitiva dado o ângulo de rotação sobre cada eixo */
-            void rotate(float ax, float ay, float az);
+            /* Rotação de uma primitiva dado um eixo e ângulo de rotação */
+            void rotate(float angle, float rx, float ry, float rz);
+
+            /* Escala de uma primitiva dado um vetor de escala */
+            void scale(float sx, float sy, float sz);
 
             /* Rotação de todas as faces de uma primitiva para ficarem viradas para o lado oposto */
             void turn();

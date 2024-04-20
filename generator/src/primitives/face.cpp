@@ -76,6 +76,15 @@ namespace primitives
         return this->third;
     }
 
+    /* Normalização de todos os pontos de uma face */
+    void Face::normalize() {
+
+        /* Aplicação de uma normalização aos três pontos */
+        this->first.normalize();
+        this->second.normalize();
+        this->third.normalize();
+    }
+
     /* Transformação de uma face dada uma matriz */
     void Face::transform(const utils::Matrix& transform) {
 
@@ -106,15 +115,23 @@ namespace primitives
     }
 
     /* Rotação de uma face dado o ângulo de rotação sobre cada eixo */
-    void Face::rotate(float ax, float ay, float az) {
+    void Face::rotate(float angle, float rx, float ry, float rz) {
 
         /* Criação das matrizes de rotação */
-        utils::Matrix rotateX = utils::Matrix::rotateX(ax);
-        utils::Matrix rotateY = utils::Matrix::rotateY(ay);
-        utils::Matrix rotateZ = utils::Matrix::rotateZ(az);
+        utils::Matrix rotate = utils::Matrix::rotate(angle, rx, ry, rz);
 
         /* Aplicação da matriz */
-        this->transform(rotateX * rotateY * rotateZ);
+        this->transform(rotate);
+    }
+
+    /* Escala de uma face dado um vetor de escala */
+    void Face::scale(float sx, float sy, float sz) {
+
+        /* Criação da matriz de escala */
+        utils::Matrix scale = utils::Matrix::scale(sx, sy, sz);
+
+        /* Aplicação da matriz */
+        this->transform(scale);
     }
 
     /* Rotação de uma face para ficar virada para o lado oposto */

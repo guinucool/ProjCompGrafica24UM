@@ -39,6 +39,14 @@ namespace primitives
         return this->faces;
     }
 
+    /* Normalização de todos os pontos de uma primitiva */
+    void Primitive::normalize() {
+
+        /* Aplicação da normalização a todas as faces */
+        for (Face& elem: this->faces)
+            elem.normalize();
+    }
+
     /* Transformação de uma primitiva dada uma matriz */
     void Primitive::transform(const utils::Matrix& transform) {
 
@@ -68,15 +76,23 @@ namespace primitives
     }
 
     /* Rotação de uma primitiva dado o ângulo de rotação sobre cada eixo */
-    void Primitive::rotate(float ax, float ay, float az) {
+    void Primitive::rotate(float angle, float rx, float ry, float rz) {
 
         /* Criação das matrizes de rotação */
-        utils::Matrix rotateX = utils::Matrix::rotateX(ax);
-        utils::Matrix rotateY = utils::Matrix::rotateY(ay);
-        utils::Matrix rotateZ = utils::Matrix::rotateZ(az);
+        utils::Matrix rotate = utils::Matrix::rotate(angle, rx, ry, rz);
 
         /* Aplicação da matriz */
-        this->transform(rotateX * rotateY * rotateZ);
+        this->transform(rotate);
+    }
+
+    /* Escala de uma primitiva dado um vetor de escala */
+    void Primitive::scale(float sx, float sy, float sz) {
+
+        /* Criação da matriz de escala */
+        utils::Matrix scale = utils::Matrix::scale(sx, sy, sz);
+
+        /* Aplicação da matriz */
+        this->transform(scale);
     }
 
     /* Rotação de todas as faces de uma primitiva para ficarem viradas para o lado oposto */
