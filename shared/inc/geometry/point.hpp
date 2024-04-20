@@ -32,6 +32,12 @@ namespace geometry
             /* Devolução do valor da coordenada z do ponto */
             virtual const float& Z() const = 0;
 
+            /* Definição das coordenadas do ponto */
+            void setCoords(float x, float y, float z);
+
+            /* Definição das coordenadas polares do ponto */
+            void setPolarCoords(float radius, float alpha, float beta);
+
             /* Operação de comparação por igualdade de pontos */
             bool operator==(const Point& point) const;
 

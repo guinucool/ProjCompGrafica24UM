@@ -72,31 +72,20 @@ namespace primitives
         return this->coords[2];
     }
 
-    /* Definição do valor das coordenadas de um ponto */
-    void Point::setCoords(float x, float y, float z) {
-
-        /* Associação das coordendas à respetiva posição no vetor */
-        this->X() = x;
-        this->Y() = y;
-        this->Z() = z;
-    }
-
-    /* Definição do valor das coordenadas de um ponto */
-    void Point::setPolarCoords(float radius, float alpha, float beta) {
-
-        /* Verificação de validade do raio */
-        if (radius < 0)
-            std::invalid_argument("invalid radius given");
-
-        /* Associação das coordendas à respetiva posição no vetor */
-        this->X() = radius * cos(beta) * sin(alpha);
-        this->Z() = radius * cos(beta) * cos(alpha);
-        this->Y() = radius * sin(beta);
-    }
-
     /* Devolução da matriz das coordenadas do ponto */
     utils::Matrix Point::getCoords() const {
         return utils::Matrix(this->coords);
+    }
+
+    /* Normalização de um ponto para encaixar no espaço certo */
+    void Point::normalize() {
+
+        /* Obtenção do divisor para normalizar o ponto */
+        float normalizer = this->coords[3];
+
+        /* Divisão de todas as coordenadas pelo normalizador */
+        for (size_t i = 0; i < 4; i++)
+            this->coords[i] /= normalizer;
     }
 
     /* Transformação de um ponto dada uma matriz */
@@ -108,6 +97,9 @@ namespace primitives
 
         /* Criação das novas coordenadas do ponto */
         this->coords = transform * this->coords;
+
+        /* Normalização de um ponto após uma transformação */
+        this->normalize();
     }
 
     /* Translação de um ponto dado um vetor */
@@ -131,15 +123,23 @@ namespace primitives
     }
 
     /* Rotação de um ponto dado o ângulo de rotação sobre cada eixo */
-    void Point::rotate(float ax, float ay, float az) {
+    void Point::rotate(float angle, float rx, float ry, float rz) {
 
-        /* Criação das matrizes de rotação */
-        utils::Matrix rotateX = utils::Matrix::rotateX(ax);
-        utils::Matrix rotateY = utils::Matrix::rotateY(ay);
-        utils::Matrix rotateZ = utils::Matrix::rotateZ(az);
+        /* Criação da matriz de rotação */
+        utils::Matrix rotate = utils::Matrix::rotate(angle, rx, ry, rz);
 
         /* Aplicação da matriz */
-        this->transform(rotateX * rotateY * rotateZ);
+        this->transform(rotate);
+    }
+
+    /* Escala de um ponto dado um vetor de escala */
+    void Point::scale(float sx, float sy, float sz) {
+
+        /* Criação da matriz de escala */
+        utils::Matrix scale = utils::Matrix::scale(sx, sy, sz);
+
+        /* Aplicação da matriz */
+        this->transform(scale);
     }
 
     /* Escrita de um ponto em ficheiro */

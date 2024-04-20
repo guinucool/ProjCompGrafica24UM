@@ -51,12 +51,6 @@ namespace drawables
             /* Devolução do valor da coordenada z do ponto */
             const float& Z() const;
 
-            /* Definição das coordenadas do ponto */
-            void setCoords(float x, float y, float z);
-
-            /* Definição das coordenadas polares do ponto */
-            void setPolarCoords(float radius, float alpha, float beta);
-
             /* Leitura de um ponto através de um ficheiro */
             void read(std::ifstream& stream);
 

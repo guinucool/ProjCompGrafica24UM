@@ -116,6 +116,58 @@ Ou seja, por exemplo, um ficheiro que define uma face, seria definido da seguint
 (tudo em formato binário)
 ```
 
+## Gerador de figuras em Bezier Patches (Fase 3)
+
+Para além das primitivas pré-definidas, ainda se pretende que seja possível gerar figuras através de Bezier Patches.
+
+O objetivo destas figuras é representar superfícies curvas através de um conjunto de pontos e um nível de `Tesselation`, que fará o objeto mais curvo quanto maior for.
+
+Assim sendo, o gerador de figuras deverá, agora, aceitar como parâmetros um ficheiro contendo os tais pontos pretendidos para a definição da superfície, e um argumento que indique o nível de `Tesselation` que deverá ser usado para a figura. Como, por exemplo:
+
+``` 
+# Gerar uma figura baseada em patches de Bezier
+# com nível de Tesselation 16
+$ generator patch teapot.patch 16 teapot.3d
+```
+
+Os ficheiros que sustentam esta arquitetura de Bezier, deverão, portanto, ser definidos da seguinte forma:
+
+```
+2 <- Número de patches
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 # 16 pontos
+# indíces dos pontos patch #1
+3, 16, 17, 18, 7, 19, 20, 21, 11, 22, 23, 24, 15, 25, 26, 27
+# indíces dos pontos patch #2
+28 <- Número de pontos de controlo
+1.4, 0, 2.4 <- Ponto de controlo 0
+1.4, -0.784, 2.4 <- Ponto de controlo 1
+0.784, -1.4, 2.4 <- Ponto de controlo 2
+0, -1.4, 2.4
+1.3375, 0, 2.53125
+1.3375, -0.749, 2.53125
+0.749, -1.3375, 2.53125
+0, -1.3375, 2.53125
+1.4375, 0, 2.53125
+1.4375, -0.805, 2.53125
+0.805, -1.4375, 2.53125
+0, -1.4375, 2.53125
+1.5, 0, 2.4
+1.5, -0.84, 2.4
+0.84, -1.5, 2.4
+0, -1.5, 2.4
+-0.784, -1.4, 2.4
+-1.4, -0.784, 2.4
+-1.4, 0, 2.4
+-0.749, -1.3375, 2.53125
+-1.3375, -0.749, 2.53125
+-1.3375, 0, 2.53125
+-0.805, -1.4375, 2.53125
+-1.4375, -0.805, 2.53125
+-1.4375, 0, 2.53125
+-0.84, -1.5, 2.4 <- Ponto de controlo 26
+-1.5, -0.84, 2.4 <- Ponto de controlo 27
+```
+
 ## Gerador de figuras complementares (Extra)
 
 Devido ao insucesso na implementação de algumas figuras geométricas pretendidas para a fase anterior, pretende-se corrigir essa falha e implementar, agora, as figuras em falta, tal como algumas extra.
@@ -210,6 +262,27 @@ Assim sendo, adicionam-se as seguintes propriedades à tabela:
 
 Pretende-se obter, portanto, uma maquete do sistema solar, com os planetas, estrelas e luas definidas numa hierarquia de grupos.
 
+## Animação de figuras (Fase 3)
+
+Implementadas e definidas as transformações estáticas, o objetivo é, agora, expandir estas transformações de forma a criar a possibilidade de animar as figuras.
+
+Para tal, pretende-se permitir às translações e rotações que sejam definidas com propriedades de tempo.
+
+Uma translação animada deverá, portanto, ser definida por um conjunto de quatro ou mais pontos que definem uma curva de Catmull-Rom e pelo tempo que uma figura demora a percorrer a curva. Os pontos deverão estar no referencial "atual" (no caso de já terem havido translações no grupo anterior).
+
+Uma rotação animada, em constrate, deverá ser definida como uma rotação normal, diferenciando-se, apenas, no ângulo, que poderá agora ser definido como um intervalo de tempo que a figura demorará a fazer uma rotação completa.
+
+Em notação `XML` realçam-se, então, as segunites mudanças:
+| Etiqueta | Definição                                     | Lista de propriedades | Etiqueta Mãe |
+|----------|-----------------------------------------------|-----------------------|--------------|
+|translate | Define uma translação de objetos              | x, y, z, time, align   | transform    |
+|rotate    | Define uma rotação de objetos                 | angle, time, x, y, z   | transform    |
+|point     | Define um ponto da curva de Catmull-Rom       | x, y, z                | translate    |
+
+Para além disto, o desenho das figuras deverá ser, agora, implementado por VBO's, constrastando como o modo imediato usado até agora.
+
+Pretende-se, agora, obter uma maquete do sistema solar com um cometa animado através de curvas de Catmull-Rom. O cometa deverá, ainda, ser definido por Bezier patches.
+
 ---
 
 # Estrutura da solução
@@ -296,6 +369,10 @@ Um grupo passa, portanto, a ter a possibilidade de ter mais grupos em si própri
 Para além disso, também foi adicionada a possibilidade de um grupo ter três ou menos transformações. Deverá ser garantido que o tipo destas transformações não se repita, e que todas as tranformações de um grupo sejam, ainda, aplicadas a todos os seus sub-grupos.
 
 Todos os tipos de transformações deverão, também, ser sub-classes de transformação, já que todas partilharão propriedades semelhantes para a sua aplicação e estrutura.
+
+## Fase 3
+
+
 
 ---
 

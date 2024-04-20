@@ -45,6 +45,15 @@ namespace utils
             /* Inicialização da matriz identidade */
             void initIdentity();
 
+            /* Construtor de matriz de rotação sobre eixo x */
+            static Matrix rotateX(float ax);
+
+            /* Construtor de matriz de rotação sobre eixo y */
+            static Matrix rotateY(float ay);
+
+            /* Construtor de matriz de rotação sobre eixo z */
+            static Matrix rotateZ(float az);
+
         public:
             
             /* Construtor parametrizado */
@@ -62,14 +71,11 @@ namespace utils
             /* Construtor de matriz de translação por coordenadas polares */
             static Matrix translateP(float radius, float theta, float beta);
 
-            /* Construtor de matriz de rotação sobre eixo x */
-            static Matrix rotateX(float ax);
+            /* Construtor de matriz de rotação */
+            static Matrix rotate(float angle, float rx, float ry, float rz);
 
-            /* Construtor de matriz de rotação sobre eixo y */
-            static Matrix rotateY(float ay);
-
-            /* Construtor de matriz de rotação sobre eixo z */
-            static Matrix rotateZ(float az);
+            /* Construtor de matriz de escala */
+            static Matrix scale(float sx, float sy, float sz);
 
             /* Devolução da referência de um elemento de uma matriz numa certa posição */
             float& at(size_t row, size_t col);

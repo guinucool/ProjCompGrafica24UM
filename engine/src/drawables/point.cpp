@@ -73,26 +73,6 @@ namespace drawables
         return this->z;
     }
 
-    /* Definição das coordenadas do ponto */
-    void Point::setCoords(float x, float y, float z) {
-        this->x = x;
-        this->y = y;
-        this->z = z;
-    }
-
-    /* Definição das coordenadas polares do ponto */
-    void Point::setPolarCoords(float radius, float alpha, float beta) {
-
-        /* Verifica a validade do raio */
-        if (radius < 0)
-            throw std::invalid_argument("given radius is invalid");
-
-        /* Tradução e definição das coordenadas */
-        this->x = radius * cos(beta) * sin(alpha);
-        this->z = radius * cos(beta) * cos(alpha);
-        this->y = radius * sin(beta);
-    }
-
     /* Leitura de um ponto através de um ficheiro */
     void Point::read(std::ifstream& stream) {
 

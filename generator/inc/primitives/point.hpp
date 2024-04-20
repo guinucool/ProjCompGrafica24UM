@@ -48,14 +48,11 @@ namespace primitives
             /* Devolução da referência do valor da coordenada z do ponto sem possibilidade de alteração */
             const float& Z() const;
 
-            /* Definição das coordenadas do ponto */
-            void setCoords(float x, float y, float z);
-
-            /* Definição das coordenadas polares do ponto */
-            void setPolarCoords(float radius, float alpha, float beta);
-
             /* Devolução da matriz das coordenadas do ponto */
             utils::Matrix getCoords() const;
+
+            /* Normalização de um ponto para encaixar no espaço certo */
+            void normalize();
 
             /* Transformação de um ponto dada uma matriz */
             void transform(const utils::Matrix& transform);
@@ -66,8 +63,11 @@ namespace primitives
             /* Translação de um ponto dado um vetor polar */
             void translateP(float radius, float theta, float beta);
 
-            /* Rotação de um ponto dado o ângulo de rotação sobre cada eixo */
-            void rotate(float ax, float ay, float az);
+            /* Rotação de um ponto dado um eixo e ângulo de rotação */
+            void rotate(float angle, float rx, float ry, float rz);
+
+            /* Escala de um ponto dado um vetor de escala */
+            void scale(float sx, float sy, float sz);
 
             /* Escrita de um ponto em ficheiro */
             void write(std::ofstream& stream) const;

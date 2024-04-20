@@ -3,6 +3,7 @@
 
 /* Inclusão de librarias para funcionalidade do programa */
 #include <stdexcept>
+#include <iostream>
 #include <cmath>
 
 /* Declaração do namespace usado para definir esta classe */
@@ -117,47 +118,6 @@ namespace utils
             this->at(i, i) = 1.0f;
     }
 
-    /* Construtor parametrizado */
-    Matrix::Matrix(size_t rows, size_t cols, float initialValue) : rows(rows), cols(cols), data(rows * cols, initialValue) {}
-
-    /* Construtor parametrizado para matriz identidade */
-    Matrix::Matrix(size_t dim) : rows(dim), cols(dim), data(dim * dim, 0.0f) {
-        this->initIdentity();
-    }
-
-    /* Construtor de cópia */
-    Matrix::Matrix(const Matrix& matrix) : rows(matrix.rows), cols(matrix.cols), data(matrix.data) {}
-
-    /* Construtor de matriz de translação */
-    Matrix Matrix::translateD(float dx, float dy, float dz) {
-
-        /* Inicialização da matriz */
-        Matrix matrix(4);
-
-        /* Criação da matriz de translação */
-        matrix.at(0, 3) = dx;
-        matrix.at(1, 3) = dy;
-        matrix.at(2, 3) = dz;
-
-        /* Devolução da matriz construída */
-        return matrix;
-    }
-
-    /* Construtor de matriz de translação por coordenadas polares */
-    Matrix Matrix::translateP(float radius, float alpha, float beta) {
-
-        /* Inicialização da matriz */
-        Matrix matrix(4);
-
-        /* Criação da matriz de translação */
-        matrix.at(0, 3) = radius * cos(beta) * sin(alpha);
-        matrix.at(2, 3) = radius * cos(beta) * cos(alpha);
-        matrix.at(1, 3) = radius * sin(beta);
-
-        /* Devolução da matriz construída */
-        return matrix;
-    }
-
     /* Construtor de matriz de rotação sobre o eixo x */
     Matrix Matrix::rotateX(float ax) {
 
@@ -201,6 +161,103 @@ namespace utils
         matrix.at(0, 1) = -sin(az);
         matrix.at(1, 0) = sin(az);
         matrix.at(1, 1) = cos(az);
+
+        /* Devolução da matriz construída */
+        return matrix;
+    }
+
+    /* Construtor parametrizado */
+    Matrix::Matrix(size_t rows, size_t cols, float initialValue) : rows(rows), cols(cols), data(rows * cols, initialValue) {}
+
+    /* Construtor parametrizado para matriz identidade */
+    Matrix::Matrix(size_t dim) : rows(dim), cols(dim), data(dim * dim, 0.0f) {
+        this->initIdentity();
+    }
+
+    /* Construtor de cópia */
+    Matrix::Matrix(const Matrix& matrix) : rows(matrix.rows), cols(matrix.cols), data(matrix.data) {}
+
+    /* Construtor de matriz de translação */
+    Matrix Matrix::translateD(float dx, float dy, float dz) {
+
+        /* Inicialização da matriz */
+        Matrix matrix(4);
+
+        /* Criação da matriz de translação */
+        matrix.at(0, 3) = dx;
+        matrix.at(1, 3) = dy;
+        matrix.at(2, 3) = dz;
+
+        /* Devolução da matriz construída */
+        return matrix;
+    }
+
+    /* Construtor de matriz de translação por coordenadas polares */
+    Matrix Matrix::translateP(float radius, float alpha, float beta) {
+
+        /* Inicialização da matriz */
+        Matrix matrix(4);
+
+        /* Criação da matriz de translação */
+        matrix.at(0, 3) = radius * cos(beta) * sin(alpha);
+        matrix.at(2, 3) = radius * cos(beta) * cos(alpha);
+        matrix.at(1, 3) = radius * sin(beta);
+
+        /* Devolução da matriz construída */
+        return matrix;
+    }
+
+    /* Construtor de matriz de rotação */
+    Matrix Matrix::rotate(float angle, float rx, float ry, float rz) {
+
+        /* Verifica se o vetor sobre o qual se executa a rotação é válido */
+        if (rx == 0 && ry == 0 && rz == 0)
+            throw std::runtime_error("given rotation vector is not valid");
+
+        /* Cálculo do comprimento do vetor */
+        float v = (float) sqrt(pow(rx, 2) + pow(ry, 2) + pow(rz, 2));
+
+        /* Cálculo do comprimento do vetor rebatido no plano xz */
+        float d = (float) sqrt(pow(rx,2) + pow(rz,2));
+
+        /* Ângulo de rotação no eixo y */
+        float alpha = 0;
+
+        /* Ângulo de rotação no eixo x */
+        float theta = sinh(ry/v);
+
+        /* Cálculo do ângulo de rotação no eixo y */
+        if (d != 0)
+            alpha = -sinh(rx/d);
+
+        /* Cálculo das matrizes de rotação */
+        Matrix rotateX = Matrix::rotateX(theta);
+        Matrix rotateY = Matrix::rotateY(alpha);
+        Matrix rotateZ = Matrix::rotateZ(angle);
+
+        std::cout << rotateY.toString() << std::endl;
+        std::cout << rotateX.toString() << std::endl;
+        std::cout << rotateZ.toString() << std::endl;
+        std::cout << rotateX.inverse().toString() << std::endl;
+        std::cout << rotateY.inverse().toString() << std::endl;
+
+        /* Cálculo da matriz de rotação final */
+        Matrix rotate = rotateY * rotateX * rotateZ * rotateX.inverse() * rotateY.inverse();
+
+        /* Devolução da matriz calculada */
+        return rotate;
+    }
+
+    /* Construtor de matriz de escala */
+    Matrix Matrix::scale(float sx, float sy, float sz) {
+
+        /* Inicialização da matriz */
+        Matrix matrix(4);
+
+        /* Criação da matriz de escala */
+        matrix.at(0,0) = sx;
+        matrix.at(1,1) = sy;
+        matrix.at(2,2) = sz;
 
         /* Devolução da matriz construída */
         return matrix;
@@ -315,7 +372,7 @@ namespace utils
     float Matrix::cofactor(size_t row, size_t col) const {
 
         /* Verifica se a matriz da qual se pretende calcular o complemento algébrico é quadrada */
-        if (this->isSquare())
+        if (!this->isSquare())
             throw std::runtime_error("given matrix does not have cofactors");
 
         /* Multiplicador do complemento */
@@ -335,7 +392,7 @@ namespace utils
     float Matrix::determinant() const {
 
         /* Verifica se a matriz da qual se pretende calcular o determinante é quadrada */
-        if (this->isSquare())
+        if (!this->isSquare())
             throw std::runtime_error("given matrix does not have a determinant");
 
         /* Variável que irá armazenar o determinante */
@@ -401,7 +458,7 @@ namespace utils
     Matrix Matrix::inverse() const {
 
         /* Verifica se a matriz da qual se pretende calcular a inversa é quadrada */
-        if (this->isSquare())
+        if (!this->isSquare())
             throw std::runtime_error("given matrix does not have a inverse");
 
         /* Cálcula o determinante da matriz */
