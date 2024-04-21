@@ -77,6 +77,12 @@ namespace utils
             /* Construtor de matriz de escala */
             static Matrix scale(float sx, float sy, float sz);
 
+            /* Construtor de uma matriz de Up */
+            static Matrix up();
+
+            /* Construtor de uma matriz de Catmull-Rom */
+            static Matrix catmullRom();
+
             /* Devolução da referência de um elemento de uma matriz numa certa posição */
             float& at(size_t row, size_t col);
 
@@ -110,6 +116,9 @@ namespace utils
             /* Cálculo do determinante de uma matriz */
             float determinant() const;
 
+            /* Cruzamento de duas matrizes tridimensionais */
+            Matrix cross(Matrix matrix) const;
+
             /* Cálculo de uma matriz normalizada */
             Matrix normalize() const;
 
@@ -127,6 +136,9 @@ namespace utils
 
             /* Operação de negação da matriz */
             Matrix operator-() const;
+
+            /* Operação de atribuição de valores de matrizes */
+            Matrix& operator=(const Matrix& other);
 
             /* Operação de soma de matrizes */
             Matrix operator+(const Matrix& other) const;
@@ -154,6 +166,9 @@ namespace utils
 
             /* Operação de clonagem de uma matriz */
             Matrix clone() const;
+
+            /* Transformação de uma matriz num array */
+            float * toArray() const;
 
             /* Transformação da matriz em string */
             std::string toString() const;

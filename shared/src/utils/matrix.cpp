@@ -234,12 +234,6 @@ namespace utils
         Matrix rotateY = Matrix::rotateY(alpha);
         Matrix rotateZ = Matrix::rotateZ(angle);
 
-        std::cout << rotateY.toString() << std::endl;
-        std::cout << rotateX.toString() << std::endl;
-        std::cout << rotateZ.toString() << std::endl;
-        std::cout << rotateX.inverse().toString() << std::endl;
-        std::cout << rotateY.inverse().toString() << std::endl;
-
         /* Cálculo da matriz de rotação final */
         Matrix rotate = rotateY * rotateX * rotateZ * rotateX.inverse() * rotateY.inverse();
 
@@ -260,6 +254,35 @@ namespace utils
 
         /* Devolução da matriz construída */
         return matrix;
+    }
+
+    /* Construtor de uma matriz de Up */
+    Matrix Matrix::up() {
+
+        /* Inicialização da matriz */
+        Matrix up(1, 3, 0.0f);
+
+        /* Criação da matriz de Up */
+        up[1] = 1.0f;
+
+        /* Devolução da matriz de Up */
+        return up;
+    }
+
+    /* Construtor de uma matriz de Catmull-Rom */
+    Matrix Matrix::catmullRom() {
+
+        /* Inicialização da matriz */
+        Matrix catmull(4);
+
+        /* Criação da matriz de Catmull-Rom */
+        catmull.at(0,0) = -0.5f; catmull.at(0,1) = 1.5f; catmull.at(0,2) = -1.5f; catmull.at(0,3) = 0.5f;
+        catmull.at(1,0) = 1.0f; catmull.at(1,1) = -2.5f; catmull.at(1,2) = 2.0f; catmull.at(1,3) = -0.5f;
+        catmull.at(2,0) = -0.5f; catmull.at(2,1) = 0.0f; catmull.at(2,2) = 0.5f; catmull.at(2,3) = 0.0f;
+        catmull.at(3,0) = 0.0f; catmull.at(3,1) = 1.0f; catmull.at(3,2) = 0.0f; catmull.at(3,3) = 0.0f;
+
+        /* Devolução da matriz de Catmull-Rom */
+        return catmull;
     }
 
     /* Devolução da referência de um elemento de uma matriz numa certa posição */
@@ -432,6 +455,25 @@ namespace utils
         return determinant;
     }
 
+    /* Cruzamento de duas matrizes tridimensionais */
+    Matrix Matrix::cross(Matrix matrix) const {
+
+        /* Verifica se o cruzamento de ambas as matrizes é possível */
+        if (this->getLength() != 3 || matrix.getLength() != 3)
+            throw std::runtime_error("given matrices can't be crossed");
+
+        /* Criação da matriz cruzada */
+        Matrix crossed(1, 3, 0);
+
+        /* Cálculo dos valores da matriz cruzada */
+        crossed[0] = (*this)[1] * matrix[2] - (*this)[2] * matrix[1];
+        crossed[1] = (*this)[2] * matrix[0] - (*this)[0] * matrix[2];
+        crossed[2] = (*this)[0] * matrix[1] - (*this)[1] * matrix[0];
+
+        /* Devolução da matriz cruzada */
+        return crossed;
+    }
+
     /* Cálculo de uma matriz normalizada */
     Matrix Matrix::normalize() const {
 
@@ -526,6 +568,20 @@ namespace utils
         return result;
     }
 
+    /* Operação de atribuição de valores de matrizes */
+    Matrix& Matrix::operator=(const Matrix& other) {
+
+        /* Atribuição das propriedades */
+        this->rows = other.rows;
+        this->cols = other.cols;
+
+        /* Atribuição do conteúdo */
+        this->data = other.data;
+
+        /* Devolução do apontador da matriz com os valores atualizados */
+        return (*this);
+    }
+
     /* Operação de soma de matrizes */
     Matrix Matrix::operator+(const Matrix& other) const {
         return this->sum(other);
@@ -569,6 +625,20 @@ namespace utils
     /* Operação de clonagem de uma matriz */
     Matrix Matrix::clone() const {
         return Matrix(*this);
+    }
+
+    /* Transformação de uma matriz num array */
+    float * Matrix::toArray() const {
+
+        /* Criação do array onde vai ser armazenado o resultado */
+        float * matrix = new float[this->getLength()];
+
+        /* População do array com os valores da matriz */
+        for (size_t i = 0; i < this->getLength(); i++)
+            matrix[i] = (*this)[i];
+        
+        /* Devolução do apontador do array criado */
+        return matrix;
     }
 
     /* Transformação da matriz em string */

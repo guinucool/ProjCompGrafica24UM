@@ -1,9 +1,10 @@
-#ifndef STATIC_ROTATE_HPP
-#define STATIC_ROTATE_HPP
+#ifndef ANIMATED_TRANSLATE_HPP
+#define ANIMATED_TRANSLATE_HPP
 
+#include "../../../../shared/inc/utils/matrix.hpp"
 #include "../../drawables/point.hpp"
 #include "transform.hpp"
-#include <list>
+#include <vector>
 
 /* Inicialização do namespace usado para definir a classe de translação animada */
 namespace transforms::animated {
@@ -13,9 +14,22 @@ namespace transforms::animated {
 
         private:
 
+            /* Definição de propriedades auxiliares ao cálculo da curva */
+            static std::vector<utils::Matrix> Y;
+
             /* Definição das propriedades de uma translação */
-            std::list<drawables::Point> points;
+            std::vector<drawables::Point> points;
             bool align;
+            int index;
+
+            /* Aplicação da translação de Catmull-Rom */
+            void catmullRomPath(float t, utils::Matrix M) const;
+
+            /* Aplicação da rotação de Catmull-Rom */
+            void catmullRomAlign(float t, utils::Matrix M) const;
+
+            /* Aplicação de uma translação com Catmull-Rom ao cenário */
+            void catmullRom(float t) const;
 
         protected:
 
@@ -25,8 +39,8 @@ namespace transforms::animated {
             /* Devolução do valor de alinhamento aplicado sobre a animação, alterável */
             bool& Align();
 
-            /* Aplicação de uma translação com CatmullRom ao cenário */
-            void applyCatmullRom(float t) const;
+            /* Devolução do valor do índice usado para o vetor y desta animação, alterável */
+            int& Index();
 
         public:
 
@@ -34,7 +48,7 @@ namespace transforms::animated {
             Translate();
 
             /* Construtor parametrizado de translação */
-            Translate(float time, bool align, std::list<drawables::Point> points);
+            Translate(float time, bool align, std::vector<drawables::Point> points);
 
             /* Construtor de cópia de translação */
             Translate(const Translate& translate);
@@ -42,8 +56,14 @@ namespace transforms::animated {
             /* Construtor através de um ficheiro XML de translação */
             Translate(tinyxml2::XMLElement * transform);
 
-            /* Devolução do valor da transformação aplicada sobre o eixo y */
-            std::list<drawables::Point> getPoints() const;
+            /* Devolução da lista de pontos que definem a curva */
+            std::vector<drawables::Point> getPoints() const;
+
+            /* Devolução do número de pontos que definem a curva*/
+            size_t getSize() const;
+
+            /* Devolução do valor do índice usado para o vetor y desta animação */
+            const int& getIndex() const;
 
             /* Devolução do valor de alinhamento aplicado sobre a animação */
             const bool& isAligned() const;

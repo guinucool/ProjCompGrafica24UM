@@ -1,5 +1,5 @@
-#ifndef STATIC_ROTATE_HPP
-#define STATIC_ROTATE_HPP
+#ifndef ANIMATED_ROTATE_HPP
+#define ANIMATED_ROTATE_HPP
 
 #include "transform.hpp"
 
