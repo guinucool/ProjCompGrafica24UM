@@ -111,21 +111,6 @@ namespace transforms::animated
             this->catmullRomAlign(t, A);
     }
 
-    /* Adição de um novo ponto à lista de pontos */
-    void Translate::addPoint(drawables::Point point) {
-        this->points.push_back(point);
-    }
-
-    /* Devolução do valor de alinhamento aplicado sobre a animação, alterável */
-    bool& Translate::Align() {
-        return this->align;
-    }
-
-    /* Devolução do valor do índice usado para o vetor y desta animação, alterável */
-    int& Translate::Index() {
-        return this->index;
-    }
-
     /* Construtor padrão vazio de translação */
     Translate::Translate() : Transform(), align(true), points(), index(Translate::Y.size()) { Translate::Y.push_back(utils::Matrix::up()); }
 
@@ -145,6 +130,11 @@ namespace transforms::animated
         this->read(transform);
     }
 
+    /* Adição de um novo ponto à lista de pontos */
+    void Translate::addPoint(drawables::Point point) {
+        this->points.push_back(point);
+    }
+
     /* Devolução do valor da transformação aplicada sobre o eixo y */
     std::vector<drawables::Point> Translate::getPoints() const {
         return this->points;
@@ -155,14 +145,24 @@ namespace transforms::animated
         return this->points.size();
     }
 
-    /* Devolução do valor do índice usado para o vetor y desta animação */
-    const int& Translate::getIndex() const {
-        return this->index;
+    /* Devolução do valor de alinhamento aplicado sobre a animação, alterável */
+    bool& Translate::Align() {
+        return this->align;
     }
 
     /* Devolução do valor de alinhamento aplicado sobre a animação */
     const bool& Translate::isAligned() const {
         return this->align;
+    }
+
+    /* Devolução do valor do índice usado para o vetor y desta animação, alterável */
+    int& Translate::Index() {
+        return this->index;
+    }
+
+    /* Devolução do valor do índice usado para o vetor y desta animação */
+    const int& Translate::getIndex() const {
+        return this->index;
     }
 
     /* Leitura de uma translação através de um ficheiro XML */
@@ -174,7 +174,7 @@ namespace transforms::animated
     void Translate::apply() const {
 
         /* Cálculo do tempo do estado atual da animação */
-        float t = glutGet(GLUT_ELAPSED_TIME) / (1000.0f * this->getTime());
+        float t = this->getRelativeTime();
 
         /* Aplicação da curva de Catmull-Rom para o tempo atual */
         this->catmullRom(t);

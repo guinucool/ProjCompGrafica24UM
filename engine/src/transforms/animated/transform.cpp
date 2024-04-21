@@ -1,6 +1,13 @@
 /* Inclusão do cabeçalho de definição da estrutura de transformação */
 #include "../../../inc/transforms/animated/transform.hpp"
 
+/* Inclusão do OpenGL e do GLUT */
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
 /* Inclusão de módulos necessários à funcionalidade */
 #include <stdexcept>
 #include <typeinfo>
@@ -25,6 +32,11 @@ namespace transforms::animated
     /* Devolução do valor de tempo de execução da transformação */
     const float& Transform::getTime() const {
         return this->time;
+    }
+
+    /* Devolução do valor de tempo relativo da transformação */
+    const float& Transform::getRelativeTime() const {
+        return glutGet(GLUT_ELAPSED_TIME) / (1000.0f * this->time);
     }
 
     /* Leitura de uma translação através de um ficheiro XML */

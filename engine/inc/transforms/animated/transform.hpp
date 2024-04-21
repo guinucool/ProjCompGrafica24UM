@@ -30,8 +30,11 @@ namespace transforms::animated {
             /* Construtor de cópia de transformação */
             Transform(const Transform& transform);
 
-            /* Devolução do valor de tempo de execução da transformação, alterável */
+            /* Devolução do valor de tempo de execução da transformação */
             const float& getTime() const;
+
+            /* Devolução do valor de tempo relativo da transformação */
+            const float& getRelativeTime() const;
 
             /* Leitura de uma transformação através de um ficheiro XML */
             void read(tinyxml2::XMLElement * transform);
