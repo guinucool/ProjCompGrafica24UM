@@ -30,6 +30,11 @@ namespace drawables
         this->read(stream);
     }
 
+    /* Construtor de ponto através da leitura de uma configuração XML */
+    Point::Point(tinyxml2::XMLElement * point) {
+        this->read(point);
+    }
+
     /* Construtor parametrizado de ponto para coordenadas polares */
     Point Point::polarPoint(float radius, float alpha, float beta) {
 
@@ -84,6 +89,26 @@ namespace drawables
         /* Verfica se a leitura foi válida */
         if (stream.fail())
             throw std::invalid_argument("given 3d file is invalid");
+    }
+
+    /* Leitura de um ponto através de um formato XML */
+    void Point::read(tinyxml2::XMLElement * point) {
+
+        /* Verifica se a propriedade de ponto é válida */
+        if (point->ChildElementCount() != 0)
+            throw std::invalid_argument("given xml configuration is invalid");
+
+        /* Variáveis que irão armazenar os atributos */
+        float x, y, z;
+
+        /* Obtenção dos atributos e verificação da existência deles */
+        if (point->QueryFloatAttribute("x", &x) || point->QueryFloatAttribute("y", &y) || point->QueryFloatAttribute("z", &z))
+            throw std::invalid_argument("given xml configuration is invalid");
+
+        /* Associação das propriedades */
+        this->x = x;
+        this->y = y;
+        this->z = z;
     }
 
     /* Desenho de um ponto no modo imediato */

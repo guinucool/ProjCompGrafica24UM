@@ -16,6 +16,9 @@
 /* Inicialização do namespace utilizado para a definição */
 namespace transforms::animated
 {
+    /* Definição de propriedades auxiliares ao cálculo da curva */
+    std::vector<utils::Matrix> Translate::Y;
+
     /* Aplicação da translação de Catmull-Rom */
     void Translate::catmullRomPath(float t, utils::Matrix M) const {
 
@@ -168,6 +171,46 @@ namespace transforms::animated
     /* Leitura de uma translação através de um ficheiro XML */
     void Translate::read(tinyxml2::XMLElement * transform) {
 
+        /* Verifica se a propriedade de translação é válida */
+        if (transform->ChildElementCount() < 4)
+            throw std::invalid_argument("given xml configuration is invalid");
+
+        /* Leitura das propriedades do tempo de rotação */
+        Transform::read(transform);
+
+        /* Variável que irá armazenar a propriedade de alinhamento */
+        bool align;
+
+        /* Leitura e verificação da propriedade de alinhamento */
+        if (transform->QueryBoolAttribute("align", &align))
+            throw std::invalid_argument("given xml configuration is invalid");
+
+        /* Associação de propriedades */
+        this->align = align;
+
+        /* Fixa o número de iterações */
+        int children = transform->ChildElementCount();
+
+        /* Leitura da lista de pontos */
+        for (int i = 0; i < children; i++) {
+
+            /* Vai buscar o primeiro elemento */
+            tinyxml2::XMLElement * next = transform->FirstChildElement();
+
+            /* Armazena o nome do primeiro elemento */
+            std::string name = std::string(next->Value());
+
+            /* Verifica qual é o elemento */
+            if (name == "point")
+                this->addPoint(drawables::Point(next));
+            
+            /* Caso o elemento seja inválido */
+            else
+                throw std::invalid_argument("given xml configuration is invalid");
+
+            /* Apaga o elemento lido */
+            transform->DeleteChild(next);
+        }
     }
 
     /* Aplicação da translação ao cenário */

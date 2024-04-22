@@ -10,6 +10,7 @@ list(APPEND SHARED_SRC_FILES
      ../shared/src/geometry/point.cpp
      ../shared/src/geometry/face.cpp
      ../shared/src/geometry/primitive.cpp
+     ../shared/src/utils/matrix.cpp
      ../shared/src/exception/unvalues.cpp
     )
 
@@ -19,7 +20,7 @@ file(GLOB GENERATOR_DRAWABLE_SRC "src/drawables/*.cpp")
 list(APPEND ENGINE_SRC_FILES ${GENERATOR_DRAWABLE_SRC})
 
 # Lista de módulos necessários para a transformação do desenho do programa
-file(GLOB GENERATOR_TRANSFORM_SRC "src/transforms/*.cpp")
+file(GLOB_RECURSE GENERATOR_TRANSFORM_SRC "src/transforms/*.cpp")
 list(APPEND ENGINE_SRC_FILES ${GENERATOR_TRANSFORM_SRC})
 
 # Lista de módulos necessários para a projeção do desenho do programa

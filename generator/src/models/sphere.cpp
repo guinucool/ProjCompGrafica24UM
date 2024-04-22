@@ -14,7 +14,6 @@ namespace models
         /* Verifica a validade das propriedades submetidas */
         if (radius <= 0 || slices < 3 || stacks < 1)
             std::invalid_argument("invalid primitive arguments given");
-        
 
         /* Cáculo dos ângulos de rotação */
         float alpha = (2 * M_PI) / slices;

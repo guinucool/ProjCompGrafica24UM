@@ -63,6 +63,24 @@ namespace transforms::animated
     /* Leitura de uma rotação através de um ficheiro XML */
     void Rotate::read(tinyxml2::XMLElement * transform) {
 
+        /* Verifica se a propriedade de rotação é válida */
+        if (transform->ChildElementCount() != 0)
+            throw std::invalid_argument("given xml configuration is invalid");
+
+        /* Leitura das propriedades do tempo de rotação */
+        Transform::read(transform);
+
+        /* Variáveis que irão armazenar os atributos */
+        float x, y, z;
+
+        /* Obtenção dos atributos e verificação da existência deles */
+        if (transform->QueryFloatAttribute("x", &x) || transform->QueryFloatAttribute("y", &y) || transform->QueryFloatAttribute("z", &z))
+            throw std::invalid_argument("given xml configuration is invalid");
+
+        /* Associação das propriedades */
+        this->x = x;
+        this->y = y;
+        this->z = z;
     }
 
     /* Aplicação da rotação ao cenário */

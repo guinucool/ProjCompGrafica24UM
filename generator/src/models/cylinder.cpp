@@ -15,7 +15,7 @@ namespace models
         float stackHeight = height / stacks;
 
         /* Criação das matrizes de rotação */
-        utils::Matrix alphaR = utils::Matrix::rotateY(alpha);
+        utils::Matrix alphaR = utils::Matrix::rotate(alpha, 0, 1, 0);
 
         /* Criação dos pontos de começo na base */
         primitives::Point bottom(0, -height / 2, 0); // Ponto central inferior

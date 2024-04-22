@@ -9,9 +9,9 @@
 #endif
 
 /* Inclusão de módulos necessários à funcionalidade */
-#include "../../inc/transforms/translate.hpp"
-#include "../../inc/transforms/rotate.hpp"
-#include "../../inc/transforms/scale.hpp"
+#include "../../inc/transforms/constant/translate.hpp"
+#include "../../inc/transforms/constant/rotate.hpp"
+#include "../../inc/transforms/constant/scale.hpp"
 #include <stdexcept>
 #include <typeinfo>
 
@@ -44,15 +44,15 @@ namespace containers
 
         /* Caso a transformação seja uma translação */
         if (name == "translate")
-            trans = new transforms::Translate(transform);
+            trans = new transforms::constant::Translate(transform);
 
         /* Caso a transformação seja uma rotação */
         else if (name == "rotate")
-            trans = new transforms::Rotate(transform);
+            trans = new transforms::constant::Rotate(transform);
 
         /* Caso a transformação seja uma escala */
         else if (name == "scale")
-            trans = new transforms::Scale(transform);
+            trans = new transforms::constant::Scale(transform);
 
         /* Caso o elemento seja inválido */
         else

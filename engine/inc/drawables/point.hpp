@@ -1,6 +1,7 @@
 #ifndef POINT_HPP
 #define POINT_HPP
 
+#include "../../../external/tinyxml2/tinyxml2.h"
 #include "../../../shared/inc/geometry/point.hpp"
 #include <fstream>
 #include <vector>
@@ -30,6 +31,9 @@ namespace drawables
             /* Construtor de ponto através da leitura do ficheiro */
             Point(std::ifstream& stream);
 
+            /* Construtor de ponto através da leitura de uma configuração XML */
+            Point(tinyxml2::XMLElement * point);
+
             /* Construtor parametrizado de ponto para coordenadas polares */
             static Point polarPoint(float radius, float theta, float beta);
 
@@ -53,6 +57,9 @@ namespace drawables
 
             /* Leitura de um ponto através de um ficheiro */
             void read(std::ifstream& stream);
+
+            /* Leitura de um ponto através de um formato XML */
+            void read(tinyxml2::XMLElement * point);
 
             /* Desenho de um ponto no modo imediato */
             void draw() const;

@@ -213,6 +213,10 @@ namespace utils
         if (rx == 0 && ry == 0 && rz == 0)
             throw std::runtime_error("given rotation vector is not valid");
 
+        /* Caso o vetor tenha uma componente z negativa */
+        if (rz < 0)
+            angle = -angle;
+
         /* Cálculo do comprimento do vetor */
         float v = (float) sqrt(pow(rx, 2) + pow(ry, 2) + pow(rz, 2));
 
@@ -223,11 +227,11 @@ namespace utils
         float alpha = 0;
 
         /* Ângulo de rotação no eixo x */
-        float theta = sinh(ry/v);
+        float theta = asin(ry/v);
 
         /* Cálculo do ângulo de rotação no eixo y */
         if (d != 0)
-            alpha = -sinh(rx/d);
+            alpha = -asin(rx/d);
 
         /* Cálculo das matrizes de rotação */
         Matrix rotateX = Matrix::rotateX(theta);
@@ -235,7 +239,7 @@ namespace utils
         Matrix rotateZ = Matrix::rotateZ(angle);
 
         /* Cálculo da matriz de rotação final */
-        Matrix rotate = rotateY * rotateX * rotateZ * rotateX.inverse() * rotateY.inverse();
+        Matrix rotate = rotateY.inverse() * rotateX.inverse() * rotateZ * rotateX * rotateY;
 
         /* Devolução da matriz calculada */
         return rotate;
