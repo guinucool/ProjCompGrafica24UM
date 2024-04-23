@@ -35,7 +35,7 @@ namespace transforms::animated
     }
 
     /* Devolução do valor de tempo relativo da transformação */
-    const float& Transform::getRelativeTime() const {
+    float Transform::getRelativeTime() const {
         return glutGet(GLUT_ELAPSED_TIME) / (1000.0f * this->time);
     }
 
@@ -46,7 +46,7 @@ namespace transforms::animated
         float time;
 
         /* Obtenção dos atributos e verificação da existência deles */
-        if (transform->QueryFloatAttribute("time", &time))
+        if (transform->QueryFloatAttribute("time", &time) || time < 0)
             throw std::invalid_argument("given xml configuration is invalid");
 
         /* Associação das propriedades */

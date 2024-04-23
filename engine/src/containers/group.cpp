@@ -12,6 +12,8 @@
 #include "../../inc/transforms/constant/translate.hpp"
 #include "../../inc/transforms/constant/rotate.hpp"
 #include "../../inc/transforms/constant/scale.hpp"
+#include "../../inc/transforms/animated/translate.hpp"
+#include "../../inc/transforms/animated/rotate.hpp"
 #include <stdexcept>
 #include <typeinfo>
 
@@ -36,6 +38,9 @@ namespace containers
     /* Leitura de uma transformação para grupo através de um ficheiro xml */
     void Group::readTransform(tinyxml2::XMLElement * transform) {
 
+        /* Placeholder para o valor que irá ser usado para verificar se uma translação é animada */
+        float time;
+
         /* Armazena o nome do elemento */
         std::string name = std::string(transform->Value());
 
@@ -43,12 +48,28 @@ namespace containers
         transforms::Transform * trans = NULL;
 
         /* Caso a transformação seja uma translação */
-        if (name == "translate")
-            trans = new transforms::constant::Translate(transform);
+        if (name == "translate") {
+
+            /* Verifica se a translação é animada */
+            if (!transform->QueryFloatAttribute("time", &time))
+                trans = new transforms::animated::Translate(transform);
+
+            /* Caso seja uma translação estática */
+            else
+                trans = new transforms::constant::Translate(transform);
+        }
 
         /* Caso a transformação seja uma rotação */
-        else if (name == "rotate")
-            trans = new transforms::constant::Rotate(transform);
+        else if (name == "rotate") {
+
+            /* Verifica se a rotação é animada */
+            if (!transform->QueryFloatAttribute("time", &time))
+                trans = new transforms::animated::Rotate(transform);
+
+            /* Caso seja uma rotação estática */
+            else
+                trans = new transforms::constant::Rotate(transform);
+        }
 
         /* Caso a transformação seja uma escala */
         else if (name == "scale")

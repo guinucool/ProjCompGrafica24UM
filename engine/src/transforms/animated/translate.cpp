@@ -51,7 +51,7 @@ namespace transforms::animated
         T[3] = 0;
 
         /* Cálculo dos vetores de rotação */
-        utils::Matrix D = T * M;
+        utils::Matrix D = (T * M).normalize();
         utils::Matrix zrot = D.cross(Translate::Y[this->index]).normalize();
         Translate::Y[this->index] = zrot.cross(D).normalize();
 

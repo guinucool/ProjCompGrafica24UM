@@ -211,6 +211,7 @@ namespace containers
         /* Definição das funções de representação */
         glutReshapeFunc(World::shapeCamera);
         glutDisplayFunc(callback);
+        glutIdleFunc(callback);
 
         /* Configurações do OpenGL */
         glEnable(GL_DEPTH_TEST);
