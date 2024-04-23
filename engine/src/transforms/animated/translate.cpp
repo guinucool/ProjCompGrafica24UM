@@ -12,6 +12,7 @@
 #include <stdexcept>
 #include <typeinfo>
 #include <cmath>
+#include <iostream>
 
 /* Inicialização do namespace utilizado para a definição */
 namespace transforms::animated
@@ -107,11 +108,11 @@ namespace transforms::animated
         utils::Matrix A = M * P;
 
         /* Aplicação da curva de Catmull-Rom */
-        this->catmullRomPath(t, A);
+        this->catmullRomPath(rt, A);
 
         /* Verifica se é pretendido o alinhamento do objeto */
         if (this->isAligned())
-            this->catmullRomAlign(t, A);
+            this->catmullRomAlign(rt, A);
     }
 
     /* Construtor padrão vazio de translação */
