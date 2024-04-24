@@ -1,7 +1,9 @@
 #ifndef MATRIX_HPP
 #define MATRIX_HPP
 
+#include "../../inc/geometry/point.hpp"
 #include <vector>
+#include <list>
 #include <cstddef>
 #include <string>
 
@@ -54,6 +56,18 @@ namespace utils
             /* Construtor de matriz de rotação sobre eixo z */
             static Matrix rotateZ(float az);
 
+            /* Cálculo da posição atual do ponto numa curva */
+            Matrix curvePosition(float t) const;
+
+            /* Cálculo da derivada atual do ponto numa curva */
+            Matrix curveDerivate(float t) const;
+
+            /* Cálculo da posição atual do ponto numa superfície curva */
+            Matrix surfacePosition(float u, float v) const;
+
+            /* Cálculo das derivadas atuais do ponto numa superfície curva */
+            Matrix surfaceDerivate(float u, float v) const;
+
         public:
             
             /* Construtor parametrizado */
@@ -79,6 +93,9 @@ namespace utils
 
             /* Construtor de uma matriz de Up */
             static Matrix up();
+
+            /* Construtor de uma matriz de Bezier */
+            static Matrix bezier();
 
             /* Construtor de uma matriz de Catmull-Rom */
             static Matrix catmullRom();
@@ -115,6 +132,12 @@ namespace utils
 
             /* Cálculo do determinante de uma matriz */
             float determinant() const;
+
+            /* Curvamento de uma matriz dado um conjunto de pontos */
+            void curve(float t, std::list<geometry::Point*> points, Matrix * position, Matrix * derivate) const;
+
+            /* Curvamento de uma matriz em superfície dado um conjunto de pontos */
+            void surface(float u, float v, std::list<geometry::Point*> points, Matrix * position, Matrix * derivate) const;
 
             /* Cruzamento de duas matrizes tridimensionais */
             Matrix cross(Matrix matrix) const;

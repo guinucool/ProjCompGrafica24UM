@@ -12,13 +12,12 @@
         </models> -->
         <group>
             <transform>
-                <!--<translate time="1" align="true">
+                <translate time="1" align="true" >
                     <point x="-1" y="-1" z="0" />
                     <point x="-1" y="1" z="0" />
                     <point x="1" y="1" z="0" />
                     <point x="1" y="-1" z="0" />
-                </translate>-->
-                <rotate time="5" x="0" y="0" z="1" />
+                </translate>
             </transform>
             <models>
                 <model file="sphere.3d"/>

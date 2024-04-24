@@ -165,6 +165,68 @@ namespace utils
         return matrix;
     }
 
+    /* Cálculo da posição atual do ponto numa curva */
+    Matrix Matrix::curvePosition(float t) const {
+
+        /* Criação da matriz de tempo */
+        utils::Matrix T(1, 4, 0.0f);
+
+        /* Cálculo da matriz temporal */
+        T[0] = pow(t, 3);
+        T[1] = pow(t, 2);
+        T[2] = t;
+        T[3] = 1;
+
+        /* Cálculo da coordenada representada pela matriz atual */
+        Matrix coord = T * (*this);
+
+        /* Devolução do valor da coordenada calculada */
+        return coord;
+    }
+
+    /* Cálculo da derivada atual do ponto numa curva */
+    Matrix Matrix::curveDerivate(float t) const {
+
+        /* Criação da matriz de tempo */
+        utils::Matrix T(1, 4, 0.0f);
+
+        /* Cálculo da matriz temporal */
+        T[0] = 3 * pow(t, 2);
+        T[1] = 2 * t;
+        T[2] = 1;
+        T[3] = 0;
+
+        /* Cálculo da derivada representada pela matriz atual */
+        Matrix deriv = T * (*this);
+
+        /* Devolução do valor da derivada calculada */
+        return deriv;
+    }
+
+    /* Cálculo da posição atual do ponto numa superfície curva */
+    Matrix Matrix::surfacePosition(float u, float v) const {
+
+        /* Criação da matriz de tempo horizontal */
+        utils::Matrix T(4, 1, 0.0f);
+
+        /* Cálculo da matriz temporal */
+        T[0] = pow(v, 3);
+        T[1] = pow(v, 2);
+        T[2] = v;
+        T[3] = 1;
+
+        /* Cálculo da coordenada representada pela matriz atual */
+        Matrix coord = this->curvePosition(u) * T;
+
+        /* Devolução do valor da coordenada calculada */
+        return coord;
+    }
+
+    /* Cálculo das derivadas atuais do ponto numa superfície curva */
+    Matrix Matrix::surfaceDerivate(float u, float v) const {
+        /* To be implemented */
+    }
+
     /* Construtor parametrizado */
     Matrix::Matrix(size_t rows, size_t cols, float initialValue) : rows(rows), cols(cols), data(rows * cols, initialValue) {}
 
@@ -271,6 +333,22 @@ namespace utils
 
         /* Devolução da matriz de Up */
         return up;
+    }
+
+    /* Construtor de uma matriz de Bezier */
+    Matrix Matrix::bezier() {
+        
+        /* Inicialização da matriz */
+        Matrix bezier(4);
+
+        /* Criação da matriz de Bezier */
+        bezier.at(0,0) = -1.0f; bezier.at(0,1) = 3.0f; bezier.at(0,2) = -3.0f; bezier.at(0,3) = 1.0f;
+        bezier.at(1,0) = 3.0f; bezier.at(1,1) = -6.0f; bezier.at(1,2) = 3.0f; bezier.at(1,3) = 0.0f;
+        bezier.at(2,0) = -3.0f; bezier.at(2,1) = 3.0f; bezier.at(2,2) = 0.0f; bezier.at(2,3) = 0.0f;
+        bezier.at(3,0) = 1.0f; bezier.at(3,1) = 0.0f; bezier.at(3,2) = 0.0f; bezier.at(3,3) = 0.0f;
+
+        /* Devolução da matriz de Bezier */
+        return bezier;
     }
 
     /* Construtor de uma matriz de Catmull-Rom */
@@ -457,6 +535,140 @@ namespace utils
         
         /* Devolução do determinante calculado */
         return determinant;
+    }
+
+    /* Curvamento de uma matriz dado um conjunto de pontos */
+    void Matrix::curve(float t, std::list<geometry::Point*> points, Matrix * position, Matrix * derivate) const {
+
+        /* Verifica se o número de pontos dados é válido para uma curva */
+        if (points.size() != 4)
+            throw std::runtime_error("given point list is not valid for a curve");
+
+        /* Criação das matrizes de coordenadas */
+        Matrix x(1, 4, 0.0f);
+        Matrix y(1, 4, 0.0f);
+        Matrix z(1, 4, 0.0f);
+
+        /* Iterador de população das matrizes de coordenadas */
+        int index = 0;
+
+        /* Iteração por todos os pontos do conjunto de pontos */
+        for (geometry::Point * point: points) {
+
+            /* Atribuição das coordenadas aos conjuntos */
+            x[index] = point->X();
+            y[index] = point->Y();
+            z[index] = point->Z();
+
+            /* Passagem para o próximo índice */
+            index++;
+        }
+        
+        /* Multiplicação de matrizes para criação de curvas */
+        x = (*this) * x;
+        y = (*this) * y;
+        z = (*this) * z;
+
+        /* Obtenção da matriz de posição */
+        if (position != NULL) {
+
+            /* Criação da matriz resultado */
+            Matrix pos(3, 1, 0.0f);
+
+            /* Cálculo das coordenadas */
+            pos[0] = x.curvePosition(t)[0];
+            pos[1] = y.curvePosition(t)[0];
+            pos[2] = z.curvePosition(t)[0];
+
+            /* Associação da matriz criada */
+            *position = pos;
+        }
+
+        /* Obtenção da matriz de derivada */
+        if (derivate != NULL) {
+
+            /* Criação da matriz resultado */
+            Matrix deriv(3, 1, 0.0f);
+
+            /* Cálculo das coordenadas */
+            deriv[0] = x.curveDerivate(t)[0];
+            deriv[1] = y.curveDerivate(t)[0];
+            deriv[2] = z.curveDerivate(t)[0];
+
+            /* Associação da matriz criada */
+            *derivate = deriv;
+        }
+    }
+
+    /* Curvamento de uma matriz em superfície dado um conjunto de pontos */
+    void Matrix::surface(float u, float v, std::list<geometry::Point*> points, Matrix * position, Matrix * derivate) const {
+
+        /* Verifica se o número de pontos dados é válido para uma superfície */
+        if (points.size() != 16)
+            throw std::runtime_error("given point list is not valid for a curve");
+
+        /* Criação das matrizes de coordenadas */
+        Matrix x(4, 4, 0.0f);
+        Matrix y(4, 4, 0.0f);
+        Matrix z(4, 4, 0.0f);
+
+        /* Iterador de população das matrizes de coordenadas */
+        int index = 0;
+
+        /* Iteração por todos os pontos do conjunto de pontos */
+        for (geometry::Point * point: points) {
+
+            /* Atribuição das coordenadas aos conjuntos */
+            x[index] = point->X();
+            y[index] = point->Y();
+            z[index] = point->Z();
+
+            /* Passagem para o próximo índice */
+            index++;
+        }
+
+        /* Colocação das matrizes na posição correta */
+        x = x.transpose();
+        y = y.transpose();
+        z = z.transpose();
+
+        /* Cálculo da matriz de curva transposta */
+        Matrix transposed = this->transpose();
+
+        /* Multiplicação de matrizes para criação de curvas */
+        x = (*this) * x * transposed;
+        y = (*this) * y * transposed;
+        z = (*this) * z * transposed;
+
+        /* Obtenção da matriz de posição */
+        if (position != NULL) {
+
+            /* Criação da matriz resultado */
+            Matrix pos(3, 1, 0.0f);
+
+            /* Cálculo das coordenadas */
+            pos[0] = x.surfacePosition(u, v)[0];
+            pos[1] = y.surfacePosition(u, v)[0];
+            pos[2] = z.surfacePosition(u, v)[0];
+
+            /* Associação da matriz criada */
+            *position = pos;
+        }
+
+        /* Obtenção da matriz de derivada */
+        if (derivate != NULL) {
+
+            /* Criação da matriz resultado */
+            Matrix deriv(3, 1, 0.0f);
+
+            /* Cálculo das coordenadas */
+            deriv[0] = x.surfaceDerivate(u, v)[0];
+            deriv[1] = y.surfaceDerivate(u, v)[0];
+            deriv[2] = z.surfaceDerivate(u, v)[0];
+
+            /* Associação da matriz criada */
+            *derivate = deriv;
+        }
     }
 
     /* Cruzamento de duas matrizes tridimensionais */

@@ -12,7 +12,6 @@
 #include <stdexcept>
 #include <typeinfo>
 #include <cmath>
-#include <iostream>
 
 /* Inicialização do namespace utilizado para a definição */
 namespace transforms::animated
