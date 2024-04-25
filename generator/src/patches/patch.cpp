@@ -45,6 +45,14 @@ namespace patches
         this->read(path);
     }
 
+    /* Destrutor de um patch */
+    Patch::~Patch() {
+
+        /* Destruição de todos os pontos armazenados */
+        for (primitives::Point * point : this->points)
+            delete point;
+    }
+
     /* Adição de um batch ao patch */
     void Patch::addBatch(Batch batch) {
         this->index.push_back(batch);
@@ -57,11 +65,16 @@ namespace patches
 
     /* Adição de um ponto ao patch */
     void Patch::addPoint(primitives::Point point) {
-        this->points.push_back(point);
+
+        /* Transformação de um ponto em apontador */
+        primitives::Point * a_point = new primitives::Point(point);
+
+        /* Associação do ponto transformado à lista */
+        this->points.push_back(a_point);
     }
 
     /* Devolução da lista de pontos de um patch */
-    std::vector<primitives::Point> Patch::getPoints() const {
+    std::vector<primitives::Point*> Patch::getPoints() const {
         return this->points;
     }
 
@@ -100,14 +113,23 @@ namespace patches
     /* Construção de uma primitiva baseada no patch */
     primitives::Primitive Patch::build() const {
 
+        /* Criação da primitiva que vai ser gerada */
+        primitives::Primitive primitive;
+
+        /* Geração dos vários batches */
+        for (Batch batch : this->index)
+            batch.build(&primitive, this->tesselation, this->curve, this->points);
+
+        /* Devolução da primitiva criada */
+        return primitive;
     }
 
     /* Leitura de um patch vindo de um stream */
     void Patch::read(std::ifstream& stream) {
 
         /* Número de pontos e batches a ser lidas */
-        size_t batches;
-        size_t points;
+        size_t batches = 0;
+        size_t points = 0;
 
         /* Leitura do número de batches */
         stream >> batches;
@@ -128,7 +150,16 @@ namespace patches
         /* Leitura dos vários pontos */
         for (size_t i = 0; i < points; i++) {
 
+            /* Leitura e conversão de um ponto */
+            primitives::Point point(stream);
+
+            /* Associação do ponto */
+            this->addPoint(point);
         }
+
+        /* Verfica se a leitura foi válida */
+        if (stream.fail())
+            throw std::invalid_argument("given patch file is invalid");
     }
 
     /* Leitura de um patch vindo de um ficheiro */
@@ -178,8 +209,8 @@ namespace patches
         /* População dos pontos */
         result += "points:\n";
 
-        for (primitives::Point point: this->points)
-            result += point.toString() + "\n";
+        for (primitives::Point * point: this->points)
+            result += point->toString() + "\n";
 
         /* População da matriz de curva */
         result += "curve:\n";

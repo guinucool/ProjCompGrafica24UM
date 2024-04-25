@@ -27,6 +27,9 @@ namespace primitives
             /* Construtor de cópia de ponto */
             Point(const Point& point);
 
+            /* Construtor de um ponto vindo de um ficheiro */
+            Point(std::ifstream& stream);
+
             /* Construtor parametrizado de ponto para coordenadas polares */
             static Point polarPoint(float radius, float alpha, float beta);
 
@@ -68,6 +71,9 @@ namespace primitives
 
             /* Escala de um ponto dado um vetor de escala */
             void scale(float sx, float sy, float sz);
+
+            /* Leitura de um ponto vindo de um ficheiro */
+            void read(std::ifstream& stream);
 
             /* Escrita de um ponto em ficheiro */
             void write(std::ofstream& stream) const;

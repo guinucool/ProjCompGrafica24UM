@@ -134,9 +134,21 @@ namespace utils
             float determinant() const;
 
             /* Curvamento de uma matriz dado um conjunto de pontos */
+            void curve(std::list<geometry::Point*> points, Matrix * x, Matrix * y, Matrix * z) const;
+
+            /* Curvamento de uma matriz dado um intervalo de tempo */
+            void curve(float t, float * position, float * derivate) const;
+
+            /* Curvamento de uma matriz dado um conjunto de pontos e um intervalo de tempo */
             void curve(float t, std::list<geometry::Point*> points, Matrix * position, Matrix * derivate) const;
 
             /* Curvamento de uma matriz em superfície dado um conjunto de pontos */
+            void surface(std::list<geometry::Point*> points, Matrix * xs, Matrix * ys, Matrix * zs) const;
+
+            /* Curvamento de uma matriz em superfície dado dois instantes */
+            void surface(float u, float v, float * position, float * derivate) const;
+
+            /* Curvamento de uma matriz em superfície dado um conjunto de pontos e dois instantes */
             void surface(float u, float v, std::list<geometry::Point*> points, Matrix * position, Matrix * derivate) const;
 
             /* Cruzamento de duas matrizes tridimensionais */

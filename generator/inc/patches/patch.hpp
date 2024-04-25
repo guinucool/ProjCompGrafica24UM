@@ -14,7 +14,7 @@ namespace patches
         private:
 
             /* Propriedades do objeto patch */
-            std::vector<primitives::Point> points;
+            std::vector<primitives::Point*> points;
             std::vector<Batch> index;
             utils::Matrix curve;
             int tesselation;
@@ -30,6 +30,9 @@ namespace patches
             /* Construtor através de um ficheiro de um patch */
             Patch(utils::Matrix curve, int tesselation, std::string path);
 
+            /* Destrutor de um patch */
+            ~Patch();
+
             /* Adição de um batch ao patch */
             void addBatch(Batch batch);
 
@@ -40,7 +43,7 @@ namespace patches
             void addPoint(primitives::Point point);
 
             /* Devolução da lista de pontos de um patch */
-            std::vector<primitives::Point> getPoints() const;
+            std::vector<primitives::Point*> getPoints() const;
 
             /* Definição da curva associada ao patch */
             void setCurve(utils::Matrix curve);

@@ -35,7 +35,7 @@ namespace patches
             std::vector<int> getIndex() const;
 
             /* Construção de uma primitiva baseada no batch */
-            void build(primitives::Primitive * primitive, int tesselation, utils::Matrix curve, std::vector<primitives::Point> points);
+            void build(primitives::Primitive * primitive, int tesselation, utils::Matrix curve, std::vector<primitives::Point*> points);
 
             /* Leitura de um batch vindo de um ficheiro */
             void read(std::ifstream& stream);

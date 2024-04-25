@@ -538,7 +538,7 @@ namespace utils
     }
 
     /* Curvamento de uma matriz dado um conjunto de pontos */
-    void Matrix::curve(float t, std::list<geometry::Point*> points, Matrix * position, Matrix * derivate) const {
+    void Matrix::curve(std::list<geometry::Point*> points, Matrix * xc, Matrix * yc, Matrix * zc) const {
 
         /* Verifica se o número de pontos dados é válido para uma curva */
         if (points.size() != 4)
@@ -564,10 +564,45 @@ namespace utils
             index++;
         }
         
-        /* Multiplicação de matrizes para criação de curvas */
-        x = (*this) * x;
-        y = (*this) * y;
-        z = (*this) * z;
+        /* Multiplicação da matriz do eixo x para criação de curvas */
+        if (xc != NULL)
+            *xc = (*this) * x;
+
+        /* Multiplicação da matriz do eixo y para criação de curvas */
+        if (yc != NULL)
+            *yc = (*this) * y;
+
+        /* Multiplicação da matriz do eixo z para criação de curvas */
+        if (zc != NULL)
+            *zc = (*this) * z;
+    }
+
+    /* Curvamento de uma matriz dado um intervalo de tempo */
+    void Matrix::curve(float t, float * position, float * derivate) const {
+
+        /* Verifica se a matriz é curvável */
+        if (this->rows != 4 && this->cols != 1)
+            throw std::runtime_error("given matrix is not valid to curve with an instant");
+
+        /* Obtenção do valor de posição */
+        if (position != NULL)
+            *position = this->curvePosition(t)[0];
+
+        /* Obtenção do valor de derivada */
+        if (derivate != NULL)
+            *derivate = this->curveDerivate(t)[0];
+    }
+
+    /* Curvamento de uma matriz dado um conjunto de pontos e um intervalo de tempo */
+    void Matrix::curve(float t, std::list<geometry::Point*> points, Matrix * position, Matrix * derivate) const {
+
+        /* Criação das matrizes de curva */
+        Matrix x(1, 4, 0.0f);
+        Matrix y(1, 4, 0.0f);
+        Matrix z(1, 4, 0.0f);
+
+        /* Criação das curvas dos eixos */
+        this->curve(points, &x, &y, &z);
 
         /* Obtenção da matriz de posição */
         if (position != NULL) {
@@ -601,7 +636,7 @@ namespace utils
     }
 
     /* Curvamento de uma matriz em superfície dado um conjunto de pontos */
-    void Matrix::surface(float u, float v, std::list<geometry::Point*> points, Matrix * position, Matrix * derivate) const {
+    void Matrix::surface(std::list<geometry::Point*> points, Matrix * xs, Matrix * ys, Matrix * zs) const {
 
         /* Verifica se o número de pontos dados é válido para uma superfície */
         if (points.size() != 16)
@@ -635,10 +670,45 @@ namespace utils
         /* Cálculo da matriz de curva transposta */
         Matrix transposed = this->transpose();
 
-        /* Multiplicação de matrizes para criação de curvas */
-        x = (*this) * x * transposed;
-        y = (*this) * y * transposed;
-        z = (*this) * z * transposed;
+        /* Multiplicação de matrizes para criação da matriz do eixo x */
+        if (xs != NULL)
+            *xs = (*this) * x * transposed;
+
+        /* Multiplicação de matrizes para criação da matriz do eixo y */
+        if (ys != NULL)
+            *ys = (*this) * y * transposed;
+
+        /* Multiplicação de matrizes para criação da matriz do eixo z */
+        if (zs != NULL)
+            *zs = (*this) * z * transposed;
+    }
+
+    /* Curvamento de uma matriz em superfície dado dois instantes */
+    void Matrix::surface(float u, float v, float * position, float * derivate) const {
+
+        /* Verifica se a matriz é curvável para superfície */
+        if (this->rows != 4 && this->cols != 4)
+            throw std::runtime_error("given matrix is not valid to curve with an instant");
+
+        /* Obtenção do valor de posição */
+        if (position != NULL)
+            *position = this->surfacePosition(u, v)[0];
+
+        /* Obtenção do valor de derivada */
+        if (derivate != NULL)
+            *derivate = this->surfaceDerivate(u, v)[0];
+    }
+
+    /* Curvamento de uma matriz em superfície dado um conjunto de pontos e dois instantes */
+    void Matrix::surface(float u, float v, std::list<geometry::Point*> points, Matrix * position, Matrix * derivate) const {
+
+        /* Criação das matrizes de superfície dos eixos */
+        Matrix x(4, 4, 0.0f);
+        Matrix y(4, 4, 0.0f);
+        Matrix z(4, 4, 0.0f);
+
+        /* Criação das superfícies dos eixos */
+        this->surface(points, &x, &y, &z);
 
         /* Obtenção da matriz de posição */
         if (position != NULL) {

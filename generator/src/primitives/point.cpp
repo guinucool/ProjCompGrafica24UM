@@ -29,6 +29,13 @@ namespace primitives
         this->setCoords(point.X(), point.Y(), point.Z());
     }
 
+    /* Construtor de um ponto vindo de um ficheiro */
+    Point::Point(std::ifstream& stream) : coords(4, 1, 1.0f) {
+        
+        /* Leitura do ponto vindo do ficheiro */
+        this->read(stream);
+    }
+
     /* Construtor parametrizado de ponto para coordenadas polares */
     Point Point::polarPoint(float radius, float alpha, float beta) {
 
@@ -140,6 +147,29 @@ namespace primitives
 
         /* Aplicação da matriz */
         this->transform(scale);
+    }
+
+    /* Leitura de um ponto vindo de um ficheiro */
+    void Point::read(std::ifstream& stream) {
+
+        /* Atribuição do valor lido à coordenada */
+        stream >> this->X();
+
+        /* Ignora a vírgula que separa os valores */
+        stream.ignore(1);
+
+        /* Atribuição do valor lido à coordenada */
+        stream >> this->Y();
+
+        /* Ignora a vírgula que separa os valores */
+        stream.ignore(1);
+
+        /* Atribuição do valor lido à coordenada */
+        stream >> this->Z();
+
+        /* Verfica se a leitura foi válida */
+        if (stream.fail())
+            throw std::invalid_argument("given patch file is invalid");
     }
 
     /* Escrita de um ponto em ficheiro */
