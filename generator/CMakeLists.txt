@@ -18,15 +18,17 @@ set(GENERATOR_SRC_FILES)
 file(GLOB GENERATOR_PRIMITIVE_SRC "src/primitives/*.cpp")
 list(APPEND GENERATOR_SRC_FILES ${GENERATOR_PRIMITIVE_SRC})
 
+# Lista de módulos necessários para o funcionamento da geração de patches do programa
+file(GLOB GENERATOR_PATCH_SRC "src/patches/*.cpp")
+list(APPEND GENERATOR_SRC_FILES ${GENERATOR_PATCH_SRC})
+
 # Lista de ficheiros necessários à definição dos geradores de modelos em específico
-set(GENERATOR_SRC_MODELS_FILES)
 file(GLOB MODEL_SOURCES "src/models/*.cpp")
-list(APPEND GENERATOR_SRC_MODELS_FILES ${MODEL_SOURCES})
+list(APPEND GENERATOR_SRC_FILES ${MODEL_SOURCES})
 
 # Criação do executável do projeto
 add_executable(${PROJECT_NAME} 
                 src/generator.cpp
                 ${SHARED_SRC_FILES}
                 ${GENERATOR_SRC_FILES}
-                ${MODEL_SOURCES}
             )

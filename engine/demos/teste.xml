@@ -1,7 +1,7 @@
 <world>
     <window width="800" height="800" />
     <camera>
-        <position x="0" y="0" z="5" />
+        <position x="0" y="0" z="10" />
         <lookAt x="0" y="0" z="0" />
         <up x="0" y="1" z="0" />
         <projection fov="60" near="1" far="1000" />
@@ -12,15 +12,17 @@
         </models> -->
         <group>
             <transform>
-                <translate time="5" align="true" >
+                <!--<translate time="5" align="true" >
                     <point x="-1" y="-1" z="0" />
                     <point x="-1" y="1" z="0" />
                     <point x="1" y="1" z="0" />
                     <point x="1" y="-1" z="0" />
-                </translate>
+                </translate>-->
+                <rotate time="10" x="1" y="0" z="0" />
             </transform>
+
             <models>
-                <model file="sphere.3d"/>
+                <model file="teapot.3d"/>
             </models>
         </group>
         <!-- <group>

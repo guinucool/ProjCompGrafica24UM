@@ -1,4 +1,6 @@
 /* Inclusão de módulos necessários à funcionalidade do programa */
+#include "../../shared/inc/utils/matrix.hpp"
+#include "../inc/patches/patch.hpp"
 #include "../inc/models/sphere.hpp"
 #include "../inc/models/plane.hpp"
 #include "../inc/models/cone.hpp"
@@ -70,6 +72,24 @@ primitives::Primitive plane(int argc, char ** argv) {
     return models::Plane(length, divisions);
 }
 
+/* Função de criação de um patch */
+primitives::Primitive patch(int argc, char ** argv) {
+    
+    /* Validação da quantidade de elementos */
+    if (argc != 5)
+        throw std::invalid_argument("given invalid arguments");
+
+    /* Inicialização e transformação dos argumentos */
+    std::string path(argv[2]);
+    int tesselation = std::stoi(argv[3]);
+
+    /* Inicialização de um patch */
+    patches::Patch patch(utils::Matrix::bezier(), tesselation, path);
+
+    /* Devolução do patch criado */
+    return patch.build();
+}
+
 /* Função principal do programa */
 int main(int argc, char ** argv) {
 
@@ -103,6 +123,8 @@ int main(int argc, char ** argv) {
             primitive = cone(argc, argv);
         else if (model == "sphere")
             primitive = sphere(argc, argv);
+        else if (model == "patch")
+            primitive = patch(argc, argv);
         else
             throw std::invalid_argument("given invalid arguments");
 
