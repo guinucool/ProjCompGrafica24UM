@@ -12,7 +12,7 @@
         </models> -->
         <group>
             <transform>
-                <translate time="1" align="true" >
+                <translate time="5" align="true" >
                     <point x="-1" y="-1" z="0" />
                     <point x="-1" y="1" z="0" />
                     <point x="1" y="1" z="0" />

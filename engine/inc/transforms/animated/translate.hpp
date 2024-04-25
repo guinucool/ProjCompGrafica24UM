@@ -18,15 +18,9 @@ namespace transforms::animated {
             static std::vector<utils::Matrix> Y;
 
             /* Definição das propriedades de uma translação */
-            std::vector<drawables::Point> points;
+            std::vector<drawables::Point*> points;
             bool align;
             int index;
-
-            /* Aplicação da translação de Catmull-Rom */
-            void catmullRomPath(float t, utils::Matrix M) const;
-
-            /* Aplicação da rotação de Catmull-Rom */
-            void catmullRomAlign(float t, utils::Matrix M) const;
 
             /* Aplicação de uma translação com Catmull-Rom ao cenário */
             void catmullRom(float t) const;
@@ -55,6 +49,9 @@ namespace transforms::animated {
 
             /* Construtor através de um ficheiro XML de translação */
             Translate(tinyxml2::XMLElement * transform);
+
+            /* Destrutor de translação */
+            ~Translate();
 
             /* Devolução da lista de pontos que definem a curva */
             std::vector<drawables::Point> getPoints() const;

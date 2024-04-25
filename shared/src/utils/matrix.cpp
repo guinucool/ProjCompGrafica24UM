@@ -545,9 +545,9 @@ namespace utils
             throw std::runtime_error("given point list is not valid for a curve");
 
         /* Criação das matrizes de coordenadas */
-        Matrix x(1, 4, 0.0f);
-        Matrix y(1, 4, 0.0f);
-        Matrix z(1, 4, 0.0f);
+        Matrix x(4, 1, 0.0f);
+        Matrix y(4, 1, 0.0f);
+        Matrix z(4, 1, 0.0f);
 
         /* Iterador de população das matrizes de coordenadas */
         int index = 0;
@@ -597,9 +597,9 @@ namespace utils
     void Matrix::curve(float t, std::list<geometry::Point*> points, Matrix * position, Matrix * derivate) const {
 
         /* Criação das matrizes de curva */
-        Matrix x(1, 4, 0.0f);
-        Matrix y(1, 4, 0.0f);
-        Matrix z(1, 4, 0.0f);
+        Matrix x(4, 1, 0.0f);
+        Matrix y(4, 1, 0.0f);
+        Matrix z(4, 1, 0.0f);
 
         /* Criação das curvas dos eixos */
         this->curve(points, &x, &y, &z);
