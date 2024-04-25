@@ -13,7 +13,6 @@
 #include <stdexcept>
 #include <typeinfo>
 #include <cmath>
-#include <iostream>
 
 /* Inicialização do namespace utilizado para a definição */
 namespace transforms::animated
@@ -100,10 +99,7 @@ namespace transforms::animated
     }
 
     /* Construtor de cópia de translação */
-    Translate::Translate(const Translate& translate) : Transform(translate), align(translate.align), points(), index(Translate::Y.size()) {
-
-        /* Adição do vetor de up à lista global */
-        Translate::Y.push_back(utils::Matrix::up());
+    Translate::Translate(const Translate& translate) : Transform(translate), align(translate.align), points(), index(translate.index) {
 
         /* Adição dos vários pontos à translação de cópia */
         for (drawables::Point * point : translate.points)
