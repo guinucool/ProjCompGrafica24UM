@@ -1,37 +1,62 @@
-Definida a nova arquitetura e tendo as necessidades de
-implementação em mente, foram, agora, tomadas algumas
-decisões da implementação da arquitetura modificada.
+Definida e estruturada a arquitetura da solução, foram, então,
+especificadas soluções de implementação que tratassem as curvas
+e os \textbf{VBO}s.
+
+\subsection{Curvas e Superfícies}
+
+Tendo em perpestiva a arquitetura e requisitos definidos,
+assim como, a implementação das curvas, é possível perceber
+que as ambas as curvas de \textbf{Catmull-Rom} e \textbf{Bezier}
+podem ser implementadas em conjunto, sendo apenas necessário
+alterar os valores da matriz de curva.
 \newline
 \break
 \noindent
-Como especificado anteriormente, a arquitetura da 
-transformação irá fazer uso de uma super-classe, que
-deverá especificar que todas as suas sub-classes possuem
-um método que permite à transformação definida ser
-aplicada.
+Assim sendo, foi feito uso do módulo de matriz, já definido na
+primeira fase, que foi atualizado com novas operações relevantes
+à operação com matrizes (transpostas, inversas, determinantes, etc...). 
 \newline
 \break
 \noindent
-Estas transformações deverão, então, ser guardadas numa
-lista de transformações do grupo de forma a manter a sua
-ordem de aplicação (uma vez que o resultado é diferente
-dependendo da ordem das transformações), onde não deverá
-haver duas transformações do mesmo tipo.
+Foram, então, definidas as matrizes de \textbf{Catmull-Rom} e \textbf{Bezier}
+no módulo, que, em conjunto com as operações de curva e superfície, permitem
+gerar posições e derivadas em curvas ou superfícies.
 \newline
 \break
 \noindent
-Já a definição dos sub-grupos seguirá uma estratégia
-semelhante, guardando os vários sub-grupos numa lista
-de grupos. Cada grupo será, então, desenhado pela ordem
-de aparição na configuração, fazendo uso da definição
-recursiva para a função de desenho.
+Estas operações são elementares de forma a que seja possível usar qualquer matriz de
+curva para gerar posições e derivadas dado um instante da curva (ou dois, no caso da superfície)
+e um conjunto de pontos de acordo.
 \newline
 \break
 \noindent
-Por último, de forma a manter a herança de
-transformações e evitar a sua aplicação indesejada,
-o início do desenho de cada grupo será
-o armazenamento da matriz atual, seguido da aplicação
-das transformações, desenho dos modelos e dos grupos e,
-posteriormente, de um restauro da matriz armazenada
-inicialmente.
+Definidas as curvas e as suas operações, apenas é necessário, então, usar as posições
+geradas por um intervalo de \textbf{Tesselation} para criar primitivas ou usar as
+posições e derivadas geradas por um instante temporal para mover um objeto ao longo
+de uma curva através de translações e rotações.
+
+\subsection{Representação por VBO}
+
+Considerando o modo de funcionamento dos \textbf{VBO} a solução escolhida para
+a sua implementação permite o uso desta representação sem alterações de arquitetura.
+\newline
+\break
+\noindent
+Para tal, definiu-se que cada primitiva terá uma referência ao \textbf{buffer} responsável
+por controlar a representação dos seus pontos.
+\newline
+\break
+\noindent
+Assim sendo, a representação de \textbf{VBO}s deverá ser definida por duas fases, uma para 
+a alimentação das coordenadas dos pontos ao \textbf{buffer} e outra para a representação
+destas coordenadas já definidas.
+\newline
+\break
+\noindent
+Cada ponto ficará, então, encarregue de alimentar as suas coordenadas ao \textbf{buffer}
+da respetiva primitiva quando pedido para tal.
+\newline
+\break
+\noindent
+Alimentados todos os \textbf{buffers} de todas as primitivas, apenas será necessária a
+sua posterior representação através dos \textbf{buffers} definidos.
