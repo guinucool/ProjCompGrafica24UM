@@ -1,0 +1,71 @@
+% Inicialização do relatório e importação dos módulos necessários
+\documentclass[a4paper,12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{titling}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{caption}
+
+% Criação do título do relatório
+\pretitle{
+        \begin{center}
+        \LARGE
+        \includegraphics[width=10cm]{imgs/capa.png}\\[\bigskipamount]
+        \title{\textbf{Computação Gráfica - Relatório 3ª Fase}}
+        \author{Gabriel Pereira, a100891\\
+                Guilherme Oliveira, a100592\\
+                Gustavo Castro, a100482}
+}
+
+% Definição do estilo do relatório
+\lstdefinestyle{BASH}
+{
+        backgroundcolor=\color{black},
+        basicstyle=\scriptsize\color{white}\ttfamily     
+}
+
+% Definição da posição do título
+\posttitle{
+        \end{center}
+}
+
+% Inicialização do documento
+\begin{document}
+
+% Impressão do título do documento
+\begin{titlepage}
+        \pagenumbering{gobble}
+        \maketitle
+\end{titlepage}
+
+% Numeração das páginas
+\pagenumbering{arabic}
+
+% Secção de Introdução do Relatório
+\section{Introdução}
+\input{sub/intro}
+
+% Secção dos Requisitos do Solução
+\section{Requisitos}
+\input{sub/req}
+
+% Secção de Conceptualização da Solução
+\section{Conceptualização}
+\input{sub/concept}
+
+% Secção de Implementação da Solução
+\section{Implementação}
+\input{sub/implement}
+
+% Secção de Resultados da Solução
+\section{Resultados}
+\input{sub/results}
+
+% Secção de Conclusão e Trabalho Futuro
+\section{Conclusão e Trabalho Futuro}
+\input{sub/conc}
+
+% Finalização do documento
+\end{document}

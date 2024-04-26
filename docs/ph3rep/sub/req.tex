@@ -1,0 +1,137 @@
+Tendo em consideração o objetivo para a implementação
+desta fase, foi definido um conjunto de requisitos que
+melhor representam o que se pretende.
+Ambos o motor gráfico e o gerador de primitivas terão
+de ser atualizados.
+
+\subsection{Patches de Bezier}
+
+Será necessário, agora, ao gerador de primitivas
+conseguir gerar superfícies curvas através de
+\textbf{patches de Bezier}.
+\newline
+\break
+\noindent
+Para tal, o gerador de primitivas deverá receber
+como argumento um conjunto de \textbf{patches} de
+pontos que consiguam definir uma primitiva, assim como,
+um nível de \textbf{Tesselation} que defina a curvatura
+de cada superfície.
+\newline
+\break
+\noindent
+Este conjunto de \textbf{patches} deverá, por simplicidade,
+ser dado como forma de um único ficheiro onde serão descritos
+os pontos que os consituem, assim como, os próprios
+\textbf{patches}.
+\newline
+\break
+\noindent
+Estes ficheiros deverão, então, seguir o seguinte formato:
+\newline
+
+\begin{tcolorbox}[
+    colback=blue!10!white,
+    colframe=black!50!black,
+]
+\begin{verbatim}
+2 <- número de patches
+0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 <- ind.
+3, 16, 17, 18, 7, 19, 20, 21, 11, 22, 23, 24, 15, 25, 26, 27
+28 <- número de pontos de controlo
+1.4, 0, 2.4 <- ponto de controlo 0
+1.4, -0.784, 2.4 <- ponto de controlo 1
+0.784, -1.4, 2.4 <- ponto de controlo 2
+0, -1.4, 2.4
+1.3375, 0, 2.53125
+1.3375, -0.749, 2.53125
+0.749, -1.3375, 2.53125
+0, -1.3375, 2.53125
+1.4375, 0, 2.53125
+1.4375, -0.805, 2.53125
+0.805, -1.4375, 2.53125
+0, -1.4375, 2.53125
+1.5, 0, 2.4
+1.5, -0.84, 2.4
+0.84, -1.5, 2.4
+0, -1.5, 2.4
+-0.784, -1.4, 2.4
+-1.4, -0.784, 2.4
+-1.4, 0, 2.4
+-0.749, -1.3375, 2.53125
+-1.3375, -0.749, 2.53125
+-1.3375, 0, 2.53125
+-0.805, -1.4375, 2.53125
+-1.4375, -0.805, 2.53125
+-1.4375, 0, 2.53125
+-0.84, -1.5, 2.4 <- ponto de controlo 26
+-1.5, -0.84, 2.4 <- ponto de controlo 27
+\end{verbatim}
+\end{tcolorbox}
+
+\vspace{12pt}
+\noindent
+O argumento deste patch deverá, portanto, ser dado como:
+
+\begin{lstlisting}[style=BASH]
+    $ generator patch path/to/file.patch tesselation path/to/file.3d
+\end{lstlisting}
+
+\subsection{Transformações Animadas}
+Para além destas novas primitivas, deverão, ainda,
+ser implementadas animações sobre a forma de transformações.
+\newline
+\break
+\noindent
+Estas transformações, em constrate com as definidas na fase
+anterior, deverão variar consoante o tempo decorrido, recebendo,
+portanto, como parâmetro, um tempo para a sua execução.
+Apenas as rotações e as translações irão ser capazes de
+animação.
+\newline
+\break
+\noindent
+As translações deverão ser, então, animadas através de uma
+curva de \textbf{Catmull-Rom}, seguindo, em ciclo, durante
+o intervalo de tempo definido, um conjunto de \textbf{quatro
+ou mais} pontos dado como argumento.
+\newline
+\break
+\noindent
+Já as rotações serão animadas por uma rotação constante de
+360º que terá duração do intervalo de tempo definido.
+\newline
+\break
+\noindent
+Estas novas transformações deverão, como presumível, ser
+definidas através de uma configuração \textbf{XML} do seguinte
+formato:
+\newline
+
+\begin{tcolorbox}[
+    colback=blue!10!white,
+    colframe=black!50!black,
+    after upper={\hfill\textbf{xml}}
+]
+\begin{verbatim}
+    ...
+    <translate time="10" align="True" >
+        <point x="1" y="0" z="1" />
+        <point x="0.707" y="0.707" <="1”"/>
+        <point x="0" y="1" z="1" />
+        ...
+        <point x="-1" y="0" z="1" />
+    </translate>
+    ...
+
+    ...
+    <rotate time="10" x="0" y="1" z="0" />
+    ...
+\end{verbatim}
+\end{tcolorbox}
+
+\subsection{Representação por VBO}
+Por último, deverá ser tido, ainda, em atenção
+da necessidade de trocar o modo imediato de representação
+para a representação por \textbf{VBO}, o que trará
+melhorias de desempenho à solução.
