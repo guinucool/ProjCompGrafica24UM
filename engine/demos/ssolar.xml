@@ -59,7 +59,7 @@
             <!-- Moon -->
             <group>
                 <transform>
-                    <rotate time="6" x="0" y="1" z="0" />
+                    <rotate time="6" x="0" y="-1" z="0" />
                     <translate x="7" y="0" z="0" />
                     <scale x="0.3" y="0.3" z="0.3" />
                 </transform>
@@ -67,6 +67,22 @@
                     <model file="sphere.3d"/>
                 </models>
             </group>
+        </group>
+        <!-- Comet striking Earth -->
+        <group>
+            <transform>
+                <translate time="28" align="True" >
+                    <point x="30" y="60" z="20" />
+                    <point x="20" y="55" z="10" />
+                    <point x="10" y="50" z="5" />
+                    <point x="14" y="20" z="2" />
+                    <point x="17" y="0" z="0" />
+                </translate>
+                <scale x="0.2" y="0.2" z="0.2" />
+            </transform>
+            <models>
+                <model file="teapot.3d"/>
+            </models>
         </group>
         <!-- Mars -->
         <group>
@@ -100,6 +116,26 @@
             <models>
                 <model file="sphere.3d"/>
             </models>
+            <!-- Teapot Space Station -->
+            <group>
+                <transform>
+                    <rotate time="5" x="0" y="1" z="0" />
+                    <translate time="10" align="True" >
+                        <point x="20" y="0" z="0" />
+                        <point x="10" y="0" z="10" />
+                        <point x="0" y="0" z="20" />
+                        <point x="-10" y="0" z="10" />
+                        <point x="-20" y="0" z="0" />
+                        <point x="-10" y="0" z="-10" />
+                        <point x="0" y="0" z="-20" />
+                        <point x="10" y="0" z="-10" />
+                    </translate>
+                    <scale x="0.2" y="0.2" z="0.2" />
+                </transform>
+                <models>
+                    <model file="teapot.3d"/>
+                </models>
+            </group>
         </group>
         <!-- Uranus -->
         <group>
