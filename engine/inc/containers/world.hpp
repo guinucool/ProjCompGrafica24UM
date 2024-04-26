@@ -81,7 +81,7 @@ namespace containers
             /* Define a função que será usada para dar início à configuração do mundo */
             static void init(int argc, char ** argv, void (*callback)());
 
-            /* Define a função que será usada para dar início ao desenho do mundo em modo imediato */
+            /* Define a função que será usada para dar início ao desenho do mundo */
             static void initDraw();
 
             /* Define o operador de comparação de igualdade */

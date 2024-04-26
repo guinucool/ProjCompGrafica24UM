@@ -72,8 +72,11 @@ namespace containers
             /* Leitura de um grupo através de um ficheiro xml */
             void read(std::string directory, tinyxml2::XMLElement * group);
 
-            /* Define a função que será usada para desenhar os elementos do grupo em modo imediato */
-            void draw() const;
+            /* Define a função que será usada para desenhar os elementos do grupo */
+            void draw(bool immediate) const;
+
+            /* Alimentação dos buffers para desenho em modo VBO */
+            void feedBuffer();
 
             /* Define o operador de comparação de igualdade */
             bool operator==(const Group& group) const;

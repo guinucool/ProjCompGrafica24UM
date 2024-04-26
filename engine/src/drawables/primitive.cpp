@@ -8,7 +8,7 @@ namespace drawables
     Primitive::Primitive() {}
 
     /* Construtor de cópia de primitiva */
-    Primitive::Primitive(const Primitive& primitive) : faces(primitive.faces) {}
+    Primitive::Primitive(const Primitive& primitive) : faces(primitive.faces) { this->buffer[0] = primitive.buffer[0]; }
 
     /* Construtor de primitiva através da leitura de ficheiro */
     Primitive::Primitive(std::ifstream& stream) {
@@ -84,17 +84,42 @@ namespace drawables
         this->read(directory + path);
     }
 
-    /* Desenho de uma primitiva no modo imediato */
-    void Primitive::draw() const {
+    /* Desenho de uma primitiva */
+    void Primitive::draw(bool immediate) const {
 
-        /* Desenho de todos os triângulos presentes na primitiva */
-        for (Face elem: this->faces)
-            elem.draw();
+        /* Verifica qual o modo de desenho */
+        if (immediate) {
+
+            /* Desenho de todos os triângulos presentes na primitiva */
+            for (Face elem: this->faces)
+                elem.draw();
+
+        } else {
+
+            /* Desenho em modo VBO */
+            glBindBuffer(GL_ARRAY_BUFFER, this->buffer[0]);
+            glVertexPointer(3, GL_FLOAT, 0, 0);
+            glDrawArrays(GL_TRIANGLES, 0, this->faces.size() * 3);
+
+        }
     }
 
     /* Alimentação de um buffer para desenho em modo VBO */
-    void Primitive::feedBuffer(std::vector<float>& buffer) const {
+    void Primitive::feedBuffer() {
 
+        /* Criação do buffer de vértices */
+        std::vector<float> buffer;
+
+        /* Alimentação do buffer por parte de todas as faces */
+        for (Face face: this->faces)
+            face.feedBuffer(buffer);
+
+        /* Geração do buffer da primitiva */
+        glGenBuffers(1, this->buffer);
+
+        /* Alimentação do buffer para o modo VBO */
+        glBindBuffer(GL_ARRAY_BUFFER, this->buffer[0]);
+        glBufferData(GL_ARRAY_BUFFER, buffer.size() * sizeof(float), buffer.data(), GL_STATIC_DRAW);
     }
 
     /* Operação de comparação por igualdade de primitivas */

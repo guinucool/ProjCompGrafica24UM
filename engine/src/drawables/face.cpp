@@ -67,7 +67,9 @@ namespace drawables
 
     /* Alimentação de um buffer para desenho em modo VBO */
     void Face::feedBuffer(std::vector<float>& buffer) const {
-
+        this->first.feedBuffer(buffer);
+        this->second.feedBuffer(buffer);
+        this->third.feedBuffer(buffer);
     }
 
     /* Operação de clonagem de uma face */

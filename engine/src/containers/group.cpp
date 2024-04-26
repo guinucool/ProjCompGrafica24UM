@@ -1,13 +1,6 @@
 /* Inclusão do cabeçalho de definição da classe */
 #include "../../inc/containers/group.hpp"
 
-/* Inclusão do OpenGL e do GLUT */
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
-
 /* Inclusão de módulos necessários à funcionalidade */
 #include "../../inc/transforms/constant/translate.hpp"
 #include "../../inc/transforms/constant/rotate.hpp"
@@ -234,8 +227,8 @@ namespace containers
         
     }
 
-    /* Define a função que será usada para desenhar os elementos do grupo em modo imediato */
-    void Group::draw() const {
+    /* Define a função que será usada para desenhar os elementos do grupo */
+    void Group::draw(bool immediate) const {
 
         /* Guarda a matriz de transformações atuais */
         glPushMatrix();
@@ -246,14 +239,26 @@ namespace containers
 
         /* Desenha todas as primitivas uma a uma */
         for (drawables::Primitive model: this->models)
-            model.draw();
+            model.draw(immediate);
 
         /* Desenha todos os sub-grupos */
         for (Group group: this->groups)
-            group.draw();
+            group.draw(immediate);
 
         /* Retoma a matriz antes de se ter desenhado o grupo */
         glPopMatrix();
+    }
+
+    /* Alimentação dos buffers para desenho em modo VBO */
+    void Group::feedBuffer() {
+        
+        /* Alimentação do buffer de todas as primitivas */
+        for (drawables::Primitive& primitive: this->models)
+            primitive.feedBuffer();
+
+        /* Alimentação dos buffers dos sub-grupos */
+        for (Group& group: this->groups)
+            group.feedBuffer();
     }
 
     /* Define o operador de comparação de igualdade */

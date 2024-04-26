@@ -1,13 +1,6 @@
 /* Inclusão do cabeçalho de definição da classe */
 #include "../../inc/containers/world.hpp"
 
-/* Inclusão do OpenGL e do GLUT */
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/glut.h>
-#endif
-
 /* Inclusão de módulos necessários à funcionalidade */
 #include "../../../shared/inc/exception/unvalues.hpp"
 #include <stdexcept>
@@ -205,8 +198,17 @@ namespace containers
         if (!(World::singleton.camera))
             throw customException::undefined_value("camera property is not defined properly");
 
+        /* Verifica a existência de um grupo */
+        if (!(World::singleton.group))
+            throw customException::undefined_value("main group property is not defined properly");
+
         /* Inicialização da janela */
         World::singleton.window->defineWindow();
+
+        /* Inicialização dos VBO para desenho */
+        glewInit();
+	    glEnableClientState(GL_VERTEX_ARRAY);
+        World::singleton.group->feedBuffer();
 
         /* Definição das funções de representação */
         glutReshapeFunc(World::shapeCamera);
@@ -222,7 +224,7 @@ namespace containers
         glutMainLoop();
     }
 
-    /* Define a função que será usada para dar início ao desenho do mundo em modo imediato */
+    /* Define a função que será usada para dar início ao desenho do mundo */
     void World::initDraw() {
 
         /* Verifica a existência de uma câmera */
@@ -244,7 +246,7 @@ namespace containers
         World::singleton.camera->defineCamera();
 
         /* Desenha o grupo */
-        World::singleton.group->draw();
+        World::singleton.group->draw(false);
 
         /* Troca de buffers para desenhar no ecrã */
         glutSwapBuffers();

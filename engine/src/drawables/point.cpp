@@ -118,7 +118,9 @@ namespace drawables
 
     /* Alimentação de um buffer para desenho em modo VBO */
     void Point::feedBuffer(std::vector<float>& buffer) const {
-
+        buffer.push_back(this->x);
+        buffer.push_back(this->y);
+        buffer.push_back(this->z);
     }
 
     /* Operação de clonagem de um ponto */

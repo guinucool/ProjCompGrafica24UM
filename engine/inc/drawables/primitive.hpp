@@ -1,9 +1,18 @@
 #ifndef PRIMITIVE_HPP
 #define PRIMITIVE_HPP
 
+/* Inclusão do OpenGL e do GLUT */
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glew.h>
+#include <GL/glut.h>
+#endif
+
 #include "../../../shared/inc/geometry/primitive.hpp"
 #include "../../../external/tinyxml2/tinyxml2.h"
 #include "face.hpp"
+#include <vector>
 #include <list>
 
 /* Inicialização do namespace onde a classe irá ser definida */
@@ -17,6 +26,7 @@ namespace drawables
             
             /* Definição das propriedades da primitiva */
             std::list<Face> faces;
+            GLuint buffer[1];
         
         public:
 
@@ -50,11 +60,11 @@ namespace drawables
             /* Leitura de uma primitiva vinda de um ficheiro xml */
             void read(std::string directory, tinyxml2::XMLElement * model);
 
-            /* Desenho de uma primitiva no modo imediato */
-            void draw() const;
+            /* Desenho de uma primitiva */
+            void draw(bool immediate) const;
 
             /* Alimentação de um buffer para desenho em modo VBO */
-            void feedBuffer(std::vector<float>& buffer) const;
+            void feedBuffer();
 
             /* Operação de comparação por igualdade de primitivas */
             bool operator==(const Primitive& primitive) const;
