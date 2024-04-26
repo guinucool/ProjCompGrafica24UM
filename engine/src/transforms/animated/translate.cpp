@@ -13,6 +13,7 @@
 #include <stdexcept>
 #include <typeinfo>
 #include <cmath>
+#include <iostream>
 
 /* Inicialização do namespace utilizado para a definição */
 namespace transforms::animated
@@ -21,44 +22,17 @@ namespace transforms::animated
     std::vector<utils::Matrix> Translate::Y;
 
     /* Aplicação de uma translação com Catmull-Rom ao cenário */
-    void Translate::catmullRom(float t) const {
-
-        /* Obtenção do número de pontos presentes na curva de Catmull-Rom */
-        size_t size = this->getSize();
-
-        /* Cálculo do tempo relativo */
-        float rt = t * size;
-        int index = floor(rt);
-        rt = rt - index;
-
-        /* Criação da lista de pontos para criação da curva */
-        std::list<geometry::Point*> curve; 
-
-        /* Cálculo da ordem dos vários pontos da curva */
-        index = (index + size - 1) % size;
+    void Translate::catmullRom(float t, std::list<geometry::Point*> points) const {
 
         /* Criação da matriz de Catmull-Rom */
         utils::Matrix M = utils::Matrix::catmullRom();
-
-        /* População da lista de pontos de acordo */
-        for (size_t i = 0; i < 4; i++) {
-
-            /* Adição do elemento à lista */
-            curve.push_back(this->points[index]);
-
-            /* Passsagem para o índice do próximo ponto */
-            index = (index + 1) % size;
-        }
 
         /* Criação da matriz de posição e derivada */
         utils::Matrix position(1, 3, 0.0f);
         utils::Matrix derivate(1, 3, 0.0f);
 
         /* Cálculo das matrizes de aplicação da curva */
-        if (this->isAligned())
-            M.curve(rt, curve, &position, &derivate);
-        else
-            M.curve(rt, curve, &position, NULL);
+        M.curve(t, points, &position, &derivate);
 
         /* Execução da translação */
         glTranslatef(position[0], position[1], position[2]);
@@ -67,17 +41,17 @@ namespace transforms::animated
         if (this->isAligned()) {
 
             /* Cálculo dos vetores de rotação */
-            derivate = derivate.normalize();
-            utils::Matrix zrot = derivate.cross(Translate::Y[this->index]).normalize();
-            Translate::Y[this->index] = zrot.cross(derivate).normalize();
+            utils::Matrix X = derivate.normalize();
+            utils::Matrix Z = derivate.cross(Translate::Y[this->index]).normalize();
+            Translate::Y[this->index] = Z.cross(derivate).normalize();
 
             /* Criação da matriz de rotação */
             utils::Matrix rotate(4);
 
             /* População da matriz de rotação */
-            rotate.at(0, 0) = derivate[0]; rotate.at(0, 1) = derivate[1]; rotate.at(0, 2) = derivate[2];
+            rotate.at(0, 0) = X[0]; rotate.at(0, 1) = X[1]; rotate.at(0, 2) = X[2];
             rotate.at(1, 0) = Translate::Y[this->index][0]; rotate.at(1, 1) = Translate::Y[this->index][1]; rotate.at(1, 2) = Translate::Y[this->index][2];
-            rotate.at(2, 0) = zrot[0]; rotate.at(2, 1) = zrot[1]; rotate.at(2, 2) = zrot[2];
+            rotate.at(2, 0) = Z[0]; rotate.at(2, 1) = Z[1]; rotate.at(2, 2) = Z[2];
             
             /* Aplicação da matriz de rotação */
             glMultMatrixf(rotate.toArray());
@@ -85,12 +59,16 @@ namespace transforms::animated
     }
 
     /* Construtor padrão vazio de translação */
-    Translate::Translate() : Transform(), align(true), points(), index(Translate::Y.size()) { Translate::Y.push_back(utils::Matrix::up()); }
+    Translate::Translate() : Transform(), align(true), points(), index(Translate::Y.size()) {
+
+        /* Inicialização das propriedades globais */
+        Translate::Y.push_back(utils::Matrix::up());
+    }
 
     /* Construtor parametrizado de translação */
     Translate::Translate(float time, bool align, std::vector<drawables::Point> points) : Transform(time), align(align), points(), index(Translate::Y.size()) {
         
-        /* Adição do vetor de up à lista global */
+        /* Inicialização das propriedades globais */
         Translate::Y.push_back(utils::Matrix::up());
 
         /* Adição dos vários pontos à translação */
@@ -109,7 +87,7 @@ namespace transforms::animated
     /* Construtor através de um ficheiro XML de translação */
     Translate::Translate(tinyxml2::XMLElement * transform) : Transform(), index(Translate::Y.size()) {
 
-        /* Criação do vetor direcional em y inicial */
+        /* Inicialização das propriedades globais */
         Translate::Y.push_back(utils::Matrix::up());
 
         /* Leitura da translação em XML */
@@ -221,11 +199,32 @@ namespace transforms::animated
     /* Aplicação da translação ao cenário */
     void Translate::apply() const {
 
-        /* Cálculo do tempo do estado atual da animação */
-        float t = this->getRelativeTime();
+        /* Obtenção do número de pontos presentes na curva de Catmull-Rom */
+        size_t size = this->getSize();
+
+        /* Cálculo do tempo relativo */
+        float rt = this->getRelativeTime() * size;
+        int index = floor(rt);
+        rt = rt - index;
+
+        /* Criação da lista de pontos para criação da curva */
+        std::list<geometry::Point*> curve; 
+
+        /* Cálculo da ordem dos vários pontos da curva */
+        index = (index + size - 1) % size;
+
+        /* População da lista de pontos de acordo */
+        for (size_t i = 0; i < 4; i++) {
+
+            /* Adição do elemento à lista */
+            curve.push_back(this->points[index]);
+
+            /* Passsagem para o índice do próximo ponto */
+            index = (index + 1) % size;
+        }
 
         /* Aplicação da curva de Catmull-Rom para o tempo atual */
-        this->catmullRom(t);
+        this->catmullRom(rt, curve);
     }
 
     /* Define o operador de comparação de igualdade */

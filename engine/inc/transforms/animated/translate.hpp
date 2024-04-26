@@ -23,7 +23,7 @@ namespace transforms::animated {
             int index;
 
             /* Aplicação de uma translação com Catmull-Rom ao cenário */
-            void catmullRom(float t) const;
+            void catmullRom(float t, std::list<geometry::Point*> points) const;
 
         protected:
 

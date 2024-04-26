@@ -36,7 +36,12 @@ namespace transforms::animated
 
     /* Devolução do valor de tempo relativo da transformação */
     float Transform::getRelativeTime() const {
-        return glutGet(GLUT_ELAPSED_TIME) / (1000.0f * this->time);
+        return (this->getGlobalTime() / this->time);
+    }
+
+    /* Devolução do valor de tempo global */
+    float Transform::getGlobalTime() const {
+        return (glutGet(GLUT_ELAPSED_TIME) / (1000.0f));
     }
 
     /* Leitura de uma translação através de um ficheiro XML */

@@ -36,6 +36,9 @@ namespace transforms::animated {
             /* Devolução do valor de tempo relativo da transformação */
             float getRelativeTime() const;
 
+            /* Devolução do valor de tempo global */
+            float getGlobalTime() const;
+
             /* Leitura de uma transformação através de um ficheiro XML */
             void read(tinyxml2::XMLElement * transform);
 
