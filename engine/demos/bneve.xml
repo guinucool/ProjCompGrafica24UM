@@ -15,6 +15,7 @@
             <transform>
                 <translate x="0" y="-4" z="0" />
                 <scale x="1.5" y="1.5" z="1.5" />
+                <rotate time="40" x="0" y="1" z="0" />
             </transform>
             <models>
                 <model file="sphere.3d"/>
@@ -35,6 +36,7 @@
             <transform>
                 <translate x="0" y="7" z="0" />
                 <scale x="0.8" y="0.8" z="0.8" />
+                <rotate time="2" x="0" y="-1" z="0" />
             </transform>
             <models>
                 <model file="sphere.3d"/>
