@@ -134,7 +134,7 @@ namespace transforms::animated
         this->points.push_back(a_point);
     }
 
-    /* Devolução do valor da transformação aplicada sobre o eixo y */
+    /* Devolução da lista de pontos que definem a curva */
     std::vector<drawables::Point> Translate::getPoints() const {
 
         /* Criação de uma lista resultado */

@@ -43,7 +43,7 @@ namespace patches
             void addPoint(primitives::Point point);
 
             /* Devolução da lista de pontos de um patch */
-            std::vector<primitives::Point*> getPoints() const;
+            std::vector<primitives::Point> getPoints() const;
 
             /* Definição da curva associada ao patch */
             void setCurve(utils::Matrix curve);

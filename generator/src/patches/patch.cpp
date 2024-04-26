@@ -74,8 +74,17 @@ namespace patches
     }
 
     /* Devolução da lista de pontos de um patch */
-    std::vector<primitives::Point*> Patch::getPoints() const {
-        return this->points;
+    std::vector<primitives::Point> Patch::getPoints() const {
+        
+        /* Criação de uma lista resultado */
+        std::vector<primitives::Point> result;
+
+        /* População da lista resultado */
+        for (primitives::Point * point : this->points)
+            result.push_back(*point);
+
+        /* Devolução da lista criada */
+        return result;
     }
 
     /* Definição da curva associada ao patch */
