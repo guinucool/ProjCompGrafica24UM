@@ -1,0 +1,37 @@
+Definida a nova arquitetura e tendo as necessidades de
+implementação em mente, foram, agora, tomadas algumas
+decisões da implementação da arquitetura modificada.
+\newline
+\break
+\noindent
+Como especificado anteriormente, a arquitetura da 
+transformação irá fazer uso de uma super-classe, que
+deverá especificar que todas as suas sub-classes possuem
+um método que permite à transformação definida ser
+aplicada.
+\newline
+\break
+\noindent
+Estas transformações deverão, então, ser guardadas numa
+lista de transformações do grupo de forma a manter a sua
+ordem de aplicação (uma vez que o resultado é diferente
+dependendo da ordem das transformações), onde não deverá
+haver duas transformações do mesmo tipo.
+\newline
+\break
+\noindent
+Já a definição dos sub-grupos seguirá uma estratégia
+semelhante, guardando os vários sub-grupos numa lista
+de grupos. Cada grupo será, então, desenhado pela ordem
+de aparição na configuração, fazendo uso da definição
+recursiva para a função de desenho.
+\newline
+\break
+\noindent
+Por último, de forma a manter a herança de
+transformações e evitar a sua aplicação indesejada,
+o início do desenho de cada grupo será
+o armazenamento da matriz atual, seguido da aplicação
+das transformações, desenho dos modelos e dos grupos e,
+posteriormente, de um restauro da matriz armazenada
+inicialmente.

@@ -372,7 +372,40 @@ Todos os tipos de transformações deverão, também, ser sub-classes de transfo
 
 ## Fase 3
 
+```mermaid
+graph TD
+    Primitive-- tem (*) -->Face
+    Face-- tem (3) -->Point
+    Group-- tem (*) -->Primitive
+    Group-- tem (*) -->Group
+    Group-- tem (3) -->Transform
+    Translate-- é uma -->TransformEstática
+    Scale-- é uma -->TransformEstática
+    Rotate-- é uma -->TransformEstática
+    TranslateAnimada-- é uma -->TransformAnimada
+    RotateAnimada-- é uma -->TransformAnimada
+    TransformAnimada-- é uma -->Transform
+    TransformEstática-- é uma -->Transform
+    World-- tem -->Window
+    World-- tem -->Camera
+    World-- tem -->Group
+    Engine-- representa -->World
+```
 
+```mermaid
+graph TD
+    Primitive-- tem (*) -->Face
+    Face-- tem (3) -->Point
+    Plane-- é uma -->Primitive
+    Box-- é uma -->Primitive
+    Sphere-- é uma -->Primitive
+    Cone-- é uma -->Primitive
+    Generator-- cria -->Primitive
+    Generator-- cria -->Patch
+    Patch-- cria -->Primitive
+    Patch-- tem (*) -->Batch
+    Patch-- tem (*) -->Point
+```
 
 ---
 
