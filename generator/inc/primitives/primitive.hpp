@@ -40,6 +40,12 @@ namespace primitives
             /* Devolução de uma cópia da lista de faces da primitiva */
             std::list<Face> getFaces() const;
 
+            /* Cálculo da normal de todos os pontos por interpolação */
+            void interpolationNormal();
+
+            /* Cálculo da normal de todos os pontos por Gouraud */
+            void gouraudNormal();
+
             /* Normalização de todos os pontos de uma primitiva */
             void normalize();
 

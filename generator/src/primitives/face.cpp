@@ -76,6 +76,53 @@ namespace primitives
         return this->third;
     }
 
+    /* Definição da normal da face */
+    void Face::normal() {
+
+        /* Cálculo da normal da face */
+        utils::Matrix normal = this->getNormal();
+
+        /* Aplicação da normal aos respetivos pontos */
+        this->first.setNormal(normal);
+        this->second.setNormal(normal);
+        this->third.setNormal(normal);
+    }
+
+    /* Definição das normais da face através de um dicionário */
+    void Face::setNormal(std::unordered_map<std::string, Point> normalMap) {
+
+        /* Atualiza os pontos para os presentes no mapa */
+        this->first = normalMap[this->first.stringKey()];
+        this->second = normalMap[this->second.stringKey()];
+        this->third = normalMap[this->third.stringKey()];
+    }
+
+    /* Atualização do dicionário de normais através dos pontos das faces */
+    void Face::updateNormal(std::unordered_map<std::string, Point> normalMap) const {
+
+        /* Atualiza o primeiro ponto no mapa */
+        if (!(normalMap.emplace(this->first.stringKey(), this->first).second))
+            normalMap[this->first.stringKey()].updateNormal(this->first.getNormal());
+
+        /* Atualiza o segundo ponto no mapa */
+        if (!(normalMap.emplace(this->second.stringKey(), this->second).second))
+            normalMap[this->second.stringKey()].updateNormal(this->second.getNormal());
+
+        /* Atualiza o terceiro ponto no mapa */
+        if (!(normalMap.emplace(this->third.stringKey(), this->third).second))
+            normalMap[this->third.stringKey()].updateNormal(this->third.getNormal());
+    }
+
+    /* Cálculo da normal desta face */
+    utils::Matrix Face::getNormal() const {
+
+        /* Cálculo da normal */
+        utils::Matrix normal = (this->second.getCoords() - this->first.getCoords()).cross((this->third.getCoords() - this->first.getCoords())).normalize();
+
+        /* Devolução da normal calculada */
+        return normal;
+    }
+
     /* Normalização de todos os pontos de uma face */
     void Face::normalize() {
 

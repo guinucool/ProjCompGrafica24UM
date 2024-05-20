@@ -15,6 +15,7 @@ namespace primitives
 
             /* Definição das propriedades do ponto */
             utils::Matrix coords;
+            utils::Matrix normal;
 
         public:
 
@@ -54,6 +55,15 @@ namespace primitives
             /* Devolução da matriz das coordenadas do ponto */
             utils::Matrix getCoords() const;
 
+            /* Definição do vetor normal de um ponto */
+            void setNormal(const utils::Matrix& normal);
+
+            /* Atualização do vetor normal de um ponto */
+            void updateNormal(const utils::Matrix& normal);
+
+            /* Devolução da matriz da normal do ponto */
+            utils::Matrix getNormal() const;
+
             /* Normalização de um ponto para encaixar no espaço certo */
             void normalize();
 
@@ -80,6 +90,12 @@ namespace primitives
 
             /* Operação de clonagem de um ponto */
             Point clone() const;
+
+            /* Transformação de um ponto em formato string para ser usado como chave */
+            std::string stringKey() const;
+
+            /* Transformação de um ponto em formato string */
+            std::string toString() const;
     };
 }
 

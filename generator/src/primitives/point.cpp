@@ -9,28 +9,28 @@
 namespace primitives
 {
     /* Construtor vazio que invoca um ponto sempre na origem do referencial */
-    Point::Point() : coords(4, 1, 1.0f) {
+    Point::Point() : coords(4, 1, 1.0f), normal(4, 1, 0.0f) {
 
         /* Associação de coordenadas */
         this->setCoords(0.0f, 0.0f, 0.0f);
     }
 
     /* Construtor parametrizado */
-    Point::Point(float x, float y, float z) : coords(4, 1, 1.0f) {
+    Point::Point(float x, float y, float z) : coords(4, 1, 1.0f), normal(4, 1, 0.0f) {
 
         /* Associação das coordenadas */
         this->setCoords(x, y, z);
     }
 
     /* Construtor de cópia */
-    Point::Point(const Point& point) : coords(4, 1, 1.0f) {
+    Point::Point(const Point& point) : coords(4, 1, 1.0f), normal(point.normal) {
 
         /* Associação das coordenadas */
         this->setCoords(point.X(), point.Y(), point.Z());
     }
 
     /* Construtor de um ponto vindo de um ficheiro */
-    Point::Point(std::ifstream& stream) : coords(4, 1, 1.0f) {
+    Point::Point(std::ifstream& stream) : coords(4, 1, 1.0f), normal(4, 1, 0.0f) {
         
         /* Leitura do ponto vindo do ficheiro */
         this->read(stream);
@@ -82,6 +82,33 @@ namespace primitives
     /* Devolução da matriz das coordenadas do ponto */
     utils::Matrix Point::getCoords() const {
         return utils::Matrix(this->coords);
+    }
+
+    /* Definição do vetor normal de um ponto */
+    void Point::setNormal(const utils::Matrix& normal) {
+
+        /* Verifica se a matriz dada pode ser uma normal */
+        if (normal.getRows() != 4 || normal.getCols() != 1 || normal[3] != 0)
+            throw std::runtime_error("invalid normal vector given");
+
+        /* Associação da normal */
+        this->normal = normal;
+    }
+
+    /* Atualização do vetor normal de um ponto */
+    void Point::updateNormal(const utils::Matrix& normal) {
+
+        /* Verifica se a matriz dada pode ser uma normal */
+        if (normal.getRows() != 4 || normal.getCols() != 1 || normal[3] != 0)
+            throw std::runtime_error("invalid normal vector given");
+
+        /* Atualização da normal atual com a nova */
+        this->normal = (this->normal + normal).normalize();
+    }
+
+    /* Devolução da matriz da normal do ponto */
+    utils::Matrix Point::getNormal() const {
+        return utils::Matrix(this->normal);
     }
 
     /* Normalização de um ponto para encaixar no espaço certo */
@@ -180,6 +207,11 @@ namespace primitives
         stream.write(reinterpret_cast<const char*>(&(this->Y())), sizeof(float));
         stream.write(reinterpret_cast<const char*>(&(this->Z())), sizeof(float));
 
+        /* Escrita do valor do vetor normal em ficheiro */
+        stream.write(reinterpret_cast<const char*>(&(this->normal[0])), sizeof(float));
+        stream.write(reinterpret_cast<const char*>(&(this->normal[1])), sizeof(float));
+        stream.write(reinterpret_cast<const char*>(&(this->normal[2])), sizeof(float));
+
         /* Verifica se a escrita foi bem sucedida */
         if (stream.fail())
             std::runtime_error("failed to write to file");
@@ -188,5 +220,23 @@ namespace primitives
     /* Operação de clonagem de um ponto */
     Point Point::clone() const {
         return Point((*this));
+    }
+
+    /* Transformação de um ponto em formato string para ser usado como chave */
+    std::string Point::stringKey() const {
+        return geometry::Point::toString();
+    }
+
+    /* Transformação de um ponto em formato string */
+    std::string Point::toString() const {
+
+        /* Inicialização da string vazia */
+        std::string point = geometry::Point::toString() + "\n";
+
+        /* Construção da string que irá representar o ponto */
+        point = "Normal:(" + std::to_string(this->normal[0]) + "," + std::to_string(this->normal[1]) + "," + std::to_string(this->normal[2]) + ")";
+
+        /* Devolução da string criada */
+        return point;
     }
 }

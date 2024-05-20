@@ -3,6 +3,7 @@
 
 #include "../../../shared/inc/geometry/face.hpp"
 #include "point.hpp"
+#include <unordered_map>
 
 /* Inicialização do namespace usado para definir a classe face */
 namespace primitives{
@@ -43,6 +44,18 @@ namespace primitives{
 
             /* Devolução do terceiro ponto da face */
             const Point& getThird() const;
+
+            /* Definição da normal da face */
+            void normal();
+
+            /* Definição das normais da face através de um dicionário */
+            void setNormal(std::unordered_map<std::string, Point> normalMap);
+
+            /* Atualização do dicionário de normais através dos pontos das faces */
+            void updateNormal(std::unordered_map<std::string, Point> normalMap) const;
+
+            /* Cálculo da normal desta face */
+            utils::Matrix getNormal() const;
 
             /* Normalização de todos os pontos de uma face */
             void normalize();

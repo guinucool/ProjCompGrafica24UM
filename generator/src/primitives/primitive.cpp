@@ -39,6 +39,35 @@ namespace primitives
         return this->faces;
     }
 
+    /* Cálculo da normal de todos os pontos por interpolação */
+    void Primitive::interpolationNormal() {
+
+        /* Cálculo de todas as normais de todas as faces */
+        for (Face &face: this->faces) 
+            face.normal();
+    }
+
+    /* Cálculo da normal de todos os pontos por Gouraud */
+    void Primitive::gouraudNormal() {
+        
+        /* Criação de um mapa de normais */
+        std::unordered_map<std::string, Point> normalMap;
+
+        /* Cálculo das normais de cada ponto */
+        for (Face face: this->faces) {
+
+            /* Cálculo da normal */
+            face.normal();
+
+            /* Atualização do mapa */
+            face.updateNormal(normalMap);
+        }
+        
+        /* Atualização dos pontos para as respetivas normais */
+        for (Face &face: this->faces) 
+            face.setNormal(normalMap);
+    }
+
     /* Normalização de todos os pontos de uma primitiva */
     void Primitive::normalize() {
 
