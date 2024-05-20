@@ -4,6 +4,7 @@
 /* Inclusão de livrarias necessárias à funcionalidade */
 #include <stdexcept>
 #include <cmath>
+#include <iostream>
 
 /* Inicialização do namespace ao qual a classe pertence */
 namespace primitives

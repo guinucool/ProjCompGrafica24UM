@@ -154,6 +154,9 @@ namespace utils
             /* Cruzamento de duas matrizes tridimensionais */
             Matrix cross(Matrix matrix) const;
 
+            /* Cruzamento de dois vetores */
+            Matrix crossVector(Matrix matrix) const;
+
             /* Cálculo de uma matriz normalizada */
             Matrix normalize() const;
 

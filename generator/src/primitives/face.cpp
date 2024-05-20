@@ -117,7 +117,7 @@ namespace primitives
     utils::Matrix Face::getNormal() const {
 
         /* Cálculo da normal */
-        utils::Matrix normal = (this->second.getCoords() - this->first.getCoords()).cross((this->third.getCoords() - this->first.getCoords())).normalize();
+        utils::Matrix normal = (this->second.getCoords() - this->first.getCoords()).crossVector((this->third.getCoords() - this->first.getCoords())).normalize();
 
         /* Devolução da normal calculada */
         return normal;

@@ -760,6 +760,25 @@ namespace utils
         return crossed;
     }
 
+    /* Cruzamento de dois vetores */
+    Matrix Matrix::crossVector(Matrix matrix) const {
+
+        /* Verifica se o cruzamento de ambas as matrizes é possível */
+        if (this->getRows() != 4 || this->getCols() != 1 || (*this)[3] != 0 || matrix.getRows() != 4 || matrix.getCols() != 1 || matrix[3] != 0)
+            throw std::runtime_error("given matrices can't be crossed");
+
+        /* Criação da matriz cruzada */
+        Matrix crossed(4, 1, 0.0f);
+
+        /* Cálculo dos valores da matriz cruzada */
+        crossed[0] = (*this)[1] * matrix[2] - (*this)[2] * matrix[1];
+        crossed[1] = (*this)[2] * matrix[0] - (*this)[0] * matrix[2];
+        crossed[2] = (*this)[0] * matrix[1] - (*this)[1] * matrix[0];
+
+        /* Devolução da matriz cruzada */
+        return crossed;
+    }
+
     /* Cálculo de uma matriz normalizada */
     Matrix Matrix::normalize() const {
 
