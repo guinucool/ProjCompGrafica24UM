@@ -109,7 +109,18 @@ namespace lighting
     /* Ativação e desenho de uma luz */
     void Spot::enable() {
 
-        
+        /* Obtenção do índice de luz mais recente */
+        GLenum light = fetchIndex();
+
+        /* Criação do array de posição */
+        float pos[4] = { this->getX(), this->getY(), this->getZ(), 1.0f };
+        float dir[3] = { this->dirX, this->dirY, this->dirZ };
+
+        /* Ativação da luz */
+        glLightfv(light, GL_POSITION, pos);
+        glLightfv(light, GL_SPOT_DIRECTION, dir);
+        glLightf(light, GL_SPOT_CUTOFF, this->cutoff);
+        glLightf(light, GL_SPOT_EXPONENT, 0.0f);
     }
 
     /* Define o operador de comparação de igualdade */
