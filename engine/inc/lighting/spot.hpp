@@ -18,16 +18,16 @@ namespace lighting
         protected:
 
             /* Devolução da referência do valor da coordenada direcional x da luz */
-            float& dirX();
+            float& DirX();
 
             /* Devolução da referência do valor da coordenada direcional y da luz */
-            float& dirY();
+            float& DirY();
 
             /* Devolução da referência do valor da coordenada direcional z da luz */
-            float& dirZ();
+            float& DirZ();
 
-            /* Devolução da referência do valor do ângulo de abertura da luz */
-            float& cutoff();
+            /* Atribuição do ângulo de abertura da luz */
+            void SetCutoff(float cutoff);
 
         public:
 
@@ -35,7 +35,7 @@ namespace lighting
             Spot();
 
             /* Construtor de luz parametrizado */
-            Spot(float x, float y, float z);
+            Spot(float x, float y, float z, float dirX, float dirY, float dirZ, float cutoff);
 
             /* Construtor de cópia de uma luz */
             Spot(const Spot& spot);
@@ -60,9 +60,6 @@ namespace lighting
 
             /* Ativação e desenho de uma luz */
             void enable();
-
-            /* Desativação de uma luz */
-            void disable() const;
 
             /* Define o operador de comparação de igualdade */
             bool operator==(const Light * light) const;

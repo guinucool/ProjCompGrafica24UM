@@ -29,15 +29,6 @@ namespace lighting
             /* Ativação e desenho de uma luz */
             void enable();
 
-            /* Desativação de uma luz */
-            void disable() const;
-
-            /* Define o operador de comparação de igualdade */
-            bool operator==(const Light * light) const;
-
-            /* Define o operador de comparação de desigualdade */
-            bool operator!=(const Light * light) const;
-
             /* Operação de clonagem de uma luz */
             Light * clone() const;
 

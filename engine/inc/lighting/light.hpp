@@ -24,7 +24,6 @@ namespace lighting
             static GLenum light;
 
             /* Definição das propriedades da luz */
-            GLenum index;
             float x, y, z;
 
         protected:
@@ -37,6 +36,9 @@ namespace lighting
 
             /* Devolução da referência do valor da coordenada z da luz */
             float& Z();
+
+            /* Atribuição de um índice à luz */
+            static GLenum fetchIndex();
 
         public:
 
@@ -65,7 +67,7 @@ namespace lighting
             virtual void enable() = 0;
 
             /* Desativação de uma luz */
-            virtual void disable() const = 0;
+            static void disable();
 
             /* Define o operador de comparação de igualdade */
             bool operator==(const Light * light) const;
