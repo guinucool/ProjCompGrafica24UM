@@ -11,6 +11,7 @@
 
 #include "../../../shared/inc/geometry/primitive.hpp"
 #include "../../../external/tinyxml2/tinyxml2.h"
+#include "../lighting/color.hpp"
 #include "face.hpp"
 #include <vector>
 #include <list>
@@ -26,7 +27,35 @@ namespace drawables
             
             /* Definição das propriedades da primitiva */
             std::list<Face> faces;
+            lighting::Color diffuse;
+            lighting::Color ambient;
+            lighting::Color specular;
+            lighting::Color emissive;
+            float shininess;
             GLuint buffer[1];
+
+            /* Leitura da componente de cores vinda da configuração XML */
+            void readColors(tinyxml2::XMLElement * colors);
+
+        protected:
+
+            /* Definição da cor difusa do objeto */
+            void setDiffuse(lighting::Color color);
+
+            /* Definição da cor ambiente do objeto */
+            void setAmbient(lighting::Color color);
+
+            /* Definição da cor especular do objeto */
+            void setSpecular(lighting::Color color);
+
+            /* Definição da cor emissiva do objeto */
+            void setEmissive(lighting::Color color);
+
+            /* Definição de uma das cores do objeto */
+            void setColor(std::string type, lighting::Color color);
+
+            /* Definição do shininess do objeto */
+            void setShininess(float shininess);
         
         public:
 
@@ -47,6 +76,21 @@ namespace drawables
 
             /* Devolução de uma cópia da lista de faces da primitiva */
             std::list<Face> getFaces() const;
+
+            /* Devolução da cor difusa do objeto */
+            lighting::Color getDiffuse() const;
+
+            /* Devolução da cor ambiente do objeto */
+            lighting::Color getAmbient() const;
+
+            /* Devolução da cor especular do objeto */
+            lighting::Color getSpecular() const;
+
+            /* Devolução da cor emisiva do objeto */
+            lighting::Color getEmissive() const;
+
+            /* Devolução da shininess do objeto */
+            float getShininess() const;
 
             /* Rotação de todas as faces de uma primitiva para ficarem viradas para o lado oposto */
             void turn();

@@ -4,30 +4,173 @@
 /* Inicialização do namespace utilizado para a definição */
 namespace drawables
 {
+    /* Leitura da componente de cores vinda da configuração XML */
+    void Primitive::readColors(tinyxml2::XMLElement * colors) {
+
+        /* Verifica se a propriedade de cores é válida */
+        if (colors->ChildElementCount() > 5)
+            throw std::invalid_argument("given xml configuration is invalid");
+
+        /* Fixa o número de iterações */
+        int children = colors->ChildElementCount();
+
+        /* Leitura da lista de pontos */
+        for (int i = 0; i < children; i++) {
+
+            /* Vai buscar o primeiro elemento */
+            tinyxml2::XMLElement * next = colors->FirstChildElement();
+
+            /* Armazena o nome do primeiro elemento */
+            std::string name = std::string(next->Value());
+
+            /* Verifica qual é o elemento */
+            if (name == "shininess") {
+                
+                /* Inicialização da variável que irá armazenar o atributo */
+                float shininess;
+
+                /* Obtenção do atributo e verificação da existência dele */
+                if (next->QueryFloatAttribute("value", &shininess))
+                    throw std::invalid_argument("given xml configuration is invalid");
+
+                /* Atribuição da propriedade */
+                this->setShininess(shininess);
+
+            }
+            
+            /* Caso o elemento seja uma cor */
+            else
+                this->setColor(name, lighting::Color(next));
+
+            /* Apaga o elemento lido */
+            colors->DeleteChild(next);
+        }
+    }
+
+    /* Definição da cor difusa do objeto */
+    void Primitive::setDiffuse(lighting::Color color) {
+
+        /* Verifica se a cor atribuída é da componente correta */
+        if (color.getType() != GL_DIFFUSE)
+            throw std::invalid_argument("given diffuse color is of wrong type");
+
+        /* Associação da propriedade */
+        this->diffuse = color;
+    }
+
+    /* Definição da cor ambiente do objeto */
+    void Primitive::setAmbient(lighting::Color color) {
+
+        /* Verifica se a cor atribuída é da componente correta */
+        if (color.getType() != GL_AMBIENT)
+            throw std::invalid_argument("given ambient color is of wrong type");
+
+        /* Associação da propriedade */
+        this->ambient = color;
+    }
+
+    /* Definição da cor especular do objeto */
+    void Primitive::setSpecular(lighting::Color color) {
+
+        /* Verifica se a cor atribuída é da componente correta */
+        if (color.getType() != GL_SPECULAR)
+            throw std::invalid_argument("given specular color is of wrong type");
+
+        /* Associação da propriedade */
+        this->specular = color;
+    }
+
+    /* Definição da cor emissiva do objeto */
+    void Primitive::setEmissive(lighting::Color color) {
+
+        /* Verifica se a cor atribuída é da componente correta */
+        if (color.getType() != GL_EMISSION)
+            throw std::invalid_argument("given emissive color is of wrong type");
+
+        /* Associação da propriedade */
+        this->emissive = color;
+    }
+
+    /* Definição de uma das cores do objeto */
+    void Primitive::setColor(std::string type, lighting::Color color) {
+
+        /* Averigua qual o tipo de cor */
+        if (type == "diffuse")
+            this->setDiffuse(color);
+        else if (type == "specular")
+            this->setSpecular(color);
+        else if (type == "ambient")
+            this->setAmbient(color);
+        else if (type == "emissive")
+            this->setEmissive(color);
+
+        /* Caso o tipo de cor não exista */
+        else
+            throw std::invalid_argument("given color type is not valid");
+    }
+
+    /* Definição do shininess do objeto */
+    void Primitive::setShininess(float shininess) {
+
+        /* Verifica se a shininess está dentro do intervalo correto */
+        if (shininess < 0 || shininess > 128)
+            throw std::invalid_argument("given shininess is invalid");
+
+        /* Associação da propriedade */
+        this->shininess = shininess;
+    }
+
     /* Construtor padrão de primitiva */
-    Primitive::Primitive() {}
+    Primitive::Primitive() : diffuse(GL_DIFFUSE), ambient(GL_AMBIENT), specular(GL_SPECULAR), emissive(GL_EMISSION), shininess(0) {}
 
     /* Construtor de cópia de primitiva */
-    Primitive::Primitive(const Primitive& primitive) : faces(primitive.faces) { this->buffer[0] = primitive.buffer[0]; }
+    Primitive::Primitive(const Primitive& primitive) : faces(primitive.faces), diffuse(primitive.diffuse), ambient(primitive.ambient), specular(primitive.specular), emissive(primitive.emissive), shininess(primitive.shininess) {
+        this->buffer[0] = primitive.buffer[0];
+    }
 
     /* Construtor de primitiva através da leitura de ficheiro */
-    Primitive::Primitive(std::ifstream& stream) {
+    Primitive::Primitive(std::ifstream& stream) : diffuse(GL_DIFFUSE), ambient(GL_AMBIENT), specular(GL_SPECULAR), emissive(GL_EMISSION), shininess(0) {
         this->read(stream);
     }
 
     /* Construtor de primitiva através da leitura de ficheiro dado o seu caminho */
-    Primitive::Primitive(std::string path) {
+    Primitive::Primitive(std::string path) : diffuse(GL_DIFFUSE), ambient(GL_AMBIENT), specular(GL_SPECULAR), emissive(GL_EMISSION), shininess(0) {
         this->read(path);
     }
 
     /* Construtor de uma primitiva vinda de um ficheiro xml */
-    Primitive::Primitive(std::string directory, tinyxml2::XMLElement * model) {
+    Primitive::Primitive(std::string directory, tinyxml2::XMLElement * model) : diffuse(GL_DIFFUSE), ambient(GL_AMBIENT), specular(GL_SPECULAR), emissive(GL_EMISSION), shininess(0) {
         this->read(directory, model);
     }
 
     /* Devolução de uma cópia da lista de faces da primitiva */
     std::list<Face> Primitive::getFaces() const {
         return this->faces;
+    }
+
+    /* Devolução da cor difusa do objeto */
+    lighting::Color Primitive::getDiffuse() const {
+        return this->diffuse;
+    }
+
+    /* Devolução da cor ambiente do objeto */
+    lighting::Color Primitive::getAmbient() const {
+        return this->ambient;
+    }
+
+    /* Devolução da cor especular do objeto */
+    lighting::Color Primitive::getSpecular() const {
+        return this->specular;
+    }
+
+    /* Devolução da cor emisiva do objeto */
+    lighting::Color Primitive::getEmissive() const {
+        return this->emissive;
+    }
+
+    /* Devolução da shininess do objeto */
+    float Primitive::getShininess() const {
+        return this->shininess;
     }
 
     /* Rotação de todas as faces de uma primitiva para ficarem viradas para o lado oposto */
@@ -66,8 +209,8 @@ namespace drawables
     /* Leitura de uma primitiva vinda de um ficheiro xml */
     void Primitive::read(std::string directory, tinyxml2::XMLElement * model) {
 
-        /* Verifica se a propriedade de janela é válida */
-        if (model->ChildElementCount() != 0)
+        /* Verifica se a propriedade de primitiva é válida */
+        if (model->ChildElementCount() > 2)
             throw std::invalid_argument("given xml configuration is invalid");
 
         /* Inicialização da variável que irá armazenar o caminho para o modelo */
@@ -82,10 +225,43 @@ namespace drawables
 
         /* Leitura do modelo através do ficheiro */
         this->read(directory + path);
+
+        /* Fixa o número de iterações */
+        int children = model->ChildElementCount();
+
+        /* Leitura da lista de pontos */
+        for (int i = 0; i < children; i++) {
+
+            /* Vai buscar o primeiro elemento */
+            tinyxml2::XMLElement * next = model->FirstChildElement();
+
+            /* Armazena o nome do primeiro elemento */
+            std::string name = std::string(next->Value());
+
+            /* Verifica qual é o elemento */
+            if (name == "color")
+                this->readColors(next);
+            
+            /* Caso o elemento seja inválido */
+            else
+                throw std::invalid_argument("given xml configuration is invalid");
+
+            /* Apaga o elemento lido */
+            model->DeleteChild(next);
+        }
     }
 
     /* Desenho de uma primitiva */
     void Primitive::draw(bool immediate) const {
+
+        /* Aplicação das cores do objeto */
+        diffuse.enable();
+        ambient.enable();
+        specular.enable();
+        emissive.enable();
+
+        /* Aplicação da shininess do objeto */
+        glMaterialf(GL_FRONT, GL_SHININESS, this->shininess);
 
         /* Verifica qual o modo de desenho */
         if (immediate) {
@@ -140,8 +316,11 @@ namespace drawables
                     exists = true;
 
             /* Atualiza resultado final */ 
-            result &= exists;
+            result = result && exists;
         }
+
+        /* Comparação da componente de cores */
+        result = result && (this->diffuse == primitive.diffuse) && (this->ambient == primitive.ambient) && (this->specular == primitive.specular) && (this->emissive == primitive.emissive) && (this->shininess == primitive.shininess);
             
         /* Devolve a conclusão a que se chegou */
         return result;
@@ -165,8 +344,11 @@ namespace drawables
                     exists = true;
 
             /* Atualiza resultado final */ 
-            result &= exists;
+            result = result && exists;
         }
+
+        /* Comparação da componente de cores */
+        result = result && (this->diffuse == primitive.diffuse) && (this->ambient == primitive.ambient) && (this->specular == primitive.specular) && (this->emissive == primitive.emissive) && (this->shininess == primitive.shininess);
             
         /* Devolve a conclusão a que se chegou */
         return !result;
@@ -186,6 +368,13 @@ namespace drawables
         /* Construção da string que irá representar a primitiva */
         for (Face elem: this->faces)
             result += elem.toString();
+
+        /* Colocação da componente de cores */
+        result += diffuse.toString() + "\n";
+        result += ambient.toString() + "\n";
+        result += specular.toString() + "\n";
+        result += emissive.toString() + "\n";
+        result += std::to_string(this->shininess);
         
         /* Devolução da string construída */
         return result;
