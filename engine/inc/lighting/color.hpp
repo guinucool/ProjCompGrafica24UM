@@ -12,10 +12,10 @@
 #include "../../../external/tinyxml2/tinyxml2.h"
 #include <string>
 
-/* Inicialização do namespace usado para definir a classe ponto */
+/* Inicialização do namespace usado para definir a classe cor */
 namespace lighting
 {
-    /* Definição da classe ponto */
+    /* Definição da classe cor */
     class Color {
 
         private:
@@ -25,22 +25,25 @@ namespace lighting
             float alpha;
             GLenum type;
 
+            /* Verificação do intervalo de cores */
+            static bool Color::verifyColor(int color);
+
         protected:
 
             /* Atribuição do parâmetro da cor vermelha */
-            void setRed(float red);
+            void setRed(int red);
 
             /* Atribuição do parâmetro da cor verde */
-            void setGreen(float green);
+            void setGreen(int green);
 
             /* Atribuição do parâmetro da cor azul */
-            void setBlue(float blue);
+            void setBlue(int blue);
 
             /* Atribuição do parâmetro da transparência */
             void setAlpha(float alpha);
 
             /* Atribuição do tipo de cor */
-            void setType(float type);
+            void setType(GLenum type);
 
             /* Atribuição do tipo de cor através de uma string */
             void setType(std::string type);
@@ -54,7 +57,7 @@ namespace lighting
             Color(GLenum type);
 
             /* Construtor de cor parametrizado */
-            Color(float red, float green, float blue, float alpha, GLenum type);
+            Color(int red, int green, int blue, float alpha, GLenum type);
 
             /* Construtor de cópia de uma cor */
             Color(const Color& color);
