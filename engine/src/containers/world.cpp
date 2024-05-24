@@ -219,8 +219,15 @@ namespace containers
         /* Configurações do OpenGL */
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
-        glEnable(GL_LIGHTING);
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+        /* Configurações da iluminação */
+        glEnable(GL_LIGHTING);
+        glEnable(GL_RESCALE_NORMAL);
+        
+        /* Cor ambiente de todas as luzes */
+        float amb[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
 
         /* Inicialização do GLUT */
         glutMainLoop();

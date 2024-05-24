@@ -53,6 +53,11 @@ namespace lighting
         /* Ativação da luz */
         glLightfv(light, GL_POSITION, pos);
         glEnable(light);
+
+        /* Coloração da iluminação */
+        float white[4] = {1.0, 1.0, 1.0, 1.0};
+        glLightfv(light, GL_DIFFUSE, white);
+        glLightfv(light, GL_SPECULAR, white);
     }
 
     /* Operação de clonagem de uma luz */

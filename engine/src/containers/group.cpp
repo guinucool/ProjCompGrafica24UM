@@ -330,13 +330,13 @@ namespace containers
         /* Guarda a matriz de transformações atuais */
         glPushMatrix();
 
-        /* Criação dos pontos de luz */
-        for (lighting::Light * light : this->lights)
-            light->enable();
-
         /* Aplica todas as transformações por ordem */
         for (transforms::Transform * transform: this->transforms)
             transform->apply();
+
+        /* Criação dos pontos de luz */
+        for (lighting::Light * light : this->lights)
+            light->enable();
 
         /* Desenha todas as primitivas uma a uma */
         for (drawables::Primitive model: this->models)

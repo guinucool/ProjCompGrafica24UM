@@ -122,6 +122,11 @@ namespace lighting
         glLightf(light, GL_SPOT_CUTOFF, this->cutoff);
         glLightf(light, GL_SPOT_EXPONENT, 0.0f);
         glEnable(light);
+
+        /* Coloração da iluminação */
+        float white[4] = {1.0, 1.0, 1.0, 1.0};
+        glLightfv(light, GL_DIFFUSE, white);
+        glLightfv(light, GL_SPECULAR, white);
     }
 
     /* Define o operador de comparação de igualdade */

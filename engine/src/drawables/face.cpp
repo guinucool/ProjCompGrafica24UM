@@ -8,6 +8,8 @@
 #include <GL/glut.h>
 #endif
 
+#include <iostream>
+
 /* Inicialização do namespace ao qual a classe pertence */
 namespace drawables
 {
@@ -93,6 +95,10 @@ namespace drawables
         this->first.feedBuffer(buffer);
         this->second.feedBuffer(buffer);
         this->third.feedBuffer(buffer);
+
+        std::cout << "1p.-" << this->first.toString() << std::endl;
+        std::cout << "2p.-" << this->second.toString() << std::endl;
+        std::cout << "3p.-" << this->third.toString() << std::endl;
     }
 
     /* Alimentação de um buffer para normais para desenho em modo VBO */
@@ -100,6 +106,10 @@ namespace drawables
         this->fNormal.feedBuffer(buffer);
         this->sNormal.feedBuffer(buffer);
         this->tNormal.feedBuffer(buffer);
+
+        std::cout << "1.-" << this->fNormal.toString() << std::endl;
+        std::cout << "2.-" << this->sNormal.toString() << std::endl;
+        std::cout << "3.-" << this->tNormal.toString() << std::endl;
     }
 
     /* Define o operador de comparação de igualdade */
