@@ -58,6 +58,9 @@ namespace models
             /* Adição do quadrado à figura */
             this->add(col);
         }
+
+        /* Cálculo das normais para o plano */
+        this->interpolationNormal();
     }
 
     /* Construtor de cópia da classe plano */

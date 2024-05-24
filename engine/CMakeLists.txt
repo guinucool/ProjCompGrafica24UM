@@ -31,6 +31,10 @@ list(APPEND ENGINE_SRC_FILES ${GENERATOR_PROJECTION_SRC})
 file(GLOB GENERATOR_CONTAINER_SRC "src/containers/*.cpp")
 list(APPEND ENGINE_SRC_FILES ${GENERATOR_CONTAINER_SRC})
 
+# Lista de módulos necessários para a iluminação de objetos do programa
+file(GLOB GENERATOR_LIGHTING_SRC "src/lighting/*.cpp")
+list(APPEND ENGINE_SRC_FILES ${GENERATOR_LIGHTING_SRC})
+
 # Lista de módulos externos necessários
 set(EXTERNAL_SRC_FILES)
 list(APPEND EXTERNAL_SRC_FILES

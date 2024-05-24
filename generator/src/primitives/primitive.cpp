@@ -60,7 +60,7 @@ namespace primitives
             face.normal();
 
             /* Atualização do mapa */
-            face.updateNormal(normalMap);
+            face.updateNormal(&normalMap);
         }
         
         /* Atualização dos pontos para as respetivas normais */

@@ -98,19 +98,19 @@ namespace primitives
     }
 
     /* Atualização do dicionário de normais através dos pontos das faces */
-    void Face::updateNormal(std::unordered_map<std::string, Point> normalMap) const {
+    void Face::updateNormal(std::unordered_map<std::string, Point> * normalMap) const {
 
         /* Atualiza o primeiro ponto no mapa */
-        if (!(normalMap.emplace(this->first.stringKey(), this->first).second))
-            normalMap[this->first.stringKey()].updateNormal(this->first.getNormal());
+        if (!(normalMap->emplace(this->first.stringKey(), this->first).second))
+            (*normalMap)[this->first.stringKey()].updateNormal(this->first.getNormal());
 
         /* Atualiza o segundo ponto no mapa */
-        if (!(normalMap.emplace(this->second.stringKey(), this->second).second))
-            normalMap[this->second.stringKey()].updateNormal(this->second.getNormal());
+        if (!(normalMap->emplace(this->second.stringKey(), this->second).second))
+            (*normalMap)[this->second.stringKey()].updateNormal(this->second.getNormal());
 
         /* Atualiza o terceiro ponto no mapa */
-        if (!(normalMap.emplace(this->third.stringKey(), this->third).second))
-            normalMap[this->third.stringKey()].updateNormal(this->third.getNormal());
+        if (!(normalMap->emplace(this->third.stringKey(), this->third).second))
+            (*normalMap)[this->third.stringKey()].updateNormal(this->third.getNormal());
     }
 
     /* Cálculo da normal desta face */

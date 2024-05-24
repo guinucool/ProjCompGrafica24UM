@@ -67,6 +67,9 @@ namespace models
             /* Adição da nova fatia */
             this->add(slice);
         }
+
+        /* Cálculo das normais para a esfera */
+        this->gouraudNormal();
     }
 
     /* Construtor de cópia */

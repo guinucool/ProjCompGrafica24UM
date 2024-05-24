@@ -12,6 +12,9 @@
 #include "../../../external/tinyxml2/tinyxml2.h"
 #include <string>
 
+/* Definição do máximo de cor */
+#define MAX_COLOR 200
+
 /* Inicialização do namespace usado para definir a classe cor */
 namespace lighting
 {
@@ -26,7 +29,7 @@ namespace lighting
             GLenum type;
 
             /* Verificação do intervalo de cores */
-            static bool Color::verifyColor(int color);
+            static bool verifyColor(int color);
 
         protected:
 

@@ -52,7 +52,7 @@ namespace primitives{
             void setNormal(std::unordered_map<std::string, Point> normalMap);
 
             /* Atualização do dicionário de normais através dos pontos das faces */
-            void updateNormal(std::unordered_map<std::string, Point> normalMap) const;
+            void updateNormal(std::unordered_map<std::string, Point> * normalMap) const;
 
             /* Cálculo da normal desta face */
             utils::Matrix getNormal() const;

@@ -128,9 +128,6 @@ int main(int argc, char ** argv) {
         else
             throw std::invalid_argument("given invalid arguments");
 
-        /* Cálculo das normais de Gouraud */
-        primitive.gouraudNormal();
-
         /* Armazenamento da primitiva em ficheiro */
         primitive.write(path);
 

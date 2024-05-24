@@ -75,6 +75,9 @@ namespace models
             /* Adição da nova fatia rodada à figura final */
             this->add(slice);
         }
+
+        /* Cálculo das normais para o cone */
+        this->interpolationNormal();
     }
 
     /* Construtor de cópia da classe plano */

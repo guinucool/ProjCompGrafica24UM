@@ -47,6 +47,9 @@ namespace models
         this->add(upDo);
         this->add(riLe);
         this->add(foBa);
+
+        /* Cálculo das normais para o cubo */
+        this->interpolationNormal();
     }
 
     /* Construtor de cópia */

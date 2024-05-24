@@ -9,7 +9,7 @@ namespace lighting
 {
     /* Verificação do intervalo de cores */
     bool Color::verifyColor(int color) {
-        return color < 0 || color > 255;
+        return color < 0 || color > MAX_COLOR;
     }
 
     /* Atribuição do parâmetro da cor vermelha */
@@ -20,7 +20,7 @@ namespace lighting
             throw std::out_of_range("given red color parameter is out of range");
 
         /* Associação de propriedades */
-        this->red = red / 255.0f;
+        this->red = (red / MAX_COLOR) / 1.0f;
     }
 
     /* Atribuição do parâmetro da cor verde */
@@ -31,7 +31,7 @@ namespace lighting
             throw std::out_of_range("given green color parameter is out of range");
 
         /* Associação de propriedades */
-        this->green = green / 255.0f;
+        this->green = (green / MAX_COLOR) / 1.0f;
     }
 
     /* Atribuição do parâmetro da cor azul */
@@ -42,7 +42,7 @@ namespace lighting
             throw std::out_of_range("given blue color parameter is out of range");
 
         /* Associação de propriedades */
-        this->blue = blue / 255.0f;
+        this->blue = (blue / MAX_COLOR) / 1.0f;
     }
 
     /* Atribuição do parâmetro da transparência */
@@ -93,6 +93,9 @@ namespace lighting
         /* Caso o tipo de cor não exista */
         else
             throw std::invalid_argument("given color type is not valid");
+
+        /* Atribuição do tipo */
+        this->type = type;
     }
 
     /* Atribuição do tipo de cor através de uma string */
@@ -136,7 +139,7 @@ namespace lighting
     Color::Color(const Color& color) : red(color.red), green(color.green), blue(color.blue), alpha(color.alpha), type(color.type) {}
 
     /* Construtor através de um configuração XML de uma cor */
-    Color::Color(tinyxml2::XMLElement * color) {
+    Color::Color(tinyxml2::XMLElement * color) : alpha(1.0f) {
         this->read(color);
     }
 
