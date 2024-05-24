@@ -129,6 +129,9 @@ namespace patches
         for (Batch batch : this->index)
             batch.build(&primitive, this->tesselation, this->curve, this->points);
 
+        /* Cálculo das normais */
+        primitive.gouraudNormal();
+
         /* Devolução da primitiva criada */
         return primitive;
     }

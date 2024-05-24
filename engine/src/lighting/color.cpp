@@ -20,7 +20,7 @@ namespace lighting
             throw std::out_of_range("given red color parameter is out of range");
 
         /* Associação de propriedades */
-        this->red = (red / MAX_COLOR) / 1.0f;
+        this->red = (red  / 1.0f) / MAX_COLOR;
     }
 
     /* Atribuição do parâmetro da cor verde */
@@ -31,7 +31,7 @@ namespace lighting
             throw std::out_of_range("given green color parameter is out of range");
 
         /* Associação de propriedades */
-        this->green = (green / MAX_COLOR) / 1.0f;
+        this->green = (green  / 1.0f) / MAX_COLOR;
     }
 
     /* Atribuição do parâmetro da cor azul */
@@ -42,7 +42,7 @@ namespace lighting
             throw std::out_of_range("given blue color parameter is out of range");
 
         /* Associação de propriedades */
-        this->blue = (blue / MAX_COLOR) / 1.0f;
+        this->blue = (blue / 1.0f) / MAX_COLOR;
     }
 
     /* Atribuição do parâmetro da transparência */

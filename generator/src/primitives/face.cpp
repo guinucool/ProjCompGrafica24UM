@@ -113,6 +113,15 @@ namespace primitives
             (*normalMap)[this->third.stringKey()].updateNormal(this->third.getNormal());
     }
 
+    /* Cálculo da normal para uma esfera */
+    void Face::sphereNormal() {
+
+        /* Cálculo da normal em todos os pontos */
+        this->first.sphereNormal();
+        this->second.sphereNormal();
+        this->third.sphereNormal();
+    }
+
     /* Cálculo da normal desta face */
     utils::Matrix Face::getNormal() const {
 
@@ -204,5 +213,20 @@ namespace primitives
     /* Operação de clonagem de uma face */
     Face Face::clone() const {
         return Face((*this));
+    }
+
+    /* Transformação de uma face em formato string */
+    std::string Face::toString() const {
+
+        /* Inicialização da string vazia */
+        std::string face = "";
+
+        /* Construção da string que irá representar o ponto */
+        face += "1.-" + this->first.toString() + "\n";
+        face += "2.-" + this->second.toString() + "\n";
+        face += "3.-" + this->third.toString() + "\n";
+
+        /* Devolução da string criada */
+        return face;
     }
 };

@@ -10,6 +10,10 @@
         <lights> 
 		    <light type="directional" dirX="1" dirY="0.7" dirZ="0.5"/>
 	    </lights>
+		<transform>
+			<rotate time="10" x="0" y="1" z="0" />
+			<!-- <scale x="0.5" y="0.5" z="0.5" /> -->
+		</transform>
   		<models> 
 			<model file="boxil.3d" > <!-- generator box 2 3 box_2_3.3d -->
 				<color>

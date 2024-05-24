@@ -107,6 +107,18 @@ namespace primitives
         this->normal = (this->normal + normal).normalize();
     }
 
+    /* Cálculo da normal para uma esfera */
+    void Point::sphereNormal() {
+
+        /* Atualização da normal para as coordenadas do ponto */
+        this->normal[0] = this->X();
+        this->normal[1] = this->Y();
+        this->normal[2] = this->Z();
+
+        /* Normalização da normal */
+        this->normal = this->normal.normalize();
+    }
+
     /* Devolução da matriz da normal do ponto */
     utils::Matrix Point::getNormal() const {
         return utils::Matrix(this->normal);
@@ -132,9 +144,6 @@ namespace primitives
 
         /* Criação das novas coordenadas do ponto */
         this->coords = transform * this->coords;
-
-        /* Normalização de um ponto após uma transformação */
-        this->normalize();
     }
 
     /* Translação de um ponto dado um vetor */
@@ -235,7 +244,7 @@ namespace primitives
         std::string point = geometry::Point::toString() + "\n";
 
         /* Construção da string que irá representar o ponto */
-        point = "Normal:(" + std::to_string(this->normal[0]) + "," + std::to_string(this->normal[1]) + "," + std::to_string(this->normal[2]) + ")";
+        point += "Normal:(" + std::to_string(this->normal[0]) + "," + std::to_string(this->normal[1]) + "," + std::to_string(this->normal[2]) + ")";
 
         /* Devolução da string criada */
         return point;

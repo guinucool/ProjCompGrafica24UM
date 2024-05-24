@@ -13,7 +13,7 @@
 #include <string>
 
 /* Definição do máximo de cor */
-#define MAX_COLOR 200
+#define MAX_COLOR 255
 
 /* Inicialização do namespace usado para definir a classe cor */
 namespace lighting

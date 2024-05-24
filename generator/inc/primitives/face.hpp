@@ -54,6 +54,9 @@ namespace primitives{
             /* Atualização do dicionário de normais através dos pontos das faces */
             void updateNormal(std::unordered_map<std::string, Point> * normalMap) const;
 
+            /* Cálculo da normal para uma esfera */
+            void sphereNormal();
+
             /* Cálculo da normal desta face */
             utils::Matrix getNormal() const;
 
@@ -83,6 +86,9 @@ namespace primitives{
 
             /* Operação de clonagem de uma face */
             Face clone() const;
+
+            /* Transformação de uma face em formato string */
+            std::string toString() const;
     };
 }
 #endif

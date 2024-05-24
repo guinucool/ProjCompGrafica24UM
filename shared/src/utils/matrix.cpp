@@ -303,6 +303,9 @@ namespace utils
         /* Cálculo da matriz de rotação final */
         Matrix rotate = rotateY.inverse() * rotateX.inverse() * rotateZ * rotateX * rotateY;
 
+        /* Normalização da matriz */
+        rotate = rotate * (1 / rotate[15]);
+
         /* Devolução da matriz calculada */
         return rotate;
     }

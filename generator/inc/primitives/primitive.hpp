@@ -46,6 +46,9 @@ namespace primitives
             /* Cálculo da normal de todos os pontos por Gouraud */
             void gouraudNormal();
 
+            /* Cálculo da normal para uma esfera */
+            void sphereNormal();
+
             /* Normalização de todos os pontos de uma primitiva */
             void normalize();
 

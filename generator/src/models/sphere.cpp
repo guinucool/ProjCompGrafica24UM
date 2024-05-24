@@ -69,7 +69,7 @@ namespace models
         }
 
         /* Cálculo das normais para a esfera */
-        this->gouraudNormal();
+        this->sphereNormal();
     }
 
     /* Construtor de cópia */

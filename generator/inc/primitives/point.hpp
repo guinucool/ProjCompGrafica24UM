@@ -61,6 +61,9 @@ namespace primitives
             /* Atualização do vetor normal de um ponto */
             void updateNormal(const utils::Matrix& normal);
 
+            /* Cálculo da normal para uma esfera */
+            void sphereNormal();
+
             /* Devolução da matriz da normal do ponto */
             utils::Matrix getNormal() const;
 

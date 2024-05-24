@@ -68,6 +68,14 @@ namespace primitives
             face.setNormal(normalMap);
     }
 
+    /* Cálculo da normal para uma esfera */
+    void Primitive::sphereNormal() {
+
+        /* Cálculo da normal dos pontos de todas as faces */
+        for (Face &face: this->faces) 
+            face.sphereNormal();
+    }
+
     /* Normalização de todos os pontos de uma primitiva */
     void Primitive::normalize() {
 
