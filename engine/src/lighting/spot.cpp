@@ -107,7 +107,7 @@ namespace lighting
     }
 
     /* Ativação e desenho de uma luz */
-    void Spot::enable() {
+    void Spot::enable() const {
 
         /* Obtenção do índice de luz mais recente */
         GLenum light = fetchIndex();
@@ -121,6 +121,7 @@ namespace lighting
         glLightfv(light, GL_SPOT_DIRECTION, dir);
         glLightf(light, GL_SPOT_CUTOFF, this->cutoff);
         glLightf(light, GL_SPOT_EXPONENT, 0.0f);
+        glEnable(light);
     }
 
     /* Define o operador de comparação de igualdade */

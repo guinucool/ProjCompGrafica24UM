@@ -42,7 +42,7 @@ namespace lighting
     }
 
     /* Ativação e desenho de uma luz */
-    void Directional::enable() {
+    void Directional::enable() const {
 
         /* Obtenção do índice de luz mais recente */
         GLenum light = fetchIndex();
@@ -52,6 +52,7 @@ namespace lighting
 
         /* Ativação da luz */
         glLightfv(light, GL_POSITION, pos);
+        glEnable(light);
     }
 
     /* Operação de clonagem de uma luz */

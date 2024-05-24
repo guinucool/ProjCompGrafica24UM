@@ -3,6 +3,10 @@
 
 #include "../../../external/tinyxml2/tinyxml2.h"
 #include "../drawables/primitive.hpp"
+#include "../lighting/light.hpp"
+#include "../lighting/directional.hpp"
+#include "../lighting/point.hpp"
+#include "../lighting/spot.hpp"
 #include "../transforms/transform.hpp"
 
 /* Inicialização do namespace onde a classe irá ser definida */
@@ -20,12 +24,16 @@ namespace containers
             /* Leitura de uma transformação para grupo através de um ficheiro xml */
             void readTransform(tinyxml2::XMLElement * transform);
 
+            /* Leitura de uma fonte de luz para grupo através de um ficheiro xml */
+            void readLight(tinyxml2::XMLElement * light);
+
             /* Leitura de um sub grupo para grupo através de um ficheiro xml */
             void readGroup(std::string directory, tinyxml2::XMLElement * group);
 
             /* Definição das propriedades do grupo */
             std::list<drawables::Primitive> models;
             std::list<transforms::Transform*> transforms;
+            std::list<lighting::Light*> lights;
             std::list<Group> groups;
         
         public:
@@ -59,6 +67,15 @@ namespace containers
 
             /* Devolução de uma cópia da lista de transformações */
             std::list<transforms::Transform*> getTransforms() const;
+
+            /* Adição de uma fonte de luz à lista de luzes */
+            void addLight(lighting::Light * light);
+
+            /* Remoção de uma fonte de luz à lista de luzes */
+            void removeLight(lighting::Light * light);
+
+            /* Devolução de uma cópia da lista de transformações */
+            std::list<lighting::Light*> getLights() const;
 
             /* Adição de um sub grupo à lista de grupos */
             void addGroup(Group group);

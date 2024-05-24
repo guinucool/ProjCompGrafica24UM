@@ -64,7 +64,7 @@ namespace lighting
             virtual void read(tinyxml2::XMLElement * light) = 0;
 
             /* Ativação e desenho de uma luz */
-            virtual void enable() = 0;
+            virtual void enable() const = 0;
 
             /* Desativação de uma luz */
             static void disable();

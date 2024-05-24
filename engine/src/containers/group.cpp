@@ -79,6 +79,52 @@ namespace containers
         delete trans;
     }
 
+    /* Leitura de uma fonte de luz para grupo através de um ficheiro xml */
+    void Group::readLight(tinyxml2::XMLElement * light) {
+
+        /* Armazena o nome do elemento */
+        std::string name = std::string(light->Value());
+
+        /* Verifica qual o elemento */
+        if (name == "light") {
+
+            /* Variável que irá armazenar o tipo de luz */
+            const char * type;
+
+            /* Fetch do atributo tipo de luz */
+            light->QueryStringAttribute("type", &type);
+
+            /* Conversão do atríbuto em formato string */
+            std::string typeStr = std::string(type);
+
+            /* Variável que irá armazenar a luz */
+            lighting::Light * li = NULL;
+
+            /* Caso seja um ponto de luz */
+            if (typeStr == "point")
+                li = new lighting::Point(light);
+
+            /* Caso seja uma luz directional */
+            else if (typeStr == "directional")
+                li = new lighting::Directional(light);
+
+            /* Caso seja um foco de luz */
+            else if (typeStr == "spotlight")
+                li = new lighting::Spot(light);
+
+            /* Caso não seja nenhum dos casos anteriores */
+            else
+                throw std::invalid_argument("given xml configuration is invalid");
+
+            /* Adição da luz à lista */
+            this->addLight(li);
+        }
+
+        /* Caso seja um elemento inválido */
+        else
+            throw std::invalid_argument("given xml configuration is invalid");
+    }
+
     /* Leitura de um sub grupo para grupo através de um ficheiro xml */
     void Group::readGroup(std::string directory, tinyxml2::XMLElement * group) {
         this->addGroup(Group(directory, group));
@@ -88,7 +134,7 @@ namespace containers
     Group::Group() {}
 
     /* Construtor de cópia de grupo */
-    Group::Group(const Group& group) : models(group.models), transforms(group.getTransforms()), groups(group.groups) {}
+    Group::Group(const Group& group) : models(group.models), transforms(group.getTransforms()), groups(group.groups), lights(group.getLights()) {}
 
     /* Construtor através de um elemento xml */
     Group::Group(std::string directory, tinyxml2::XMLElement * group) {
@@ -101,6 +147,10 @@ namespace containers
         /* Destroí todos os elementos na lista de transformações */
         for (transforms::Transform * transform: this->transforms)
             delete transform;
+
+        /* Destroí todos os elementos na lista de luzes */
+        for (lighting::Light * light: this->lights)
+            delete light;
     }
 
     /* Adição de uma primitiva à lista de modelos */
@@ -135,7 +185,11 @@ namespace containers
 
     /* Remoção de uma transformação à lista de transformações */
     void Group::removeTransform(transforms::Transform * transform) {
-        this->transforms.remove(transform);
+
+        /* Iteração pelas várias variáveis para encontrar o valor do apontador */
+        for (transforms::Transform * elem: this->transforms)
+            if ((*elem) == transform)
+                this->transforms.remove(elem);
     }
 
     /* Devolução de uma cópia da lista de transformações */
@@ -156,6 +210,45 @@ namespace containers
 
         /* Devolução da lista de clones */
         return transforms;
+    }
+
+    /* Adição de uma fonte de luz à lista de luzes */
+    void Group::addLight(lighting::Light * light) {
+
+        /* Clonagem da luz para colocar na lista */
+        lighting::Light * save = light->clone();
+
+        /* Colocação da luz na lista de luzes */
+        this->lights.push_back(light);
+    }
+
+    /* Remoção de uma fonte de luz à lista de luzes */
+    void Group::removeLight(lighting::Light * light) {
+
+        /* Iteração pelas várias luzes para encontrar o valor do apontador */
+        for (lighting::Light * elem: this->lights)
+            if ((*elem) == light)
+                this->lights.remove(elem);
+    }
+
+    /* Devolução de uma cópia da lista de transformações */
+    std::list<lighting::Light*> Group::getLights() const {
+
+        /* Criação de uma lista que será idêntica */
+        std::list<lighting::Light*> lights;
+
+        /* Adição dos vários elementos à lista */
+        for (lighting::Light * light: this->lights) {
+
+            /* Clonagem da luz */
+            lighting::Light * clone = light->clone();
+
+            /* Inserção do clone na lista resultado */
+            lights.push_back(clone);
+        }
+
+        /* Devolução da lista de clones */
+        return lights;
     }
 
     /* Adição de um sub grupo à lista de grupos */
@@ -189,7 +282,7 @@ namespace containers
             std::string name = std::string(next->Value());
 
             /* Verifica qual é o elemento */
-            if (name == "models" || name == "transform") {
+            if (name == "models" || name == "transform" || name == "lights") {
 
                 /* Fixa o número de iterações */
                 int childChildren = next->ChildElementCount();
@@ -207,6 +300,10 @@ namespace containers
                     /* Caso a criança esteja num conjunto de transformações */
                     else if (name == "transform")
                         this->readTransform(nextChild);
+
+                    /* Caso a criança esteja num conjunto de luzes */
+                    else if (name == "lights")
+                        this->readLight(nextChild);
 
                     /* Apaga o elemento lido */
                     next->DeleteChild(nextChild);
@@ -233,6 +330,10 @@ namespace containers
         /* Guarda a matriz de transformações atuais */
         glPushMatrix();
 
+        /* Criação dos pontos de luz */
+        for (lighting::Light * light : this->lights)
+            light->enable();
+
         /* Aplica todas as transformações por ordem */
         for (transforms::Transform * transform: this->transforms)
             transform->apply();
@@ -244,6 +345,10 @@ namespace containers
         /* Desenha todos os sub-grupos */
         for (Group group: this->groups)
             group.draw(immediate);
+
+        /* Desativação das luzes */
+        for (lighting::Light * light : this->lights)
+            lighting::Light::disable();
 
         /* Retoma a matriz antes de se ter desenhado o grupo */
         glPopMatrix();
@@ -300,6 +405,24 @@ namespace containers
             result &= exists;
         }
 
+        /* Avalia o tamanho da lista de luzes */
+        result = this->lights.size() == group.lights.size();
+
+        /* Verifica a existência da luz no outro grupo */
+        for (lighting::Light * elem: this->lights) {
+            
+            /* Resultado da verificação */
+            bool exists = false;
+
+            /* Iterador pelo segundo grupo */
+            for (lighting::Light * sec: group.lights)
+                if ((*sec) == elem)
+                    exists = true;
+
+            /* Atualiza resultado final */ 
+            result &= exists;
+        }
+
         /* Avalia o tamanho da lista de grupos */
         result = this->groups.size() == group.groups.size();
 
@@ -349,6 +472,12 @@ namespace containers
 
         for (drawables::Primitive model: this->models)
             group += model.toString();
+
+        /* Construção da string com as várias luzes */
+        group += "LIGHTS:\n";
+
+        for (lighting::Light * light: this->lights)
+            group += light->toString() + '\n';
 
         /* Construção da string com os vários sub-grupos */
         group += "GROUPS:\n";

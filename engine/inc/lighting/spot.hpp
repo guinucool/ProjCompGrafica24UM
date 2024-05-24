@@ -59,7 +59,7 @@ namespace lighting
             void read(tinyxml2::XMLElement * spot);
 
             /* Ativação e desenho de uma luz */
-            void enable();
+            void enable() const;
 
             /* Define o operador de comparação de igualdade */
             bool operator==(const Light * light) const;

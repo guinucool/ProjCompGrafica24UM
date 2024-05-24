@@ -27,7 +27,7 @@ namespace lighting
             void read(tinyxml2::XMLElement * directional);
 
             /* Ativação e desenho de uma luz */
-            void enable();
+            void enable() const;
 
             /* Operação de clonagem de uma luz */
             Light * clone() const;

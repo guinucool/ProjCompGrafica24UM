@@ -42,7 +42,7 @@ namespace lighting
     }
 
     /* Ativação e desenho de uma luz */
-    void Point::enable() {
+    void Point::enable() const {
 
         /* Obtenção do índice de luz mais recente */
         GLenum light = fetchIndex();
@@ -53,6 +53,7 @@ namespace lighting
         /* Ativação da luz */
         glLightfv(light, GL_POSITION, pos);
         glLightf(light, GL_QUADRATIC_ATTENUATION, 1.0f);
+        glEnable(light);
     }
 
     /* Operação de clonagem de uma luz */
