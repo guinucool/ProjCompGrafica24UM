@@ -208,6 +208,7 @@ namespace containers
         /* Inicialização dos VBO para desenho */
         glewInit();
 	    glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
         World::singleton.group->feedBuffer();
 
         /* Definição das funções de representação */
@@ -218,6 +219,7 @@ namespace containers
         /* Configurações do OpenGL */
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
+        glEnable(GL_LIGHTING);
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         /* Inicialização do GLUT */

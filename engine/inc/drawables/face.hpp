@@ -15,6 +15,7 @@ namespace drawables
 
             /* Definição das propriedades da face */
             Point first, second, third;
+            Point fNormal, sNormal, tNormal;
 
         public:
 
@@ -33,6 +34,15 @@ namespace drawables
             /* Devolução do terceiro ponto da face */
             const Point& getThird() const;
 
+            /* Devolução da primeira normal da face */
+            const Point& getFirstNormal() const;
+
+            /* Devolução da segunda normal da face */
+            const Point& getSecondNormal() const;
+
+            /* Devolução da terceira normal da face */
+            const Point& getThirdNormal() const;
+
             /* Rotação de uma face para ficar virada para o lado oposto */
             void turn();
 
@@ -42,11 +52,23 @@ namespace drawables
             /* Desenho de um ponto no modo imediato */
             void draw() const;
 
-            /* Alimentação de um buffer para desenho em modo VBO */
-            void feedBuffer(std::vector<float>& buffer) const;
+            /* Alimentação de um buffer para pontos para desenho em modo VBO */
+            void feedBufferPoints(std::vector<float>& buffer) const;
+
+            /* Alimentação de um buffer para normais para desenho em modo VBO */
+            void feedBufferNormals(std::vector<float>& buffer) const;
+
+            /* Define o operador de comparação de igualdade */
+            bool operator==(const Face& face) const;
+
+            /* Define o operador de comparação de desigualdade */
+            bool operator!=(const Face& face) const;
 
             /* Operação de clonagem de uma face */
             Face clone() const;
+
+            /* Converte o grupo num formato string */
+            std::string toString() const;
     };
 }
 #endif

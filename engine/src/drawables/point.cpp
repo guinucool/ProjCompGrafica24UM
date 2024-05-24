@@ -78,6 +78,15 @@ namespace drawables
         return this->z;
     }
 
+    /* Negação das coordenadas do ponto */
+    void Point::negate() {
+
+        /* Negação das coordenadas */
+        this->x = -this->x;
+        this->y = -this->y;
+        this->z = -this->z;
+    }
+
     /* Leitura de um ponto através de um ficheiro */
     void Point::read(std::ifstream& stream) {
 

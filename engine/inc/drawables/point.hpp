@@ -55,6 +55,9 @@ namespace drawables
             /* Devolução do valor da coordenada z do ponto */
             const float& Z() const;
 
+            /* Negação das coordenadas do ponto */
+            void negate();
+
             /* Leitura de um ponto através de um ficheiro */
             void read(std::ifstream& stream);
 

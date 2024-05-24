@@ -126,6 +126,7 @@ namespace drawables
     /* Construtor de cópia de primitiva */
     Primitive::Primitive(const Primitive& primitive) : faces(primitive.faces), diffuse(primitive.diffuse), ambient(primitive.ambient), specular(primitive.specular), emissive(primitive.emissive), shininess(primitive.shininess) {
         this->buffer[0] = primitive.buffer[0];
+        this->buffer[1] = primitive.buffer[1];
     }
 
     /* Construtor de primitiva através da leitura de ficheiro */
@@ -275,6 +276,8 @@ namespace drawables
             /* Desenho em modo VBO */
             glBindBuffer(GL_ARRAY_BUFFER, this->buffer[0]);
             glVertexPointer(3, GL_FLOAT, 0, 0);
+            glBindBuffer(GL_ARRAY_BUFFER, this->buffer[1]);
+            glNormalPointer(GL_FLOAT, 0, 0);
             glDrawArrays(GL_TRIANGLES, 0, this->faces.size() * 3);
 
         }
@@ -283,19 +286,24 @@ namespace drawables
     /* Alimentação de um buffer para desenho em modo VBO */
     void Primitive::feedBuffer() {
 
-        /* Criação do buffer de vértices */
-        std::vector<float> buffer;
+        /* Criação do buffers */
+        std::vector<float> pointBuffer;
+        std::vector<float> normalBuffer;
 
         /* Alimentação do buffer por parte de todas as faces */
-        for (Face face: this->faces)
-            face.feedBuffer(buffer);
+        for (Face face: this->faces) {
+            face.feedBufferPoints(pointBuffer);
+            face.feedBufferNormals(normalBuffer);
+        }
 
         /* Geração do buffer da primitiva */
-        glGenBuffers(1, this->buffer);
+        glGenBuffers(2, this->buffer);
 
         /* Alimentação do buffer para o modo VBO */
         glBindBuffer(GL_ARRAY_BUFFER, this->buffer[0]);
-        glBufferData(GL_ARRAY_BUFFER, buffer.size() * sizeof(float), buffer.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, pointBuffer.size() * sizeof(float), pointBuffer.data(), GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, this->buffer[1]);
+        glBufferData(GL_ARRAY_BUFFER, normalBuffer.size() * sizeof(float), normalBuffer.data(), GL_STATIC_DRAW);
     }
 
     /* Operação de comparação por igualdade de primitivas */

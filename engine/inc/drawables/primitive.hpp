@@ -32,7 +32,7 @@ namespace drawables
             lighting::Color specular;
             lighting::Color emissive;
             float shininess;
-            GLuint buffer[1];
+            GLuint buffer[2];
 
             /* Leitura da componente de cores vinda da configuração XML */
             void readColors(tinyxml2::XMLElement * colors);
