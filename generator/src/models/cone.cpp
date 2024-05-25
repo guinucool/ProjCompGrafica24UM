@@ -35,8 +35,11 @@ namespace models
         primitives::Point origin(0, 0, radius);
         primitives::Point side = primitives::Point::polarPoint(radius, angle, 0);
 
+        /* Criação de uma primitiva para a base do cone */
+        primitives::Primitive base;
+
         /* Criação da base do cone */
-        this->addTriangle(origin, primitives::Point(), side);
+        base.addTriangle(origin, primitives::Point(), side);
 
         /* Criação da primeira fatia do cone */
         for (int i = 0; i < stacks; i++) {
@@ -62,6 +65,7 @@ namespace models
 
         /* Separação da fatia da figura */
         primitives::Primitive slice = (*this);
+        primitives::Primitive baseSlice = base;
 
         /* Criação da rotação */
         utils::Matrix rotation = utils::Matrix::rotate(angle, 0, 1, 0);
@@ -71,13 +75,19 @@ namespace models
 
             /* Transformação da fatia para a próxima fatia */
             slice.transform(rotation);
+            baseSlice.transform(rotation);
 
             /* Adição da nova fatia rodada à figura final */
+            base.add(baseSlice);
             this->add(slice);
         }
 
         /* Cálculo das normais para o cone */
+        base.interpolationNormal();
         this->interpolationNormal();
+
+        /* Junção da base e da lateral */
+        this->add(base);
     }
 
     /* Construtor de cópia da classe plano */

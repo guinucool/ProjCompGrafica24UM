@@ -12,6 +12,7 @@
 #include "../../../shared/inc/geometry/primitive.hpp"
 #include "../../../external/tinyxml2/tinyxml2.h"
 #include "../lighting/color.hpp"
+#include "../texture/texture.hpp"
 #include "face.hpp"
 #include <vector>
 #include <list>
@@ -32,7 +33,8 @@ namespace drawables
             lighting::Color specular;
             lighting::Color emissive;
             float shininess;
-            GLuint buffer[2];
+            texture::Texture texture;
+            GLuint buffer[3];
 
             /* Leitura da componente de cores vinda da configuração XML */
             void readColors(tinyxml2::XMLElement * colors);
@@ -56,6 +58,9 @@ namespace drawables
 
             /* Definição do shininess do objeto */
             void setShininess(float shininess);
+
+            /* Definição da textura do objeto */
+            void setTexture(std::string texture);
         
         public:
 
@@ -91,6 +96,9 @@ namespace drawables
 
             /* Devolução da shininess do objeto */
             float getShininess() const;
+
+            /* Devolução da textura do objeto */
+            texture::Texture getTexture() const;
 
             /* Rotação de todas as faces de uma primitiva para ficarem viradas para o lado oposto */
             void turn();

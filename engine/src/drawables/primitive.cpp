@@ -120,27 +120,32 @@ namespace drawables
         this->shininess = shininess;
     }
 
+    /* Definição da textura do objeto */
+    void Primitive::setTexture(std::string texture) {
+        this->texture = texture::Texture(texture);
+    }
+
     /* Construtor padrão de primitiva */
-    Primitive::Primitive() : diffuse(GL_DIFFUSE), ambient(GL_AMBIENT), specular(GL_SPECULAR), emissive(GL_EMISSION), shininess(0) {}
+    Primitive::Primitive() : diffuse(GL_DIFFUSE), ambient(GL_AMBIENT), specular(GL_SPECULAR), emissive(GL_EMISSION), shininess(0), texture() {}
 
     /* Construtor de cópia de primitiva */
-    Primitive::Primitive(const Primitive& primitive) : faces(primitive.faces), diffuse(primitive.diffuse), ambient(primitive.ambient), specular(primitive.specular), emissive(primitive.emissive), shininess(primitive.shininess) {
+    Primitive::Primitive(const Primitive& primitive) : faces(primitive.faces), diffuse(primitive.diffuse), ambient(primitive.ambient), specular(primitive.specular), emissive(primitive.emissive), shininess(primitive.shininess), texture(primitive.texture) {
         this->buffer[0] = primitive.buffer[0];
         this->buffer[1] = primitive.buffer[1];
     }
 
     /* Construtor de primitiva através da leitura de ficheiro */
-    Primitive::Primitive(std::ifstream& stream) : diffuse(GL_DIFFUSE), ambient(GL_AMBIENT), specular(GL_SPECULAR), emissive(GL_EMISSION), shininess(0) {
+    Primitive::Primitive(std::ifstream& stream) : diffuse(GL_DIFFUSE), ambient(GL_AMBIENT), specular(GL_SPECULAR), emissive(GL_EMISSION), shininess(0), texture() {
         this->read(stream);
     }
 
     /* Construtor de primitiva através da leitura de ficheiro dado o seu caminho */
-    Primitive::Primitive(std::string path) : diffuse(GL_DIFFUSE), ambient(GL_AMBIENT), specular(GL_SPECULAR), emissive(GL_EMISSION), shininess(0) {
+    Primitive::Primitive(std::string path) : diffuse(GL_DIFFUSE), ambient(GL_AMBIENT), specular(GL_SPECULAR), emissive(GL_EMISSION), shininess(0), texture() {
         this->read(path);
     }
 
     /* Construtor de uma primitiva vinda de um ficheiro xml */
-    Primitive::Primitive(std::string directory, tinyxml2::XMLElement * model) : diffuse(GL_DIFFUSE), ambient(GL_AMBIENT), specular(GL_SPECULAR), emissive(GL_EMISSION), shininess(0) {
+    Primitive::Primitive(std::string directory, tinyxml2::XMLElement * model) : diffuse(GL_DIFFUSE), ambient(GL_AMBIENT), specular(GL_SPECULAR), emissive(GL_EMISSION), shininess(0), texture() {
         this->read(directory, model);
     }
 
@@ -172,6 +177,11 @@ namespace drawables
     /* Devolução da shininess do objeto */
     float Primitive::getShininess() const {
         return this->shininess;
+    }
+
+    /* Devolução da textura do objeto */
+    texture::Texture Primitive::getTexture() const {
+        return this->texture;
     }
 
     /* Rotação de todas as faces de uma primitiva para ficarem viradas para o lado oposto */
@@ -243,6 +253,10 @@ namespace drawables
             if (name == "color")
                 this->readColors(next);
             
+            /* Verifica se é uma textura */
+            else if (name == "texture")
+                this->texture = texture::Texture(directory, next);
+
             /* Caso o elemento seja inválido */
             else
                 throw std::invalid_argument("given xml configuration is invalid");
@@ -263,6 +277,9 @@ namespace drawables
 
         /* Aplicação da shininess do objeto */
         glMaterialf(GL_FRONT, GL_SHININESS, this->shininess);
+
+        /* Aplica a textura */
+        this->texture.load();
 
         /* Verifica qual o modo de desenho */
         if (immediate) {
@@ -329,6 +346,9 @@ namespace drawables
 
         /* Comparação da componente de cores */
         result = result && (this->diffuse == primitive.diffuse) && (this->ambient == primitive.ambient) && (this->specular == primitive.specular) && (this->emissive == primitive.emissive) && (this->shininess == primitive.shininess);
+
+        /* Comparação das texturas */
+        result = result && (this->texture == primitive.texture);
             
         /* Devolve a conclusão a que se chegou */
         return result;
@@ -357,6 +377,9 @@ namespace drawables
 
         /* Comparação da componente de cores */
         result = result && (this->diffuse == primitive.diffuse) && (this->ambient == primitive.ambient) && (this->specular == primitive.specular) && (this->emissive == primitive.emissive) && (this->shininess == primitive.shininess);
+
+        /* Comparação das texturas */
+        result = result && (this->texture == primitive.texture);
             
         /* Devolve a conclusão a que se chegou */
         return !result;
@@ -382,7 +405,10 @@ namespace drawables
         result += ambient.toString() + "\n";
         result += specular.toString() + "\n";
         result += emissive.toString() + "\n";
-        result += std::to_string(this->shininess);
+        result += std::to_string(this->shininess) + "\n";
+
+        /* Colocação da textura */
+        result += "texture: " + this->texture.toString();
         
         /* Devolução da string construída */
         return result;
