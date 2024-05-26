@@ -22,7 +22,8 @@
                 <model file="sphere.3d">
                     <texture file="sun.jpg" />
                     <color>
-                        <emissive R="1" G="1" B="0.8" />
+                        <emissive R="210" G="210" B="100" />
+                        <shininess value="0" />
                     </color>
                 </model>
             </models>
@@ -136,6 +137,11 @@
             </models>
             <!-- Teapot Space Station -->
             <group>
+                <models>
+                    <model file="teapot.3d">
+                        <texture file="teaStationPot.jpg" />
+                    </model>
+                </models>
                 <transform>
                     <rotate time="5" x="0" y="1" z="0" />
                     <translate time="10" align="True">
@@ -148,11 +154,6 @@
                         <point x="0" y="0" z="-20" />
                         <point x="10" y="0" z="-10" />
                     </translate>
-                    <models>
-                        <model file="teapot.3d">
-                            <texture file="teaStationPot.jpg" />
-                        </model>
-                    </models>
                 </transform>
             </group>
         </group>
