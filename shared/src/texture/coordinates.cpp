@@ -53,7 +53,7 @@ namespace texture
     }
 
     /* Aplicação das coordenadas para uma esfera */
-    void Coordinates::sphere(utils::Matrix coords) {
+    void Coordinates::sphere(utils::Matrix coords, bool borderH) {
 
         /* Cálculo do centro da esfera */
         utils::Matrix center(4, 1, 0.0f);
@@ -62,14 +62,44 @@ namespace texture
         /* Cálculo do vetor normal */
         utils::Matrix normal = (coords - center).normalize();
 
+        /* Ângulo em usado para calcular x */
+        float xang = std::atan2(normal[0], normal[2]);
+
         /* Cálculo das coordenadas */
-        this->x = 0.5f + (std::atan2(normal[0], normal[2]) / (2 * M_PI));
-        this->y = 0.5f + (std::asin(normal[1]) / (M_PI));
+        this->x = (0.5f + (xang / (2 * M_PI)));
+        this->y = -(0.5f + (std::asin(normal[1]) / (M_PI)));
+
+        /* Verifica se a borda foi atingida */
+        if (borderH || xang < 0)
+            this->x += 1;
     }
 
     /* Aplicação das coordenadas para a lateral de um cone */
-    void Coordinates::cone(float height, utils::Matrix coords) {
-        
+    void Coordinates::cone(float height, utils::Matrix coords, bool borderH) {
+
+        /* Centro da circunferência */
+        utils::Matrix center(4, 1, 1.0f);
+        center[0] = 0;
+        center[1] = coords[1];
+        center[2] = 0;
+
+        /* Vetor inicial do cone */
+        utils::Matrix front(4, 1, 0.0f);
+        front[2] = 1;
+
+        /* Cálculo da direção com o centro */
+        utils::Matrix normal = (coords - center).normalize();
+
+        /* Ângulo em usado para calcular x */
+        float xang = std::atan2(normal[0], normal[2]);
+
+        /* Cálculo das coordenadas */
+        this->x = (0.5f + (xang / (2 * M_PI)));
+        this->y = (coords[1] / height);
+
+        /* Verifica se é o último elemento */
+        /*if (borderH || xang < 0)
+            this->x += 1;*/
     }
 
     /* Leitura de coordenadas vindas de um ficheiro */

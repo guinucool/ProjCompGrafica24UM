@@ -134,13 +134,13 @@ namespace primitives
     }
 
     /* Cálculo das coordenadas de uma esfera */
-    void Point::sphereCoordinates() {
-        this->texture.sphere(this->coords);
+    void Point::sphereCoordinates(bool borderH) {
+        this->texture.sphere(this->coords, borderH);
     }
 
     /* Cálculo das coordenadas de uma superfície lateral de cone */
-    void Point::coneCoordinates(float height) {
-        this->texture.cone(height, this->coords);
+    void Point::coneCoordinates(float height, bool borderH) {
+        this->texture.cone(height, this->coords, borderH);
     }
 
     /* Definição das coordenadas de textura */

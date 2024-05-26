@@ -53,10 +53,10 @@ namespace primitives
             void surfaceCoordinates(float side);
 
             /* Cálculo das coordenadas de uma esfera */
-            void sphereCoordinates();
+            void sphereCoordinates(bool borderH);
 
             /* Cálculo das coordenadas de uma superfície lateral de cone */
-            void coneCoordinates(float height);
+            void coneCoordinates(float height, bool borderH);
 
             /* Normalização de todos os pontos de uma primitiva */
             void normalize();

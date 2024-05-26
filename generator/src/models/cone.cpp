@@ -67,6 +67,9 @@ namespace models
         primitives::Primitive slice = (*this);
         primitives::Primitive baseSlice = base;
 
+        /* Cálculo das coordenadas de textura para a lateral */
+        this->coneCoordinates(height, false);
+
         /* Criação da rotação */
         utils::Matrix rotation = utils::Matrix::rotate(angle, 0, 1, 0);
 
@@ -77,6 +80,9 @@ namespace models
             slice.transform(rotation);
             baseSlice.transform(rotation);
 
+            /* Cálculo das coordenadas de textura para a lateral */
+            slice.coneCoordinates(height, i == (slices - 2));
+
             /* Adição da nova fatia rodada à figura final */
             base.add(baseSlice);
             this->add(slice);
@@ -85,6 +91,9 @@ namespace models
         /* Cálculo das normais para o cone */
         base.interpolationNormal();
         this->interpolationNormal();
+
+        /* Cálculo das coordenadas de textura para a base */
+        base.surfaceCoordinates(radius * 2);
 
         /* Junção da base e da lateral */
         this->add(base);

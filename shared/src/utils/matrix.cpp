@@ -540,6 +540,27 @@ namespace utils
         return determinant;
     }
 
+    /* Cruzamento pontual de duas matrizes */
+    float Matrix::dot(Matrix matrix) const {
+
+        /* Verifica se o cruzamento de ambas as matrizes é possível */
+        if (this->getLength() != matrix.getLength())
+            throw std::runtime_error("given matrices can't be dotted");
+
+        /* Criação da matriz cruzada */
+        Matrix crossed(this->getLength(), 1, 0.0f);
+
+        /* Resultado do cruzamento pontual */
+        float dot = 0.0f;
+
+        /* Cálculo dos valores da matriz cruzada */
+        for (int i = 0; i < this->getLength(); i++)
+            dot += (*this)[i] * matrix[i];
+
+        /* Devolução do cruzamento */
+        return dot;
+    }
+
     /* Curvamento de uma matriz dado um conjunto de pontos */
     void Matrix::curve(std::list<geometry::Point*> points, Matrix * xc, Matrix * yc, Matrix * zc) const {
 

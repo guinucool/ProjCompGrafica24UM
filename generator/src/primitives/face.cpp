@@ -140,17 +140,17 @@ namespace primitives
     }
 
     /* Cálculo das coordenadas de uma esfera */
-    void Face::sphereCoordinates() {
-        this->first.sphereCoordinates();
-        this->second.sphereCoordinates();
-        this->third.sphereCoordinates();
+    void Face::sphereCoordinates(bool borderH) {
+        this->first.sphereCoordinates(borderH);
+        this->second.sphereCoordinates(borderH);
+        this->third.sphereCoordinates(borderH);
     }
 
     /* Cálculo das coordenadas de uma superfície lateral de cone */
-    void Face::coneCoordinates(float height) {
-        this->first.coneCoordinates(height);
-        this->second.coneCoordinates(height);
-        this->third.coneCoordinates(height);
+    void Face::coneCoordinates(float height, bool borderH) {
+        this->first.coneCoordinates(height, borderH);
+        this->second.coneCoordinates(height, borderH);
+        this->third.coneCoordinates(height, borderH);
     }
 
     /* Normalização de todos os pontos de uma face */

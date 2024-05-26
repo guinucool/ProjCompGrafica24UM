@@ -133,6 +133,9 @@ namespace utils
             /* Cálculo do determinante de uma matriz */
             float determinant() const;
 
+            /* Cruzamento pontual de duas matrizes */
+            float dot(Matrix matrix) const;
+
             /* Curvamento de uma matriz dado um conjunto de pontos */
             void curve(std::list<geometry::Point*> points, Matrix * x, Matrix * y, Matrix * z) const;
 

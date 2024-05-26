@@ -4,6 +4,7 @@
 /* Inclusão dos módulos necessários para funcionalidade */
 #include <stdexcept>
 #include <cmath>
+#include <iostream>
 
 /* Inicialização do namespace onde vai ser feita a definição */
 namespace models
@@ -58,11 +59,17 @@ namespace models
         /* Clonagem da fatia atual */
         primitives::Primitive slice = (*this);
 
+        /* Cálculo das coordenadas de textura da esfera */
+        this->sphereCoordinates(false);
+
         /* Duplicação da fatia atual por várias fatias */
         for (int i = 0; i < (slices - 1); i++) {
 
             /* Transformação desta fatia na próxima */
             slice.transform(alphaR);
+
+            /* Cálculo das coordenadas de textura da esfera */
+            slice.sphereCoordinates(i == (slices - 2));
 
             /* Adição da nova fatia */
             this->add(slice);
@@ -70,9 +77,6 @@ namespace models
 
         /* Cálculo das normais para a esfera */
         this->sphereNormal();
-
-        /* Cálculo das coordenadas de textura da esfera */
-        this->sphereCoordinates();
     }
 
     /* Construtor de cópia */

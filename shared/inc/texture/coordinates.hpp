@@ -45,10 +45,10 @@ namespace texture
             void surface(float side, utils::Matrix coords);
 
             /* Aplicação das coordenadas para uma esfera */
-            void sphere(utils::Matrix coords);
+            void sphere(utils::Matrix coords, bool borderH);
 
             /* Aplicação das coordenadas para a lateral de um cone */
-            void cone(float height, utils::Matrix coords);
+            void cone(float height, utils::Matrix coords, bool borderH);
 
             /* Leitura de coordenadas vindas de um ficheiro */
             void read(std::ifstream& stream);
