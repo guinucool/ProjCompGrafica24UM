@@ -1,0 +1,132 @@
+Considerando os objetivos definidos, recolheu-se, como de costume,
+um conjunto de requisitos que melhor descrevem os comportamentos
+pretendidos para a solução final.
+
+\subsection{Iluminação}
+
+De forma a garantir uma boa implementação da componente
+iluminatória, ambos os componentes de motor e gerador vão
+precisar de ser atualizados.\\
+\\
+O gerador de primitivas deverá, portanto, ser capaz de gerar
+normais para todos os pontos das figuras que constroi, armazenando-as
+nos ficheiros \textit{.3d}. Estas
+normais precisam de estar de acordo com o aspeto da figura de
+forma a obter os melhores resultados, e é, por isso, importante
+que seja o gerador a fazer essa atribuição.\\
+\\
+Já o motor gráfico deverá estar preparado para ler as normais
+geradas e aplicá-las às respetivas figuras. Para além disso,
+ainda deverá ser possível a criação de fontes de luz (de forma
+a iluminar as figuras efetivamente).\\
+\\
+As fontes de luzes devem, ainda, ser semelhantes às figuras,
+pertencendo a grupos e sub-grupos dos quais herdam transformações.
+Porém, em constrate às figuras, uma fonte de luz apenas pode
+iluminar os elementos do seu grupo e seus sub-grupos, pelo que
+deverão ser configuradas com esta ideologia em mente.\\
+\\
+Isto permite aos utilizadores do programa a criação virtual
+de mais luzes do que o \textbf{OpenGL} permite, ligando e
+desligando luzes consoante os desenhos dos grupos que as pedem.
+Ainda assim, não será possível ter mais do que oito luzes
+ligadas em simultâneo.\\
+\\
+As fontes de luzes terão de ser definidas na configuração
+\textbf{XML}, como, por exemplo:\\
+
+\begin{tcolorbox}[
+    colback=blue!10!white,
+    colframe=black!50!black,
+    after upper={\hfill\textbf{xml}}
+]
+\begin{verbatim}
+<world> 
+    <window width="512" height="512" />
+    <camera>  
+	    <position x="0" y="3" z="3" />
+	    <lookAt x="0" y="0" z="0" />
+	    <up x="0" y="1" z="0" />
+        <projection fov="60" near="1" far="1000" /> 
+    </camera>	
+	<group>
+        <lights> 
+            <light
+            type="spotlight" posX="0" posY="0" posZ="3"
+			            dirX="0" dirY="0" dirZ="-1"
+			            cutoff="5" />
+        </lights>
+		<group> 
+			    <transform>
+				        <rotate time="10" x="0" y="1" z="0" />
+			    </transform>
+			    <models> 
+				        <model file="cone_1_2_4_3.3d" />
+			    </models>
+		</group>		
+ 	</group>
+</world>
+\end{verbatim}
+\end{tcolorbox}
+
+\subsection{Materiais e cores}
+Tendo os objetos iluminados, será interessante ter, também,
+cores diferentes para diferentes objetos.\\
+\\
+Para tal, pretende-se que seja possível definir as várias
+componentes de cor de um modelo através da configuração
+\textbf{XML} dada ao motor gráfico.\\
+\\
+Cada componente deverá ser definido através das suas intensidades
+de \textbf{vermelho, verde e azul}, como pode ser observado em:\\
+
+\begin{tcolorbox}[
+    colback=blue!10!white,
+    colframe=black!50!black,
+    after upper={\hfill\textbf{xml}}
+]
+\begin{verbatim}
+<models>
+    <model file="sphere.3d" >
+        <color>
+            <diffuse R="200" G="200" B="200" />
+            <ambient R="50" G="50" B="50" />
+            <specular R="0" G="0" B="0" />
+            <emissive R="0" G="0" B="0" />
+            <shininess value="0" />
+        </color>
+    </model>
+</models>
+\end{verbatim}
+\end{tcolorbox}
+
+\subsection{Texturas}
+Para além da coloração, pretende-se, ainda, que seja possível
+aplicar texturas aos objetos.\\
+\\
+Esta tarefa estará, mais uma vez, dividida entre o gerador de
+primitivas e o motor gráfico, ficando um deles encarregue de
+gerar as coordenadas de textura para cada ponto de uma figura e, o 
+outro, encarregue de carregar e aplicar texturas aos objetos
+definidos anteriormente.\\
+\\
+As coordenadas de textura deverão, também, ser armazenadas
+nos ficheiros \textit{.3d} e lidas e processadas pelo motor
+gráfico.\\
+\\
+Uma textura deverá ser atribuida através do seguinte género
+de configuração:\\
+
+\begin{tcolorbox}[
+    colback=blue!10!white,
+    colframe=black!50!black,
+    after upper={\hfill\textbf{xml}}
+]
+\begin{verbatim}
+<models>
+    <model file="sphere.3d" >
+        <texture file="earth.jpg" />
+    </model>
+</models>
+\end{verbatim}
+\end{tcolorbox}
