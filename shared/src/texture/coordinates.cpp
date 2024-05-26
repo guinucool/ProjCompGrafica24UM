@@ -49,7 +49,7 @@ namespace texture
 
         /* Cálculo das coordenadas */
         this->x = (coords[0] - corner) / side;
-        this->y = -((coords[2] + corner) / side);
+        this->y = ((coords[2] + corner) / side);
     }
 
     /* Aplicação das coordenadas para uma esfera */

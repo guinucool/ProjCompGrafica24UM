@@ -40,6 +40,7 @@ namespace models
 
         /* Rotação dos lados para o local certo */
         riLe.rotate(M_PI / 2, 0, 0, 1);
+        riLe.rotate(M_PI / 2, 1, 0 ,0);
         foBa.rotate(M_PI / 2, 1, 0, 0);
         
 
