@@ -12,64 +12,54 @@ de forma a sustentar as novas funcionalidades pretendidas.
 \end{center}
 
 \noindent
-Reutilizando a abilidade já existente das primitivas de
-gerarem ficheiros \textit{3d}, decidiu-se que será necessário
-criar primeiro uma primitiva que represente um \textbf{patch}
-e só em seguida escrevê-la em ficheiro.
-\newline
-\break
-\noindent
-Para tal, foi criada uma classe \textbf{Patch} que, recebendo
-um ficheiro \textit{.patch}, gera uma primitiva. Esta fará uso,
-ainda, de um conjunto de \textbf{Batches} que irão armazenar,
-cada uma, um conjunto de índices de pontos (estes guardados
-num conjunto de pontos também armazenado)
-que representam uma superfície.
-\newline
-\break
-\noindent
-Cada \textbf{Batch} terá, então, de ser capaz de gerar a
-superfície que representa, tal que, uma \textbf{Patch} possa
-criar uma primitiva através do conjunto de superfícies
-geradas.
-\newline
+No gerador de primitivas as diferenças são mais notórias na parte
+da implementação do que na arquitetura, visto que o maior papel
+desta componente é realizar cálculos.\\
+\\
+Porém, ainda assim existem alguns componentes arquiteturais
+que foram utilizados para auxiliar ao cálculo, armazenamento
+e escrita das novas propriedades.\\
+\\
+O ponto do gerador passará, portanto, para além das suas coordenadas,
+a armazenar também as coordenadas da sua normal, assim como, das
+suas texturas, através da estrutura \textbf{TextureCoordinates}
+(que será também utilizada para o motor gráfico).
 
 \subsection{Motor gráfico}
 
 \begin{center}
-    \includegraphics[width=0.8\textwidth]{imgs/concept2.png}
+    \includegraphics[width=1.0\textwidth]{imgs/concept2.png}
     \captionof{figure}{Modelo de Domínio do Motor Gráfico}
     \label{fig:domeng}
 \end{center}
 
 \noindent
-Seguindo a hierarquia de transformações definida já na fase
-anterior, foram adicionados novos elementos para a completar
-de forma a possibilitar a animação.
-\newline
-\break
-\noindent
-Para tal, a hierarquia definida na fase anterior foi dada, agora,
-como uma sub-hierarquia (TransformEstática) de um hierarquia
-superior que contém todos os tipos de transformações.
-\newline
-\break
-\noindent
-Uma transformação passa, então, a definir as regras globais
-de todas as transformações (tem de poder ser aplicadas) e as
-transformações estática e animada definem as regras mais
-especificas (tem de existir um eixo, no caso da transformação
-estática, e tem de haver um intervalo de tempo, no caso
-contrário).
-\newline
-\break
-\noindent
-As translações e rotações animadas definem, posteriormente,
-as suas propriedades específicas, como o conjunto de pontos
-que define a curva e o eixo de rotação, respetivamente.
-\newline
-\break
-\noindent
-Já os \textbf{VBO}s não apresentam necessidades de alteração
-da arquitetura, tendo apenas atualizações relativas à
-implementação.
+Partindo da hierarquia até agora utilizada, o motor gráfico
+teve algumas transformações notórias.\\
+\\
+Foram, portanto, esboçadas estruturas que suportem a definição
+dos vários tipos de luz que deverão ser armazenadas num grupo
+da configuração (como especificado nos requisitos).\\
+\\
+Estas estruturas conterão as propriedades necessárias para a
+definição das luzes no cenário e deverão ser desenhadas após
+as transformações do grupo serem aplicadas.\\
+\\
+Para além disso, deverão ser ativadas no início dos desenhos
+do respetivo grupo e desativadas no final
+do desenho do grupo (após o desenho dos sub-grupos), de forma
+a cumprir o requisito e não
+afetar outros grupos na mesma hierarquia.\\
+\\
+Ainda foram especificadas estruturas que pretendem armazenar
+as componentes de cor e textura, pertencentes a uma primitiva.
+A estrutura de cor é capaz de armazenar qualquer tipo de cor,
+identificando o seu tipo nas suas propriedades e a estrutura
+de textura guarda os índices necessários para a aplicação
+de uma textura a um objeto.\\
+\\
+De forma a armazenar as normais, reutilizou-se a estrutura de
+ponto, que, sendo constituída por três coordenadas e já ter
+capacidade de leitura de ficheiros, rapidamente se encaixa
+para este propósito. Para armazenar as coordenadas de textura,
+reutilizou-se a estrutura já definida para o gerador.

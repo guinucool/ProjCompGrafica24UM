@@ -375,10 +375,18 @@ Todos os tipos de transformações deverão, também, ser sub-classes de transfo
 ```mermaid
 graph TD
     Primitive-- tem (*) -->Face
+    Primitive-- tem (4) -->Color
+    Primitive-- tem -->Texture
     Face-- tem (3) -->Point
+    Face-- tem (3) (Normais) -->Point
+    Face-- tem (3) -->TextureCoordinates
     Group-- tem (*) -->Primitive
     Group-- tem (*) -->Group
     Group-- tem (3) -->Transform
+    Group-- tem (*) -->Light
+    DirectionalLight-- é uma -->Light
+    PointLight-- é uma -->Light
+    SpotLight-- é uma -->Light
     Translate-- é uma -->TransformEstática
     Scale-- é uma -->TransformEstática
     Rotate-- é uma -->TransformEstática
@@ -396,6 +404,7 @@ graph TD
 graph TD
     Primitive-- tem (*) -->Face
     Face-- tem (3) -->Point
+    Point-- tem -->TextureCoordinates
     Plane-- é uma -->Primitive
     Box-- é uma -->Primitive
     Sphere-- é uma -->Primitive
