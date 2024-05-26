@@ -70,6 +70,9 @@ namespace models
 
         /* Cálculo das normais para a esfera */
         this->sphereNormal();
+
+        /* Cálculo das coordenadas de textura da esfera */
+        this->sphereCoordinates();
     }
 
     /* Construtor de cópia */

@@ -8,7 +8,7 @@
 namespace texture
 {
     /* Construtor de coordenadas vazio */
-    Coordinates::Coordinates() {}
+    Coordinates::Coordinates() : x(0), y(0) {}
 
     /* Construtor de coordenadas parametrizado */
     Coordinates::Coordinates(float x, float y) : x(x), y(y) {}

@@ -1,9 +1,13 @@
 /* Inclusão de módulos necessários à funcionalidade do programa */
 #include "../inc/containers/world.hpp"
 #include <iostream>
+#include <IL/il.h>
 
 /* Função principal do programa */
 int main(int argc, char** argv) {
+
+	/* Inicialização do DevIL */
+	ilInit();
 
 	/* Caso o número de argumentos seja inválido */
 	if (argc != 2) {

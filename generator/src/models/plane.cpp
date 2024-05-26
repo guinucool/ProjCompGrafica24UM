@@ -61,6 +61,9 @@ namespace models
 
         /* Cálculo das normais para o plano */
         this->interpolationNormal();
+
+        /* Cálculo das coordenadas de textura */
+        this->surfaceCoordinates(length);
     }
 
     /* Construtor de cópia da classe plano */

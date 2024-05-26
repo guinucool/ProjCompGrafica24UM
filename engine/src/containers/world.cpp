@@ -209,6 +209,7 @@ namespace containers
         glewInit();
 	    glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         World::singleton.group->feedBuffer();
 
         /* Definição das funções de representação */
@@ -224,6 +225,9 @@ namespace containers
         /* Configurações da iluminação */
         glEnable(GL_LIGHTING);
         glEnable(GL_RESCALE_NORMAL);
+
+        /* Configurações das texturas */
+        glEnable(GL_TEXTURE_2D);
         
         /* Cor ambiente de todas as luzes */
         float amb[4] = {1.0f, 1.0f, 1.0f, 1.0f};

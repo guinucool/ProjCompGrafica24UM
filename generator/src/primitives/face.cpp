@@ -132,6 +132,27 @@ namespace primitives
         return normal;
     }
 
+    /* Cálculo das coordenadas de uma superfície plana */
+    void Face::surfaceCoordinates(float side) {
+        this->first.surfaceCoordinates(side);
+        this->second.surfaceCoordinates(side);
+        this->third.surfaceCoordinates(side);
+    }
+
+    /* Cálculo das coordenadas de uma esfera */
+    void Face::sphereCoordinates() {
+        this->first.sphereCoordinates();
+        this->second.sphereCoordinates();
+        this->third.sphereCoordinates();
+    }
+
+    /* Cálculo das coordenadas de uma superfície lateral de cone */
+    void Face::coneCoordinates(float height) {
+        this->first.coneCoordinates(height);
+        this->second.coneCoordinates(height);
+        this->third.coneCoordinates(height);
+    }
+
     /* Normalização de todos os pontos de uma face */
     void Face::normalize() {
 

@@ -2,6 +2,7 @@
 #define FACE_HPP
 
 #include "../../../shared/inc/geometry/face.hpp"
+#include "../../../shared/inc/texture/coordinates.hpp"
 #include "point.hpp"
 
 /* Inicialização do namespace usado para definir a classe face */
@@ -16,6 +17,7 @@ namespace drawables
             /* Definição das propriedades da face */
             Point first, second, third;
             Point fNormal, sNormal, tNormal;
+            texture::Coordinates ft, st, tt;
 
         public:
 
@@ -43,6 +45,15 @@ namespace drawables
             /* Devolução da terceira normal da face */
             const Point& getThirdNormal() const;
 
+            /* Devolução das primeiras coordenadas de textura */
+            const texture::Coordinates& getFirstTexture() const;
+
+            /* Devolução das segundas coordenadas de textura */
+            const texture::Coordinates& getSecondTexture() const;
+
+            /* Devolução das terceiras coordenadas de textura */
+            const texture::Coordinates& getThirdTexture() const;
+
             /* Rotação de uma face para ficar virada para o lado oposto */
             void turn();
 
@@ -57,6 +68,9 @@ namespace drawables
 
             /* Alimentação de um buffer para normais para desenho em modo VBO */
             void feedBufferNormals(std::vector<float>& buffer) const;
+
+            /* Alimentação de um buffer para coordenadas de textura para desenho em modo VBO */
+            void feedBufferTexture(std::vector<float>& buffer) const;
 
             /* Define o operador de comparação de igualdade */
             bool operator==(const Face& face) const;

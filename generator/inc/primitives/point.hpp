@@ -3,6 +3,7 @@
 
 #include "../../../shared/inc/utils/matrix.hpp"
 #include "../../../shared/inc/geometry/point.hpp"
+#include "../../../shared/inc/texture/coordinates.hpp"
 #include <fstream>
 
 /* Inicialização do namespace usado para definir a classe ponto */
@@ -16,6 +17,7 @@ namespace primitives
             /* Definição das propriedades do ponto */
             utils::Matrix coords;
             utils::Matrix normal;
+            texture::Coordinates texture;
 
         public:
 
@@ -66,6 +68,21 @@ namespace primitives
 
             /* Devolução da matriz da normal do ponto */
             utils::Matrix getNormal() const;
+
+            /* Definição das coordenadas de textura */
+            void setCoordinates(const texture::Coordinates& coordinates);
+
+            /* Cálculo das coordenadas de uma superfície plana */
+            void surfaceCoordinates(float side);
+
+            /* Cálculo das coordenadas de uma esfera */
+            void sphereCoordinates();
+
+            /* Cálculo das coordenadas de uma superfície lateral de cone */
+            void coneCoordinates(float height);
+
+            /* Definição das coordenadas de textura */
+            texture::Coordinates getCoordinates() const;
 
             /* Normalização de um ponto para encaixar no espaço certo */
             void normalize();

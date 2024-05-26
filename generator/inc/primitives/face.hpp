@@ -60,6 +60,15 @@ namespace primitives{
             /* Cálculo da normal desta face */
             utils::Matrix getNormal() const;
 
+            /* Cálculo das coordenadas de uma superfície plana */
+            void surfaceCoordinates(float side);
+
+            /* Cálculo das coordenadas de uma esfera */
+            void sphereCoordinates();
+
+            /* Cálculo das coordenadas de uma superfície lateral de cone */
+            void coneCoordinates(float height);
+
             /* Normalização de todos os pontos de uma face */
             void normalize();
 

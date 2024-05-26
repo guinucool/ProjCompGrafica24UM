@@ -11,6 +11,7 @@ list(APPEND SHARED_SRC_FILES
      ../shared/src/geometry/point.cpp
      ../shared/src/geometry/face.cpp
      ../shared/src/geometry/primitive.cpp
+     ../shared/src/texture/coordinates.cpp
     )
 
 # Lista de módulos necessários para o funcionamento da geração de primitivas do programa

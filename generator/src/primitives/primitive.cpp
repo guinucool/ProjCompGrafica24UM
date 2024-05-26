@@ -76,6 +76,30 @@ namespace primitives
             face.sphereNormal();
     }
 
+    /* Cálculo das coordenadas de uma superfície plana */
+    void Primitive::surfaceCoordinates(float side) {
+
+        /* Cálculo das coordenadas das texturas dos pontos de todas as faces */
+        for (Face &face: this->faces)
+            face.surfaceCoordinates(side);
+    }
+
+    /* Cálculo das coordenadas de uma esfera */
+    void Primitive::sphereCoordinates() {
+
+        /* Cálculo das coordenadas das texturas dos pontos de todas as faces */
+        for (Face &face: this->faces) 
+            face.sphereCoordinates();
+    }
+
+    /* Cálculo das coordenadas de uma superfície lateral de cone */
+    void Primitive::coneCoordinates(float height) {
+
+        /* Cálculo das coordenadas das texturas dos pontos de todas as faces */
+        for (Face &face: this->faces) 
+            face.coneCoordinates(height);
+    }
+
     /* Normalização de todos os pontos de uma primitiva */
     void Primitive::normalize() {
 

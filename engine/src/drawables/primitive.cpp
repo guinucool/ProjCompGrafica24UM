@@ -132,6 +132,7 @@ namespace drawables
     Primitive::Primitive(const Primitive& primitive) : faces(primitive.faces), diffuse(primitive.diffuse), ambient(primitive.ambient), specular(primitive.specular), emissive(primitive.emissive), shininess(primitive.shininess), texture(primitive.texture) {
         this->buffer[0] = primitive.buffer[0];
         this->buffer[1] = primitive.buffer[1];
+        this->buffer[2] = primitive.buffer[2];
     }
 
     /* Construtor de primitiva através da leitura de ficheiro */
@@ -279,7 +280,7 @@ namespace drawables
         glMaterialf(GL_FRONT, GL_SHININESS, this->shininess);
 
         /* Aplica a textura */
-        this->texture.load();
+        this->texture.apply();
 
         /* Verifica qual o modo de desenho */
         if (immediate) {
@@ -295,8 +296,9 @@ namespace drawables
             glVertexPointer(3, GL_FLOAT, 0, 0);
             glBindBuffer(GL_ARRAY_BUFFER, this->buffer[1]);
             glNormalPointer(GL_FLOAT, 0, 0);
+            glBindBuffer(GL_ARRAY_BUFFER, this->buffer[2]);
+            glTexCoordPointer(2, GL_FLOAT, 0, 0);
             glDrawArrays(GL_TRIANGLES, 0, this->faces.size() * 3);
-
         }
     }
 
@@ -306,21 +308,28 @@ namespace drawables
         /* Criação do buffers */
         std::vector<float> pointBuffer;
         std::vector<float> normalBuffer;
+        std::vector<float> textureBuffer;
 
         /* Alimentação do buffer por parte de todas as faces */
         for (Face face: this->faces) {
             face.feedBufferPoints(pointBuffer);
             face.feedBufferNormals(normalBuffer);
+            face.feedBufferTexture(textureBuffer);
         }
 
         /* Geração do buffer da primitiva */
-        glGenBuffers(2, this->buffer);
+        glGenBuffers(3, this->buffer);
 
         /* Alimentação do buffer para o modo VBO */
         glBindBuffer(GL_ARRAY_BUFFER, this->buffer[0]);
         glBufferData(GL_ARRAY_BUFFER, pointBuffer.size() * sizeof(float), pointBuffer.data(), GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, this->buffer[1]);
         glBufferData(GL_ARRAY_BUFFER, normalBuffer.size() * sizeof(float), normalBuffer.data(), GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, this->buffer[2]);
+        glBufferData(GL_ARRAY_BUFFER, textureBuffer.size() * sizeof(float), textureBuffer.data(), GL_STATIC_DRAW);
+
+        /* Leitura da textura para o buffer */
+        this->texture.load();
     }
 
     /* Operação de comparação por igualdade de primitivas */

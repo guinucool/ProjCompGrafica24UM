@@ -4,34 +4,33 @@
 /* Inclusão de livrarias necessárias à funcionalidade */
 #include <stdexcept>
 #include <cmath>
-#include <iostream>
 
 /* Inicialização do namespace ao qual a classe pertence */
 namespace primitives
 {
     /* Construtor vazio que invoca um ponto sempre na origem do referencial */
-    Point::Point() : coords(4, 1, 1.0f), normal(4, 1, 0.0f) {
+    Point::Point() : coords(4, 1, 1.0f), normal(4, 1, 0.0f), texture() {
 
         /* Associação de coordenadas */
         this->setCoords(0.0f, 0.0f, 0.0f);
     }
 
     /* Construtor parametrizado */
-    Point::Point(float x, float y, float z) : coords(4, 1, 1.0f), normal(4, 1, 0.0f) {
+    Point::Point(float x, float y, float z) : coords(4, 1, 1.0f), normal(4, 1, 0.0f), texture() {
 
         /* Associação das coordenadas */
         this->setCoords(x, y, z);
     }
 
     /* Construtor de cópia */
-    Point::Point(const Point& point) : coords(4, 1, 1.0f), normal(point.normal) {
+    Point::Point(const Point& point) : coords(4, 1, 1.0f), normal(point.normal), texture(point.texture) {
 
         /* Associação das coordenadas */
         this->setCoords(point.X(), point.Y(), point.Z());
     }
 
     /* Construtor de um ponto vindo de um ficheiro */
-    Point::Point(std::ifstream& stream) : coords(4, 1, 1.0f), normal(4, 1, 0.0f) {
+    Point::Point(std::ifstream& stream) : coords(4, 1, 1.0f), normal(4, 1, 0.0f), texture() {
         
         /* Leitura do ponto vindo do ficheiro */
         this->read(stream);
@@ -122,6 +121,31 @@ namespace primitives
     /* Devolução da matriz da normal do ponto */
     utils::Matrix Point::getNormal() const {
         return utils::Matrix(this->normal);
+    }
+
+    /* Definição das coordenadas de textura */
+    void Point::setCoordinates(const texture::Coordinates& coordinates) {
+        this->texture = coordinates;
+    }
+
+    /* Cálculo das coordenadas de uma superfície plana */
+    void Point::surfaceCoordinates(float side) {
+        this->texture.surface(side, this->coords);
+    }
+
+    /* Cálculo das coordenadas de uma esfera */
+    void Point::sphereCoordinates() {
+        this->texture.sphere(this->coords);
+    }
+
+    /* Cálculo das coordenadas de uma superfície lateral de cone */
+    void Point::coneCoordinates(float height) {
+        this->texture.cone(height, this->coords);
+    }
+
+    /* Definição das coordenadas de textura */
+    texture::Coordinates Point::getCoordinates() const {
+        return this->texture;
     }
 
     /* Normalização de um ponto para encaixar no espaço certo */
@@ -222,6 +246,9 @@ namespace primitives
         stream.write(reinterpret_cast<const char*>(&(this->normal[1])), sizeof(float));
         stream.write(reinterpret_cast<const char*>(&(this->normal[2])), sizeof(float));
 
+        /* Escrita das coordenadas de textura em ficheiro */
+        this->texture.write(stream);
+
         /* Verifica se a escrita foi bem sucedida */
         if (stream.fail())
             std::runtime_error("failed to write to file");
@@ -244,7 +271,8 @@ namespace primitives
         std::string point = geometry::Point::toString() + "\n";
 
         /* Construção da string que irá representar o ponto */
-        point += "Normal:(" + std::to_string(this->normal[0]) + "," + std::to_string(this->normal[1]) + "," + std::to_string(this->normal[2]) + ")";
+        point += "Normal:(" + std::to_string(this->normal[0]) + "," + std::to_string(this->normal[1]) + "," + std::to_string(this->normal[2]) + ")\n";
+        point += "Texure:" + this->texture.toString();
 
         /* Devolução da string criada */
         return point;

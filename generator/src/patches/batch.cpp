@@ -79,7 +79,14 @@ namespace patches
                 x.surface(u, nv, &x3, NULL); y.surface(u, nv, &y3, NULL); z.surface(u, nv, &z3, NULL);
 
                 /* Criação dos pontos necessários */
-                primitive->addSquare(primitives::Point(x0, y0, z0), primitives::Point(x1, y1, z1), primitives::Point(x2, y2, z2), primitives::Point(x3, y3, z3));
+                primitives::Point p0(x0, y0, z0), p1(x1, y1, z1), p2(x2, y2, z2), p3(x3, y3, z3);
+                p0.setCoordinates(texture::Coordinates(u, v));
+                p1.setCoordinates(texture::Coordinates(nu, v));
+                p2.setCoordinates(texture::Coordinates(nu, nv));
+                p3.setCoordinates(texture::Coordinates(u, nv));
+
+                /* Criação dos pontos necessários */
+                primitive->addSquare(p0, p1, p2, p3);
             }
         }
     }

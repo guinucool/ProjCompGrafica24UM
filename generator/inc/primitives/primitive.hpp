@@ -49,6 +49,15 @@ namespace primitives
             /* Cálculo da normal para uma esfera */
             void sphereNormal();
 
+            /* Cálculo das coordenadas de uma superfície plana */
+            void surfaceCoordinates(float side);
+
+            /* Cálculo das coordenadas de uma esfera */
+            void sphereCoordinates();
+
+            /* Cálculo das coordenadas de uma superfície lateral de cone */
+            void coneCoordinates(float height);
+
             /* Normalização de todos os pontos de uma primitiva */
             void normalize();
 

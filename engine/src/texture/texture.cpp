@@ -4,33 +4,42 @@
 /* Inclusão de módulos necessários à funcionalidade */
 #include <stdexcept>
 #include <IL/il.h>
+#include <iostream>
 
 /* Inicialização do namespace onde vai ser definida a classe de textura */
 namespace texture
 {
     /* Construtor de textura vazia */
-    Texture::Texture() : texture(0) {}
+    Texture::Texture() : texture(0), path() {}
 
     /* Construtor de cópia de textura */
-    Texture::Texture(const Texture& texture) : texture(texture.texture) {}
+    Texture::Texture(const Texture& texture) : texture(texture.texture), path(texture.path) { }
 
     /* Construtor de textura vinda de um caminho */
-    Texture::Texture(std::string path) : texture(0) {
-        this->load(path);
-    }
+    Texture::Texture(std::string path) : texture(0), path(path) {}
 
     /* Construtor de textura vinda de uma configuração XML */
-    Texture::Texture(std::string directory, tinyxml2::XMLElement * texture) : texture(0) {
-        this->load(directory, texture);
+    Texture::Texture(std::string directory, tinyxml2::XMLElement * texture) : texture(0), path() {
+        this->read(directory, texture);
+    }
+
+    /* Definição de um caminho para a textura */
+    void Texture::setPath(std::string path) {
+        this->path = path;
+    }
+    
+    /* Devolução do caminho para a textura */
+    std::string Texture::getPath() const {
+        return this->path;
     }
 
     /* Inicialização de uma textura para ser aplicada a uma primitiva */
-    void Texture::load() const {
+    void Texture::apply() const {
         glBindTexture(GL_TEXTURE_2D, this->texture);
     }
 
     /* Leitura de uma primitiva vinda de um ficheiro */
-    void Texture::load(std::string path) {
+    void Texture::load() {
 
         /* Variáveis auxiliares à definição da imagem em memória */
         unsigned int image, width, height;
@@ -39,17 +48,25 @@ namespace texture
         /* Leitura da imagem */
         ilGenImages(1, &image);
         ilBindImage(image);
-        ilLoadImage(path.c_str());
+
+        /* Verifica se a textura existe */
+        if (!ilLoadImage((ILstring)this->path.c_str()))
+            throw std::invalid_argument("invalid texture path given");
 
         /* Associação de propriedades da imagem */
         width = ilGetInteger(IL_IMAGE_WIDTH);
         height = ilGetInteger(IL_IMAGE_HEIGHT);
-        ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+        /* Verifica se a textura é uma imagem */
+        if (!ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE))
+            throw std::invalid_argument("invalid texture path given");
+        
+        /* Informação da imagem */
         data = ilGetData();
 
         /* Associação da imagem à textura */
-        glGenTextures(1, &texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glGenTextures(1, &(this->texture));
+        glBindTexture(GL_TEXTURE_2D, this->texture);
 
         /* Associação dos parâmetros */
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -59,10 +76,11 @@ namespace texture
 
         /* Associação da imagem */
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
     }
 
     /* Leitura de uma primitiva vinda de um ficheiro xml */
-    void Texture::load(std::string directory, tinyxml2::XMLElement * texture) {
+    void Texture::read(std::string directory, tinyxml2::XMLElement * texture) {
 
         /* Verifica se a propriedade de primitiva é válida */
         if (texture->ChildElementCount() != 0)
@@ -78,18 +96,18 @@ namespace texture
         /* Transformação do atributo em string */
         std::string mpath(path);
 
-        /* Leitura da textura através do ficheiro */
-        this->load(directory + path);
+        /* Definição da textura através do ficheiro */
+        this->setPath(directory + mpath);
     }
 
     /* Define o operador de comparação de igualdade */
     bool Texture::operator==(const Texture& texture) const {
-        return (this->texture == texture.texture);
+        return (this->texture == texture.texture && this->path == texture.path);
     }
 
     /* Define o operador de comparação de desigualdade */
     bool Texture::operator!=(const Texture& texture) const {
-        return (this->texture != texture.texture);
+        return (this->texture != texture.texture || this->path != texture.path);
     }
 
     /* Operação de clonagem de uma cor */
@@ -104,7 +122,8 @@ namespace texture
         std::string texture = "";
 
         /* Construção da string */
-        texture += std::to_string(this->texture);
+        texture += std::to_string(this->texture) + "\n";
+        texture += this->path;
 
         /* Devolução da string construída */
         return texture;

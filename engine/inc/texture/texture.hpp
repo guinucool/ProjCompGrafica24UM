@@ -21,6 +21,7 @@ namespace texture
         private:
 
             /* Propriedades da classe textura */
+            std::string path;
             GLuint texture;
 
         public:
@@ -37,14 +38,20 @@ namespace texture
             /* Construtor de textura vinda de uma configuração XML */
             Texture(std::string directory, tinyxml2::XMLElement * texture);
 
+            /* Definição de um caminho para a textura */
+            void setPath(std::string path);
+            
+            /* Devolução do caminho para a textura */
+            std::string getPath() const;
+
             /* Inicialização de uma textura para ser aplicada a uma primitiva */
-            void load() const;
+            void apply() const;
 
             /* Leitura de uma primitiva vinda de um ficheiro */
-            void load(std::string path);
+            void load();
 
             /* Leitura de uma primitiva vinda de um ficheiro xml */
-            void load(std::string directory, tinyxml2::XMLElement * texture);
+            void read(std::string directory, tinyxml2::XMLElement * texture);
 
             /* Define o operador de comparação de igualdade */
             bool operator==(const Texture& texture) const;
