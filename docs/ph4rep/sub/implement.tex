@@ -1,62 +1,89 @@
-Definida e estruturada a arquitetura da solução, foram, então,
-especificadas soluções de implementação que tratassem as curvas
-e os \textbf{VBO}s.
+Embora já seja bastante percétivel através da arquitetura a
+forma como as figuras, iluminação, texturas e cores vão ser
+representadas, ainda é importante discutir a forma como as
+normais e coordenadas de textura são calculadas.\\
+\\
+Cada figura tem as suas curvaturas e superfícies e, portanto,
+é importante especificar como as texturas e normais se aplicam
+a cada objeto usado.
 
-\subsection{Curvas e Superfícies}
+\subsection{Normais}
 
-Tendo em perpestiva a arquitetura e requisitos definidos,
-assim como, a implementação das curvas, é possível perceber
-que as ambas as curvas de \textbf{Catmull-Rom} e \textbf{Bezier}
-podem ser implementadas em conjunto, sendo apenas necessário
-alterar os valores da matriz de curva.
-\newline
-\break
-\noindent
-Assim sendo, foi feito uso do módulo de matriz, já definido na
-primeira fase, que foi atualizado com novas operações relevantes
-à operação com matrizes (transpostas, inversas, determinantes, etc...). 
-\newline
-\break
-\noindent
-Foram, então, definidas as matrizes de \textbf{Catmull-Rom} e \textbf{Bezier}
-no módulo, que, em conjunto com as operações de curva e superfície, permitem
-gerar posições e derivadas em curvas ou superfícies.
-\newline
-\break
-\noindent
-Estas operações são elementares de forma a que seja possível usar qualquer matriz de
-curva para gerar posições e derivadas dado um instante da curva (ou dois, no caso da superfície)
-e um conjunto de pontos de acordo.
-\newline
-\break
-\noindent
-Definidas as curvas e as suas operações, apenas é necessário, então, usar as posições
-geradas por um intervalo de \textbf{Tesselation} para criar primitivas ou usar as
-posições e derivadas geradas por um instante temporal para mover um objeto ao longo
-de uma curva através de translações e rotações.
+\subsubsection{Plano e Cubo}
 
-\subsection{Representação por VBO}
+Sendo as figuras mais simples de calcular as normais de,
+as normais destas figuras vão ser calculadas com a simples
+perpendicularidade das faces destas figuras, já que as figuras
+são quadradas.\\
+\\
+A normal de cada ponto será, portanto, simplesmente baseada
+na normal do respetivo plano a que pertence.
 
-Considerando o modo de funcionamento dos \textbf{VBO} a solução escolhida para
-a sua implementação permite o uso desta representação sem alterações de arquitetura.
-\newline
-\break
-\noindent
-Para tal, definiu-se que cada primitiva terá uma referência ao \textbf{buffer} responsável
-por controlar a representação dos seus pontos.
-\newline
-\break
-\noindent
-Assim sendo, a representação de \textbf{VBO}s deverá ser definida por duas fases, uma para 
-a alimentação das coordenadas dos pontos ao \textbf{buffer} e outra para a representação
-destas coordenadas já definidas.
-\newline
-\break
-\noindent
-Cada ponto ficará, então, encarregue de alimentar as suas coordenadas ao \textbf{buffer}
-da respetiva primitiva quando pedido para tal.
-\newline
-\break
-\noindent
-Alimentados todos os \textbf{buffers} de todas as primitivas, apenas será necessária a
-sua posterior representação através dos \textbf{buffers} definidos.
+\subsubsection{Esfera}
+
+Sendo um pouco mais complicada, a esfera poderá ter as suas
+normais calculadas através da simples extensão do raio da
+esfera em si, uma vez que é o vetor mais prependicular que
+existe em relação à curvatura da esfera naquele local.\\
+\\
+A coordenadas de cada normal serão, portanto, calculadas
+através das coordenadas do vetor de distância (normalizadas)
+entre a origem da esfera (que será a origem do
+referencial) e o ponto da superfície.
+
+\subsubsection{Cone}
+
+Sendo a figura mais complicada, as normais do cone serão
+calculadas através da perpendicularidade de um vetor com
+a borda lateral do cone.\\
+\\
+Pretendendo se considerar o cone como uma figura circular e não
+piramidal, esta aproximação pretende considerar a borda do cone
+como se fosse uma "fatia" do mesmo.\\
+\\
+Para além disso, o cone precisará também de calcular as normais
+para a sua base, que sendo uma superfície plana, serão semelhantes
+às do plano e cubo.
+
+\subsubsection{Patches de Bezier}
+
+Por último, as normais de patches de bezier serão calculadas
+através do cruzamento vetorial das suas derivadas, que, na sua
+definição, já criam, desta forma, a respetiva normal do ponto.
+
+\subsection{Texturas}
+
+\subsubsection{Plano e Cubo}
+
+Tendo o mapeamento basicamente idêntico ao das texturas,
+as coordenadas de texturas destas figuras será uma simples
+conversão das coordenadas para a escala de 0 a 1.
+
+\subsubsection{Esfera}
+
+Sendo a figura mais complicada para o mapeamento de texturas,
+as coordenadas serão calculadas através do rebatimento das
+suas coordenadas para um plano tangente.\\
+\\
+Este rebatimento permitirá uma melhor dispersão dos pontos nas
+coordenadas de textura, tendo uma relação de distância e
+dimensão mais precisa.
+
+\subsubsection{Cone}
+
+Tendo um mapeamento de texturas mais complicado, o cone será
+mapeado através da sua altura e abertura do ângulo, para a sua
+superfície lateral.\\
+\\
+As porpoções de ângulo serão, portanto, convertidas para a escala
+horizontal e a altura para a escala vertical.\\
+\\
+A base será mapeada tal como o plano e o cubo.
+
+\subsubsection{Patches de Bezier}
+
+Por último, as coordenadas de textura das patches de bezier
+serão calculadas através do uso dos parâmetros \textbf{u e v}
+(mapeados para x e y) já usados para a criação das figuras,
+que, apresentando já a escala certa, são perfeitos para o
+propósito.
