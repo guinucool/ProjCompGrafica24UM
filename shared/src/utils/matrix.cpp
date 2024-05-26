@@ -224,7 +224,34 @@ namespace utils
 
     /* Cálculo das derivadas atuais do ponto numa superfície curva */
     Matrix Matrix::surfaceDerivate(float u, float v) const {
-        /* To be implemented */
+        
+        /* Criação das matrizes de tempo horizontal */
+        utils::Matrix T(4, 1, 0.0f);
+        utils::Matrix TD(4, 1, 0.0f);
+
+        /* Cálculo da matriz temporal */
+        T[0] = pow(v, 3);
+        T[1] = pow(v, 2);
+        T[2] = v;
+        T[3] = 1;
+
+        /* Cálculo da matriz temporal derivada */
+        TD[0] = 3 * pow(v, 2);
+        TD[1] = 2 * pow(v, 1);
+        TD[2] = 1;
+        TD[3] = 0;
+
+        /* Cálculo das coordenadas representada pela matriz atual */
+        Matrix coord = this->curveDerivate(u) * T;
+        Matrix coordD = this->curvePosition(u) * TD;
+
+        /* Criação da matriz resultado */
+        Matrix result(2, 1, 0.0f);
+        result[0] = coord[0];
+        result[1] = coordD[0];
+
+        /* Devolução do valor das coordenadas calculadas */
+        return result;
     }
 
     /* Construtor parametrizado */
@@ -708,7 +735,7 @@ namespace utils
     }
 
     /* Curvamento de uma matriz em superfície dado dois instantes */
-    void Matrix::surface(float u, float v, float * position, float * derivate) const {
+    void Matrix::surface(float u, float v, float * position, float * derivateU, float * derivateV) const {
 
         /* Verifica se a matriz é curvável para superfície */
         if (this->rows != 4 && this->cols != 4)
@@ -718,13 +745,24 @@ namespace utils
         if (position != NULL)
             *position = this->surfacePosition(u, v)[0];
 
-        /* Obtenção do valor de derivada */
-        if (derivate != NULL)
-            *derivate = this->surfaceDerivate(u, v)[0];
+        /* Obtenção dos valores das derivadas */
+        if (derivateU != NULL || derivateV != NULL) {
+
+            /* Matriz que irá armazenar o resultado das derivadas */
+            Matrix derivate = this->surfaceDerivate(u, v);
+
+            /* Obtenção do valor de derivada U */
+            if (derivateU != NULL)
+                *derivateU = derivate[0];
+
+            /* Obtenção do valor de derivada V */
+            if (derivateV != NULL)
+                *derivateV = derivate[1];
+        }
     }
 
     /* Curvamento de uma matriz em superfície dado um conjunto de pontos e dois instantes */
-    void Matrix::surface(float u, float v, std::list<geometry::Point*> points, Matrix * position, Matrix * derivate) const {
+    void Matrix::surface(float u, float v, std::list<geometry::Point*> points, Matrix * position, Matrix * derivateU, Matrix * derivateV) const {
 
         /* Criação das matrizes de superfície dos eixos */
         Matrix x(4, 4, 0.0f);
@@ -750,18 +788,38 @@ namespace utils
         }
 
         /* Obtenção da matriz de derivada */
-        if (derivate != NULL) {
+        if (derivateU != NULL || derivateV != NULL) {
 
             /* Criação da matriz resultado */
-            Matrix deriv(3, 1, 0.0f);
+            Matrix derivU(3, 1, 0.0f);
+            Matrix derivV(3, 1, 0.0f);
+            Matrix xd = x.surfaceDerivate(u, v);
+            Matrix yd = y.surfaceDerivate(u, v);
+            Matrix zd = z.surfaceDerivate(u, v);
 
-            /* Cálculo das coordenadas */
-            deriv[0] = x.surfaceDerivate(u, v)[0];
-            deriv[1] = y.surfaceDerivate(u, v)[0];
-            deriv[2] = z.surfaceDerivate(u, v)[0];
+            /* Cálculo do vetor de U */
+            if (derivateU != NULL) {
+                
+                /* Cálculo das coordenadas de U */
+                derivU[0] = xd[0];
+                derivU[1] = yd[0];
+                derivU[2] = zd[0];
 
-            /* Associação da matriz criada */
-            *derivate = deriv;
+                /* Associação da matriz criada */
+                *derivateU = derivU;
+            }
+
+            /* Cálculo do vetor de U */
+            if (derivateU != NULL) {
+                
+                /* Cálculo das coordenadas de V */
+                derivU[0] = xd[1];
+                derivU[1] = yd[1];
+                derivU[2] = zd[1];
+
+                /* Associação da matriz criada */
+                *derivateV = derivV;
+            }
         }
     }
 

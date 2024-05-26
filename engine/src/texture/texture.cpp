@@ -41,42 +41,46 @@ namespace texture
     /* Leitura de uma primitiva vinda de um ficheiro */
     void Texture::load() {
 
-        /* Variáveis auxiliares à definição da imagem em memória */
-        unsigned int image, width, height;
-        unsigned char * data;
+        /* Apenas é necessário carregar a textura se houver textura personalizada */
+        if (this->path != "") {
 
-        /* Leitura da imagem */
-        ilGenImages(1, &image);
-        ilBindImage(image);
+            /* Variáveis auxiliares à definição da imagem em memória */
+            unsigned int image, width, height;
+            unsigned char * data;
 
-        /* Verifica se a textura existe */
-        if (!ilLoadImage((ILstring)this->path.c_str()))
-            throw std::invalid_argument("invalid texture path given");
+            /* Leitura da imagem */
+            ilGenImages(1, &image);
+            ilBindImage(image);
 
-        /* Associação de propriedades da imagem */
-        width = ilGetInteger(IL_IMAGE_WIDTH);
-        height = ilGetInteger(IL_IMAGE_HEIGHT);
+            /* Verifica se a textura existe */
+            if (!ilLoadImage((ILstring)this->path.c_str()))
+                throw std::invalid_argument("invalid texture path given");
 
-        /* Verifica se a textura é uma imagem */
-        if (!ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE))
-            throw std::invalid_argument("invalid texture path given");
-        
-        /* Informação da imagem */
-        data = ilGetData();
+            /* Associação de propriedades da imagem */
+            width = ilGetInteger(IL_IMAGE_WIDTH);
+            height = ilGetInteger(IL_IMAGE_HEIGHT);
 
-        /* Associação da imagem à textura */
-        glGenTextures(1, &(this->texture));
-        glBindTexture(GL_TEXTURE_2D, this->texture);
+            /* Verifica se a textura é uma imagem */
+            if (!ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE))
+                throw std::invalid_argument("invalid texture path given");
+            
+            /* Informação da imagem */
+            data = ilGetData();
 
-        /* Associação dos parâmetros */
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            /* Associação da imagem à textura */
+            glGenTextures(1, &(this->texture));
+            glBindTexture(GL_TEXTURE_2D, this->texture);
 
-        /* Associação da imagem */
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
+            /* Associação dos parâmetros */
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+            /* Associação da imagem */
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
     }
 
     /* Leitura de uma primitiva vinda de um ficheiro xml */

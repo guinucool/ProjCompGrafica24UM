@@ -149,10 +149,10 @@ namespace utils
             void surface(std::list<geometry::Point*> points, Matrix * xs, Matrix * ys, Matrix * zs) const;
 
             /* Curvamento de uma matriz em superfície dado dois instantes */
-            void surface(float u, float v, float * position, float * derivate) const;
+            void surface(float u, float v, float * position, float * derivateU, float * derivateV) const;
 
             /* Curvamento de uma matriz em superfície dado um conjunto de pontos e dois instantes */
-            void surface(float u, float v, std::list<geometry::Point*> points, Matrix * position, Matrix * derivate) const;
+            void surface(float u, float v, std::list<geometry::Point*> points, Matrix * position, Matrix * derivateU, Matrix * derivateV) const;
 
             /* Cruzamento de duas matrizes tridimensionais */
             Matrix cross(Matrix matrix) const;

@@ -67,16 +67,26 @@ namespace patches
                 float nv = v - t;
 
                 /* Criação das várias coordenadas */
-                float x0; float y0; float z0;
-                float x1; float y1; float z1;
-                float x2; float y2; float z2;
-                float x3; float y3; float z3;
+                float x0; float y0; float z0; float ux0; float uy0; float uz0; float vx0; float vy0; float vz0;
+                float x1; float y1; float z1; float ux1; float uy1; float uz1; float vx1; float vy1; float vz1;
+                float x2; float y2; float z2; float ux2; float uy2; float uz2; float vx2; float vy2; float vz2;
+                float x3; float y3; float z3; float ux3; float uy3; float uz3; float vx3; float vy3; float vz3;
 
                 /* Cálculo das coordenadas */
-                x.surface(u, v, &x0, NULL); y.surface(u, v, &y0, NULL); z.surface(u, v, &z0, NULL);
-                x.surface(nu, v, &x1, NULL); y.surface(nu, v, &y1, NULL); z.surface(nu, v, &z1, NULL);
-                x.surface(nu, nv, &x2, NULL); y.surface(nu, nv, &y2, NULL); z.surface(nu, nv, &z2, NULL);
-                x.surface(u, nv, &x3, NULL); y.surface(u, nv, &y3, NULL); z.surface(u, nv, &z3, NULL);
+                x.surface(u, v, &x0, &ux0, &vx0); y.surface(u, v, &y0, &uy0, &vy0); z.surface(u, v, &z0, &uz0, &vz0);
+                x.surface(nu, v, &x1, &ux1, &vx1); y.surface(nu, v, &y1, &uy1, &vy1); z.surface(nu, v, &z1, &uz1, &vz1);
+                x.surface(nu, nv, &x2, &ux2, &vx2); y.surface(nu, nv, &y2, &uy2, &vy2); z.surface(nu, nv, &z2, &uz2, &vz2);
+                x.surface(u, nv, &x3, &ux3, &vx3); y.surface(u, nv, &y3, &uy3, &vy3); z.surface(u, nv, &z3, &uz3, &vz3);
+
+                /* Criação dos vetores derivados */
+                utils::Matrix u0(4, 1, 0.0f), v0(4, 1, 0.0f); u0[0] = ux0; u0[1] = uy0; u0[2] = uz0; v0[0] = vx0; v0[1] = vy0; v0[2] = vz0;
+                utils::Matrix u1(4, 1, 0.0f), v1(4, 1, 0.0f); u1[0] = ux1; u1[1] = uy1; u1[2] = uz1; v1[0] = vx1; v1[1] = vy1; v1[2] = vz1;
+                utils::Matrix u2(4, 1, 0.0f), v2(4, 1, 0.0f); u2[0] = ux2; u2[1] = uy2; u2[2] = uz2; v2[0] = vx2; v2[1] = vy2; v2[2] = vz2;
+                utils::Matrix u3(4, 1, 0.0f), v3(4, 1, 0.0f); u3[0] = ux3; u3[1] = uy3; u3[2] = uz3; v3[0] = vx3; v3[1] = vy3; v3[2] = vz3;
+                utils::Matrix n0 = (u0.crossVector(v0).normalize());
+                utils::Matrix n1 = (u1.crossVector(v1).normalize());
+                utils::Matrix n2 = (u2.crossVector(v2).normalize());
+                utils::Matrix n3 = (u3.crossVector(v3).normalize());
 
                 /* Criação dos pontos necessários */
                 primitives::Point p0(x0, y0, z0), p1(x1, y1, z1), p2(x2, y2, z2), p3(x3, y3, z3);
@@ -84,6 +94,10 @@ namespace patches
                 p1.setCoordinates(texture::Coordinates(nu, v));
                 p2.setCoordinates(texture::Coordinates(nu, nv));
                 p3.setCoordinates(texture::Coordinates(u, nv));
+                p0.setNormal(n0);
+                p1.setNormal(n1);
+                p2.setNormal(n2);
+                p3.setNormal(n3);
 
                 /* Criação dos pontos necessários */
                 primitive->addSquare(p0, p1, p2, p3);
