@@ -94,12 +94,16 @@ namespace texture
         float xang = std::atan2(normal[0], normal[2]);
 
         /* Cálculo das coordenadas */
-        this->x = (0.5f + (xang / (2 * M_PI)));
-        this->y = (coords[1] / height);
+        if (coords[1] != height)
+            this->x = ((xang / (2 * M_PI)));
+        else
+            this->x = 0.5f;
+        
+        this->y = -(coords[1] / height);
 
         /* Verifica se é o último elemento */
-        /*if (borderH || xang < 0)
-            this->x += 1;*/
+        if ((borderH || xang < 0) && coords[1] != height)
+            this->x += 1.0f;
     }
 
     /* Leitura de coordenadas vindas de um ficheiro */
