@@ -76,6 +76,14 @@ namespace primitives
             face.sphereNormal();
     }
 
+    /* Cálculo da normal para a superfície de um cone */
+    void Primitive::coneNormal(float height, float radius) {
+
+        /* Cálculo da normal dos pontos de todas as faces */
+        for (Face &face: this->faces) 
+            face.coneNormal(height, radius);
+    }
+
     /* Cálculo das coordenadas de uma superfície plana */
     void Primitive::surfaceCoordinates(float side) {
 

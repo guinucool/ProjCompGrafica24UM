@@ -122,6 +122,25 @@ namespace primitives
         this->third.sphereNormal();
     }
 
+    /* Cálculo da normal para a superfície de um cone */
+    void Face::coneNormal(float height, float radius) {
+
+        /* Cálculo das normais dos pontos */
+        this->first.coneNormal(height, radius);
+        this->second.coneNormal(height, radius);
+        this->third.coneNormal(height, radius);
+
+        /* Verifica se algum vertice é a ponta */
+        if (this->first.Y() == height)
+            this->first.setNormal(this->second.getNormal());
+
+        if (this->second.Y() == height)
+            this->second.setNormal(this->third.getNormal());
+
+        if (this->third.Y() == height)
+            this->third.setNormal(this->first.getNormal());
+    }
+
     /* Cálculo da normal desta face */
     utils::Matrix Face::getNormal() const {
 

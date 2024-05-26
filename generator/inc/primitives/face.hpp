@@ -57,6 +57,9 @@ namespace primitives{
             /* Cálculo da normal para uma esfera */
             void sphereNormal();
 
+            /* Cálculo da normal para a superfície de um cone */
+            void coneNormal(float height, float radius);
+
             /* Cálculo da normal desta face */
             utils::Matrix getNormal() const;
 

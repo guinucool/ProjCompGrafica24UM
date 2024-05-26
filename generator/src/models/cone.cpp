@@ -90,7 +90,7 @@ namespace models
 
         /* Cálculo das normais para o cone */
         base.interpolationNormal();
-        this->interpolationNormal();
+        this->coneNormal(height, radius);
 
         /* Cálculo das coordenadas de textura para a base */
         base.surfaceCoordinates(radius * 2);

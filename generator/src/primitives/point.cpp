@@ -118,6 +118,28 @@ namespace primitives
         this->normal = this->normal.normalize();
     }
 
+    /* Cálculo da normal para a superfície de um cone */
+    void Point::coneNormal(float height, float radius) {
+
+        /* Centro da circunferência */
+        utils::Matrix center(4, 1, 1.0f);
+        center[0] = 0;
+        center[1] = this->Y();
+        center[2] = 0;
+
+        /* Cálculo da direção com o centro */
+        utils::Matrix dir = (coords - center).normalize();
+
+        /* Cálculo das componentes do vetor normal */
+        float nx = height / (sqrt(height * height + radius * radius));
+        float ny = radius / (sqrt(height * height + radius * radius));
+
+        /* Cálculo da normal */
+        this->normal[0] = nx * (dir[0] / dir.length());
+        this->normal[1] = ny;
+        this->normal[2] = nx * (dir[2] / dir.length());
+    }
+
     /* Devolução da matriz da normal do ponto */
     utils::Matrix Point::getNormal() const {
         return utils::Matrix(this->normal);

@@ -4,7 +4,6 @@
 /* Inclusão de módulos necessários à funcionalidade */
 #include <stdexcept>
 #include <IL/il.h>
-#include <iostream>
 
 /* Inicialização do namespace onde vai ser definida a classe de textura */
 namespace texture
